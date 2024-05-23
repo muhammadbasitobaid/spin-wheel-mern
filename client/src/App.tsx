@@ -4,7 +4,7 @@ import { attemptGetUser } from "./store/thunks/user";
 
 import {
   ConfirmPage,
-  HomePage,
+  // HomePage,
   ProfilePage,
   LoginPage,
   ResetPasswordRequestPage,
@@ -16,10 +16,20 @@ import {
 import { ProtectedRoute, NavBar } from "./components";
 import { useAppDispatch } from "./store/hooks";
 import { AuthRoute } from "./components/AuthRoute";
+import Modal from "./components/common/Modal";
+// import Table from "./components/Table";
+// import Home from "./pages/HomePage";
+// import VolumeController from "./components/VolumeController";
+// import ChoiceCounter from "./components/common/ChoiceCounter";
+// import ScoreCard from "./components/ScoreCard";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     dispatch(attemptGetUser())
@@ -37,10 +47,25 @@ export default function App() {
     <>
       <NavBar />
       <Routes>
-        <Route path='/healthcheck' element={<HealthPage />} />
-        <Route path='/home' element={<HomePage />} />
+        <Route path="/healthcheck" element={<HealthPage />} />
         <Route
-          path='/account/confirm/:token'
+          path="/home"
+          element={
+            <div>
+              <div className="min-h-screen flex items-center justify-center bg-gray">
+                <button
+                  className="bg-blue text-white py-2 px-4 rounded hover:bg-blue"
+                  onClick={openModal}
+                >
+                  Open Modal
+                </button>
+                <Modal isOpen={isModalOpen} onClose={closeModal} />
+              </div>
+            </div>
+          }
+        />
+        <Route
+          path="/account/confirm/:token"
           element={
             <AuthRoute>
               <ConfirmPage />
@@ -48,7 +73,7 @@ export default function App() {
           }
         />
         <Route
-          path='/register'
+          path="/register"
           element={
             <AuthRoute>
               <RegisterPage />
@@ -56,7 +81,7 @@ export default function App() {
           }
         />
         <Route
-          path='/login'
+          path="/login"
           element={
             <AuthRoute>
               <LoginPage />
@@ -64,7 +89,7 @@ export default function App() {
           }
         />
         <Route
-          path='/login/forgot'
+          path="/login/forgot"
           element={
             <AuthRoute>
               <ResetPasswordRequestPage />
@@ -72,7 +97,7 @@ export default function App() {
           }
         />
         <Route
-          path='/login/reset/:token'
+          path="/login/reset/:token"
           element={
             <AuthRoute>
               <ResetPasswordPage />
@@ -80,7 +105,7 @@ export default function App() {
           }
         />
         <Route
-          path='/logout'
+          path="/logout"
           element={
             <ProtectedRoute>
               <LogoutPage />
@@ -88,15 +113,15 @@ export default function App() {
           }
         />
         <Route
-          path='/my-profile'
+          path="/my-profile"
           element={
             <ProtectedRoute>
               <ProfilePage />
             </ProtectedRoute>
           }
         />
-        <Route path='/' element={<Navigate to='/home' replace />} />
-        <Route element={<Navigate to='/home' replace />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route element={<Navigate to="/home" replace />} />
       </Routes>
     </>
   );

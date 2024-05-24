@@ -55,3 +55,26 @@ tr:first-child td {
 td:first-child {
     border-left: none;
 }
+
+
+/* custom scrollbar */
+/* Ref: https://codepen.io/GhostRider/pen/oNvoNv */
+
+
+#style-2::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+	background-color: #F4F5F5;
+}
+
+#style-2::-webkit-scrollbar
+{
+	width: 8px;
+	background-color: #F4F5F5;
+}
+
+#style-2::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: #0089D6;
+}

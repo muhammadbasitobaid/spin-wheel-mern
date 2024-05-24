@@ -38,4 +38,12 @@ function getBgColorForLabel(index: number, colors: string[]): string {
     }
   }
 
-export { getLabelColor, getBgColorForLabel };
+function getRandomYesOrNo() {
+  // Generate a random number between 0 and 1
+  const randomNumber = Math.random();
+
+  // If the random number is less than 0.5, return "Yes", otherwise return "No"
+  return randomNumber < 0.5 ? "Yes" : "No";
+}
+
+export { getLabelColor, getBgColorForLabel, getRandomYesOrNo };

@@ -16,7 +16,11 @@ import {
 import { ProtectedRoute, NavBar } from "./components";
 import { useAppDispatch } from "./store/hooks";
 import { AuthRoute } from "./components/AuthRoute";
-import Modal from "./components/common/Modal";
+import Configurator from "./components/Configurator";
+// import Modal from "./components/common/Modal";
+// import ThemeGrid from "./components/Theme/ThemeGrid";
+// import { Tab } from "./components/common/Tab";
+// import Results from "./components/Results";
 // import Table from "./components/Table";
 // import Home from "./pages/HomePage";
 // import VolumeController from "./components/VolumeController";
@@ -26,11 +30,11 @@ import Modal from "./components/common/Modal";
 export default function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const tabs = [
+  //   { id: "tab1", label: "Tab 1" },
+  //   { id: "tab2", label: "Tab 2" },
+  // ];
   useEffect(() => {
     dispatch(attemptGetUser())
       .then(() => {
@@ -52,15 +56,7 @@ export default function App() {
           path="/home"
           element={
             <div>
-              <div className="min-h-screen flex items-center justify-center bg-gray">
-                <button
-                  className="bg-blue text-white py-2 px-4 rounded hover:bg-blue"
-                  onClick={openModal}
-                >
-                  Open Modal
-                </button>
-                <Modal isOpen={isModalOpen} onClose={closeModal} />
-              </div>
+              <Configurator />
             </div>
           }
         />

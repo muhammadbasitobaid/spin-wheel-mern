@@ -40,7 +40,10 @@ module.exports = {
       },
     },
     borderRadius: {
+      "custom-none": "0px",
+      "custom-sm": "8px",
       custom: "20px",
+      "custom-lg": "89px",
       full: "9999px",
     },
   },

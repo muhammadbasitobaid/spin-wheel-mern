@@ -8,6 +8,7 @@ interface ModalProps {
   showDoneButton?: boolean;
   useDefaultCloseIcon?: boolean;
   children: ReactNode;
+  className?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -17,6 +18,7 @@ const Modal: React.FC<ModalProps> = ({
   showDoneButton = false,
   useDefaultCloseIcon = false,
   children,
+  className,
 }) => {
   if (!isOpen) return null;
 
@@ -27,12 +29,12 @@ const Modal: React.FC<ModalProps> = ({
       }`}
     >
       <div
-        className={`h-[80%] bg-white p-6 ${
+        className={`bg-white p-6 ${
           showOverlay ? "rounded-custom relative" : "rounded-custom-lg relative"
-        } shadow-3xl  w-[50%]`}
+        } shadow-3xl  w-[50%]  ${className}`}
       >
         <button
-          className="absolute top-6 right-6 text-gray-700 hover:text-gray-900"
+          className="absolute top-6 right-6 text-black hover:text-gray"
           onClick={onClose}
         >
           {useDefaultCloseIcon && (
@@ -52,7 +54,7 @@ const Modal: React.FC<ModalProps> = ({
           <Button
             className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
             onClick={onClose}
-            invertedVariant
+            // invertedVariant
           >
             Done
           </Button>

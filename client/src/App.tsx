@@ -16,7 +16,9 @@ import {
 import { ProtectedRoute, NavBar } from "./components";
 import { useAppDispatch } from "./store/hooks";
 import { AuthRoute } from "./components/AuthRoute";
-import Configurator from "./components/Configurator";
+import Auth from "./components/Auth";
+// import ResultModal from "./components/ResultModal";
+// import Configurator from "./components/Configurator";
 // import Modal from "./components/common/Modal";
 // import ThemeGrid from "./components/Theme/ThemeGrid";
 // import { Tab } from "./components/common/Tab";
@@ -56,7 +58,7 @@ export default function App() {
           path="/home"
           element={
             <div>
-              <Configurator />
+              <Auth />
             </div>
           }
         />

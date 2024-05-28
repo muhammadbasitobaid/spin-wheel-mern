@@ -1,8 +1,8 @@
 import { useState } from "react";
-import ThemeGrid from "../Theme/ThemeGrid";
+import ThemeGrid from "./Theme/ThemeGrid";
 import Modal from "../common/Modal";
 import { Tab } from "../common/Tab";
-import Settings from "../Settings";
+import Settings from "./Settings";
 
 const Configurator = () => {
   const tabs = [
@@ -21,7 +21,7 @@ const Configurator = () => {
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
   return (
     <Modal isOpen={true} useDefaultCloseIcon showOverlay onClose={() => {}}>
-      <div className="mx-6 my-14 w-full">
+      <div className="mx-6 my-14 mb-8 w-full">
         <Tab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
         <div className="w-full">
           {tabs.find((tab) => tab.id === activeTab)!.content}

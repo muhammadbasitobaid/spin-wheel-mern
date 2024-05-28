@@ -7,8 +7,12 @@
 input[type="range"]{
       accent-color: #0089D6;
       outline: none;
-    -webkit-appearance: slider-vertical;
     width: 20px;
+}
+
+#range-vertical{
+
+    -webkit-appearance: slider-vertical!important;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -27,6 +31,22 @@ input[type=range]::-webkit-slider-runnable-track  {
   border: none;
 }
 
+/* Styles for horizontal range input */
+.horizontal-range {
+  width: 100%!important;
+  margin-right: 0 !important;
+  height: auto!important;
+    -webkit-appearance: horizontal-range !important;
+}
+
+.horizontal-range::-webkit-slider-runnable-track {
+  height: 5px;
+  width: 100%;
+}
+
+.horizontal-range::-webkit-slider-thumb {
+  margin-top: -5.4px !important;
+}
 
 /* Custom Table */
 

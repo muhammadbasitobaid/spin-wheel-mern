@@ -16,7 +16,7 @@ const ThemeGrid: React.FC = () => {
       </h2>
       <div className="flex flex-wrap gap-4 justify-center">
         {THEMES.map((item) => (
-          <div
+          <button
             key={uuidv4()}
             className={`flex items-center justify-center gap-2 w-[60px] leading-none ${
               selectedTheme === item
@@ -57,7 +57,7 @@ const ThemeGrid: React.FC = () => {
                 className="border-0 rounded-r-custom-sm"
               ></div>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>

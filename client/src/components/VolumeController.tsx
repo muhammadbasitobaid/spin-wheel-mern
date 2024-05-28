@@ -36,6 +36,7 @@ const VolumeController: FC = () => {
           onChange={handleSliderChange} // Handle slider value change
           aria-orientation="vertical"
           className="appearance-none h-full w-6 bg-gray-200 rounded-full focus:outline-none"
+          id="range-vertical"
         />
       </div>
     </div>

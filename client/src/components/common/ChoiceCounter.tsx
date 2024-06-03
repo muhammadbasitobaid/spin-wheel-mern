@@ -16,7 +16,7 @@ const InputButton: React.FC<InputButtonProps> = ({
   text = "-",
 }) => (
   <button
-    className="bg-white text-lg px-4 py-2 rounded-lg leading-none md:text-2xl md:px-8 md:py-4"
+    className="bg-white text-lg px-4 py-2 rounded-custom-sm leading-none md:text-2xl md:px-8 md:py-4"
     onClick={onClick}
     disabled={disabled}
   >
@@ -45,7 +45,7 @@ const ChoiceCounter: React.FC<ChoiceCounterProps> = ({ max }) => {
   };
 
   return (
-    <div className="min-w-full p-1.5 bg-slate rounded-lg flex justify-between items-center md:p-2">
+    <div className="my-1.5 min-w-full p-1.5 bg-slate rounded-custom-sm flex justify-between items-center md:p-2">
       <InputButton onClick={handleDecrement} disabled={count === min} />
       <span className="mx-4 text-base md:text-xl leading-none">{count}</span>
       <InputButton

@@ -8,20 +8,22 @@ type ToggleButtonProps = {
   label: string;
   isActive: boolean;
   onClick: () => void;
+  className?: string;
 };
 
-const ToggleButton: React.FC<ToggleButtonProps> = ({
+export const ToggleButton: React.FC<ToggleButtonProps> = ({
   label,
   isActive,
   onClick,
+  className = "",
 }) => {
   return isActive ? (
-    <Button onClick={onClick} small>
+    <Button onClick={onClick} small className={className}>
       <span>{label}</span>
     </Button>
   ) : (
     <button
-      className={`px-4 py-2 m-2 text-base font-medium rounded`}
+      className={`px-4 py-2 m-2 text-base font-medium rounded ${className}`}
       onClick={onClick}
     >
       {label}

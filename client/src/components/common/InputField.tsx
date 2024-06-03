@@ -33,7 +33,7 @@ const InputField: React.FC<InputFieldProps> = ({
     <label className={`form-control w-full ${className}`} htmlFor={id ?? ""}>
       {label && (
         <div className="label">
-          <span className="label-text">{label}</span>
+          <span className="label-text font-medium">{label}</span>
         </div>
       )}
       <input

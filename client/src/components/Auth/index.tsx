@@ -28,7 +28,7 @@ const Auth = () => {
       className="w-[35%] flex justify-center"
     >
       <div className="flex flex-col">
-        <div className="w-full my-14 mb-8">
+        <div className="w-[417px] my-14 mb-8">
           <Tab
             tabs={tabs}
             activeTab={activeTab}

@@ -21,7 +21,7 @@ const Button = ({
     <button
       onClick={onClick}
       className={`border border-black bg-white text-black rounded-custom-sm ${
-        !small ? "py-3 px-10 text-xl" : "text-base"
+        !small ? "py-2.5 px-10 text-xl leading-none" : "text-base"
       }  font-medium leading-normal ${className}`}
       type={type}
     >
@@ -30,8 +30,8 @@ const Button = ({
   ) : (
     <button
       onClick={onClick}
-      className={`rounded-custom-sm text-white py-3 px-10 bg-blue text-xl font-medium leading-normal ${
-        !small ? "py-3 px-10 text-xl" : "!px-2 !py-1 !text-base !leading-none"
+      className={`rounded-custom-sm text-white bg-blue text-xl font-medium leading-normal ${
+        !small ? "py-2.5 px-10 text-xl" : "!px-2 !py-1 !text-base !leading-none"
       } ${className}`}
       type={type}
     >

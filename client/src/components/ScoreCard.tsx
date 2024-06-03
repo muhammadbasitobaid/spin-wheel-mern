@@ -16,7 +16,7 @@ const ScoreCell: FC<ScoreCellProps> = ({ score, label }) => (
 const ScoreCard: FC = () => {
   return (
     <Card>
-      <div className="flex justify-center items-center p-16 mx-4 my-6">
+      <div className="flex justify-center items-center p-16 py-8 mx-4 my-6">
         <ScoreCell score={0} label="Yes" />
         <div className="divider divider-horizontal mx-score-divider-custom--sm"></div>
         <ScoreCell score={0} label="No" />

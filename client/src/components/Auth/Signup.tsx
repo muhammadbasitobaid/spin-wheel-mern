@@ -26,15 +26,37 @@ const Signup = () => {
         </Button>
       </form>
 
-      <div className="divider text-gray my-8">or</div>
+      <div className="divider text-gray my-8 px-8">or</div>
 
       <div className="space-y-2 px-8 flex flex-col">
-        <Button className="!text-lg rounded-full" invertedVariant>
-          Google
+        <Button
+          className="!text-lg rounded-full flex justify-center items-center relative"
+          invertedVariant
+        >
+          <img
+            src="/assets/icons/google.svg"
+            alt="Google"
+            className="absolute left-3.5"
+          />
+          <span>Google</span>
         </Button>
-        <Button className="!text-lg rounded-full " invertedVariant>
-          Facebook
+        <Button
+          className="!text-lg rounded-full flex justify-center items-center relative"
+          invertedVariant
+        >
+          <img
+            src="/assets/icons/facebook.svg"
+            alt="Facebook"
+            className="absolute left-3.5"
+          />
+          <span>Facebook</span>
         </Button>
+      </div>
+      <div className="mt-8 text-justify text-xs">
+        By clicking Sign Up, you are indicating that you accept our 
+        <span className="text-blue font-bold">Terms</span>,
+        <span className="text-blue font-bold"> Conditions </span> and 
+        <span className="text-blue font-bold">Privacy Policy</span>.
       </div>
     </>
   );

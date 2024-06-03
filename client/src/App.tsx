@@ -12,11 +12,14 @@ import {
   LogoutPage,
   RegisterPage,
   HealthPage,
+  HomePage,
 } from "./pages";
-import { ProtectedRoute, NavBar } from "./components";
+import { ProtectedRoute } from "./components";
 import { useAppDispatch } from "./store/hooks";
 import { AuthRoute } from "./components/AuthRoute";
-import Auth from "./components/Auth";
+// import SaveWheel from "./components/SaveWheel";
+// import EditWheel from "./components/EditWheel";
+// import Auth from "./components/Auth";
 // import ResultModal from "./components/ResultModal";
 // import Configurator from "./components/Configurator";
 // import Modal from "./components/common/Modal";
@@ -51,17 +54,9 @@ export default function App() {
     <p>Loading, API cold start</p>
   ) : (
     <>
-      <NavBar />
       <Routes>
         <Route path="/healthcheck" element={<HealthPage />} />
-        <Route
-          path="/home"
-          element={
-            <div>
-              <Auth />
-            </div>
-          }
-        />
+        <Route path="/home" element={<HomePage />} />
         <Route
           path="/account/confirm/:token"
           element={

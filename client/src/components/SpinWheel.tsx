@@ -104,7 +104,7 @@ const Home = () => {
     <div
       id="wheel"
       ref={container}
-      className="overflow-hidden relative flex justify-center items-center h-full bg-slate"
+      className="relative flex justify-center items-center h-[380px]"
     >
       <div className="absolute inset-0 flex justify-center items-center">
         {isWheelSpinning ? (
@@ -126,7 +126,7 @@ const Home = () => {
                   5
                 );
             }}
-            className="p-0 m-0 border-none bg-none cursor-pointer animate-flick"
+            className="p-0 m-0 border-none bg-none cursor-pointer animate-flick-commented"
           >
             <img
               src="/assets/icons/indicator.svg"

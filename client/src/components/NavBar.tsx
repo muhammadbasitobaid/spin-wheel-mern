@@ -4,11 +4,18 @@
 // } from "react-router-dom";
 // import { useAppSelector } from "src/store/hooks";
 
+import { useDispatch } from "react-redux";
+import { menuItems } from "src/constants";
+import { ModalNames } from "src/pages/HomePage";
+import { setActiveModal } from "src/store/actions/wheel";
+
 interface MenuItemProps {
   label?: string;
   width?: number;
   height?: number;
   svgSrc: string;
+  value: ModalNames;
+  setActiveModal: (modal: string) => void;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
@@ -16,9 +23,14 @@ const MenuItem: React.FC<MenuItemProps> = ({
   svgSrc,
   width,
   height,
+  value,
+  setActiveModal,
 }) => (
   <li>
-    <a href="#" className="flex py-3.5 gap-3.5">
+    <div
+      onClick={() => value && setActiveModal(value)}
+      className="flex py-3.5 gap-3.5"
+    >
       <img
         src={svgSrc}
         alt={label || "label wasn't provided"}
@@ -26,44 +38,27 @@ const MenuItem: React.FC<MenuItemProps> = ({
         height={height}
       />
       {label && <span>{label}</span>}
-    </a>
+    </div>
   </li>
 );
 
 export default function NavBar() {
+  const dispatch = useDispatch();
   // const { isAuth, user } = useAppSelector((state) => state.user);
 
   // const navLinkClass: NavLinkProps["className"] = ({ isActive }) =>
   //   isActive ? "active" : "inactive";
-  const menuItems: MenuItemProps[] = [
-    {
-      label: "Login/Signup",
-      svgSrc: "/assets/icons/login.svg",
-    },
-    {
-      label: "Switch Wheel",
-      svgSrc: "/assets/icons/wheel_page.svg",
-    },
-    {
-      label: "Setting",
-      svgSrc: "/assets/icons/setting_page.svg",
-    },
-    {
-      label: "Tools",
-      svgSrc: "/assets/icons/hammer_page.svg",
-    },
-  ];
 
   return (
-    <nav className="navbar bg-base-100 px-6">
+    <nav className="navbar bg-base-100 px-6 lg:px-10">
       <div className="navbar-start">
         <a href="/" className="btn btn-ghost text-xl flex p-0 gap-0">
           <img
             src="/assets/icons/logo.svg"
             alt="SVG"
-            className="drop-shadow-2xl"
+            className="drop-shadow-2xl lg:w-[60px]"
           />
-          <span className="mx-2 font-semibold text-lg md:text-2xl">
+          <span className="mx-2 font-semibold text-lg lg:text-2xl">
             Spin Wheel
           </span>
         </a>
@@ -106,6 +101,8 @@ export default function NavBar() {
                 svgSrc={item.svgSrc}
                 width={18}
                 height={18}
+                value={item.value}
+                setActiveModal={() => dispatch(setActiveModal(item.value))}
               />
             ))}
           </ul>
@@ -120,6 +117,8 @@ export default function NavBar() {
               svgSrc={item.svgSrc}
               width={26}
               height={26}
+              value={item.value}
+              setActiveModal={() => dispatch(setActiveModal(item.value))}
             />
           ))}
           <MenuItem
@@ -127,6 +126,8 @@ export default function NavBar() {
             svgSrc={"/assets/icons/share_page.svg"}
             width={26}
             height={26}
+            value={"share"}
+            setActiveModal={() => dispatch(setActiveModal("share"))}
           />
         </ul>
       </div>

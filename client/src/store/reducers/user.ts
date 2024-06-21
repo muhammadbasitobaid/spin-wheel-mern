@@ -5,7 +5,7 @@ export type UserState = {
   user: User | null;
 };
 
-const initialState: UserState = {
+export const initialState: UserState = {
   isAuth: false,
   user: null,
 };

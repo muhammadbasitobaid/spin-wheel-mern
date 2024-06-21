@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 interface ButtonProps {
-  onClick?: () => void;
+  onClick?: Dispatch<SetStateAction<any>>;
   children: ReactNode;
   className?: string;
   invertedVariant?: boolean;
@@ -16,6 +16,7 @@ const Button = ({
   invertedVariant = false,
   small = false,
   type = "button",
+  ...props
 }: ButtonProps) => {
   return invertedVariant ? (
     <button
@@ -24,6 +25,7 @@ const Button = ({
         !small ? "py-2.5 px-10 text-xl leading-none" : "text-base"
       }  font-medium leading-normal ${className}`}
       type={type}
+      {...props}
     >
       {children}
     </button>

@@ -1,4 +1,6 @@
-export const THEMES = [
+import { ModalNames } from "src/pages/HomePage";
+
+export const THEMES: string[][] = [
   ["#CFFDE1", "#3D5656", "#FED049", "#68B984"],
   ["#F2CC8F", "#E07A5F", "#81B29A", "#3D405B"],
   ["#426045", "#D25C2D", "#E2DDC6", "#7B9B86"],
@@ -59,3 +61,105 @@ export const THEMES = [
   ["#F7F7E8", "#557174", "#C7CFB7", "#9DAD7F"],
   ["#F7F7E8", "#557174", "#C7CFB7", "#9DAD7F"]
 ]
+
+export interface WheelItem {
+  label: string;
+  occurrences: number;
+}
+
+export interface Wheel {
+  name: string;
+  label: string;
+  options: WheelItem[];
+}
+
+export const wheels: Wheel[] = [
+  {
+    name: "yes-no-wheel",
+    label: "YES or NO",
+    options: [
+      {
+        label: "Yes",
+        occurrences: 0
+      },
+      {
+        label: "No",
+        occurrences: 0
+      }
+    ]
+  },
+  {
+    name: "yes-no-maybe-wheel",
+    label: "YES or NO or MAYBE",
+    options: [
+      {
+        label: "Yes",
+        occurrences: 0
+      },
+      {
+        label: "No",
+        occurrences: 0
+      },
+      {
+        label: "Maybe",
+        occurrences: 0
+      },
+    ]
+  }
+]
+export interface MenuItem {
+    label: string;
+    svgSrc: string;
+    value: ModalNames;
+  }
+
+  export const menuItems: MenuItem[] = [
+    {
+      label: "Login/Signup",
+      svgSrc: "/assets/icons/login.svg",
+      value: "profile",
+    },
+    {
+      label: "Switch Wheel",
+      svgSrc: "/assets/icons/wheel_page.svg",
+      value: "wheels",
+    },
+    {
+      label: "Setting",
+      svgSrc: "/assets/icons/setting_page.svg",
+      value: "settings",
+    },
+    {
+      label: "Tools",
+      svgSrc: "/assets/icons/hammer_page.svg",
+      value: "share",
+    },
+  ];
+
+export interface SpinConfig {
+  spinningSpeedLevel: number;
+  spinningDuration: number;
+  manuallyStopOption: boolean;
+  randomInitialAngleOption: boolean;
+  mysterySpinOption: boolean;
+  spinCountOption: boolean;
+  confetti: boolean;
+  sound: boolean;
+  confettiType: "Confetti" | "Fireworks";
+  soundType: "Sound" | "No Sound";
+  inputNumbers: number;
+}
+
+export const defaultSpinConfig: SpinConfig = {
+  spinningSpeedLevel: 5,
+  spinningDuration: 9,
+  manuallyStopOption: false,
+  randomInitialAngleOption: false,
+  mysterySpinOption: false,
+  spinCountOption: false,
+  confetti: false,
+  sound: false,
+  confettiType: "Confetti",
+  soundType: "Sound",
+  inputNumbers: 1
+}

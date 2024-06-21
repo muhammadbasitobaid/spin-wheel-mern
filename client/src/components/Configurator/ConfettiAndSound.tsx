@@ -28,7 +28,6 @@ const ConfettiAndSound = () => {
         <RadioButton
           label="Confetti On"
           name="confetti"
-          value={confetti}
           checked={confetti === "on"}
           onChange={() =>
             setConfetti((prevState) => (prevState === "on" ? "off" : "on"))
@@ -37,7 +36,6 @@ const ConfettiAndSound = () => {
         <RadioButton
           label="Sound On"
           name="sound"
-          value={soundOn}
           checked={soundOn === "on"}
           onChange={() =>
             setSoundOn((prevState) => (prevState === "on" ? "off" : "on"))

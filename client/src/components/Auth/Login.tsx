@@ -1,7 +1,22 @@
+import React from "react";
+import { useGoogleLogin } from "@react-oauth/google";
 import Button from "../common/Button";
 import InputField from "../common/InputField";
+import FacebookLogin from "./FacebookLogin";
 
-const Login = () => {
+const Login: React.FC = () => {
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => console.log(tokenResponse),
+  });
+
+  const handleFacebookClick = () => {
+    const fbButton = document.getElementsByClassName(".fb_iframe_widget")[0];
+    if (fbButton) {
+      // @ts-ignore
+      fbButton.click();
+    }
+  };
+
   return (
     <>
       <form className="space-y-4">
@@ -28,6 +43,7 @@ const Login = () => {
         <Button
           className="!text-lg rounded-full flex justify-center items-center relative"
           invertedVariant
+          onClick={() => login()}
         >
           <img
             src="/assets/icons/google.svg"
@@ -36,23 +52,27 @@ const Login = () => {
           />
           <span>Google</span>
         </Button>
-        <Button
-          className="!text-lg rounded-full flex justify-center items-center relative"
-          invertedVariant
-        >
-          <img
-            src="/assets/icons/facebook.svg"
-            alt="Facebook"
-            className="absolute left-3.5"
-          />
-          <span>Facebook</span>
-        </Button>
+        <div className="relative">
+          <Button
+            className="!text-lg !w-full rounded-full flex justify-center items-center relative"
+            invertedVariant
+            onClick={handleFacebookClick}
+          >
+            <img
+              src="/assets/icons/facebook.svg"
+              alt="Facebook"
+              className="absolute left-3.5"
+            />
+            <span>Facebook</span>
+          </Button>
+          <FacebookLogin />
+        </div>
       </div>
       <div className="mt-8 text-justify text-xs">
-        By clicking Log In, you are indicating that you accept our 
-        <span className="text-blue font-bold">Terms</span>,
-        <span className="text-blue font-bold"> Conditions </span> and 
-        <span className="text-blue font-bold">Privacy Policy</span>.
+        By clicking Log In, you are indicating that you accept our
+        <span className="text-blue font-bold"> Terms</span>,
+        <span className="text-blue font-bold"> Conditions </span> and
+        <span className="text-blue font-bold"> Privacy Policy</span>.
       </div>
     </>
   );

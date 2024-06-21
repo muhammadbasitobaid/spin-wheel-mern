@@ -2,8 +2,10 @@ import { legacy_createStore as createStore, applyMiddleware, compose, Store } fr
 
 import thunk from "redux-thunk";
 import buildRootReducer from "./reducers/index";
-import { UserState } from "./reducers/user";
+import { UserState, initialState as user  } from "./reducers/user";
 import { UserAction } from "./actions/user";
+
+import { WheelState, initialState as wheel} from "./reducers/wheel";
 
 declare global {
   interface Window {
@@ -11,13 +13,11 @@ declare global {
   }
 }
 
-type AppState = { user: UserState };
+type AppState = { user: UserState, wheel: WheelState };
 
 const initialState: AppState = {
-  user: {
-    isAuth: false,
-    user: null,
-  },
+  user,
+  wheel
 };
 
 export default function configureStore(

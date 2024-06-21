@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface ChoiceCounterProps {
   max: number;
+  value: number;
+  onChange: (newNumber: number) => void;
 }
 
 interface InputButtonProps {
@@ -28,29 +30,32 @@ const InputButton: React.FC<InputButtonProps> = ({
   </button>
 );
 
-const ChoiceCounter: React.FC<ChoiceCounterProps> = ({ max }) => {
+const ChoiceCounter: React.FC<ChoiceCounterProps> = ({
+  max,
+  value,
+  onChange,
+}) => {
   const min = 1;
-  const [count, setCount] = useState<number>(min);
 
   const handleDecrement = () => {
-    if (count > min) {
-      setCount(count - 1);
+    if (value > min) {
+      onChange(value - 1);
     }
   };
 
   const handleIncrement = () => {
-    if (count < max) {
-      setCount(count + 1);
+    if (value < max) {
+      onChange(value + 1);
     }
   };
 
   return (
     <div className="my-1.5 min-w-full p-1.5 bg-slate rounded-custom-sm flex justify-between items-center md:p-2">
-      <InputButton onClick={handleDecrement} disabled={count === min} />
-      <span className="mx-4 text-base md:text-xl leading-none">{count}</span>
+      <InputButton onClick={handleDecrement} disabled={value === min} />
+      <span className="mx-4 text-base md:text-xl leading-none">{value}</span>
       <InputButton
         onClick={handleIncrement}
-        disabled={count === max}
+        disabled={value === max}
         text="+"
       />
     </div>

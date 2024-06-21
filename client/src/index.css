@@ -98,3 +98,10 @@ td:first-child {
 	border-radius: 10px;
 	background-color: #0089D6;
 }
+
+
+
+.fb_iframe_widget iframe {
+    height: 40px!important;
+    opacity: 0;
+}

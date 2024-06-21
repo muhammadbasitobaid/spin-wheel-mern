@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Modal from "./common/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveModal } from "src/store/actions/wheel";
+import { RootState } from "src/store/store";
 
-interface ResultModalProps {
-  result: number;
-}
-
-const ResultModal: React.FC<ResultModalProps> = ({ result }) => {
+const ResultModal: React.FC = () => {
+  const dispatch = useDispatch();
   const [showConfetti, setShowConfetti] = useState(true);
+  const { result } = useSelector((state: RootState) => state.wheel);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,7 +20,7 @@ const ResultModal: React.FC<ResultModalProps> = ({ result }) => {
   return (
     <Modal
       isOpen
-      onClose={() => {}}
+      onClose={() => dispatch(setActiveModal(null))}
       showOverlay
       showDoneButton
       useDefaultCloseIcon

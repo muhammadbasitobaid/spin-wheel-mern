@@ -1,5 +1,8 @@
-import { FC } from "react";
+import { FC, Fragment } from "react";
 import Card from "./common/Card";
+import { v4 as uuidv4 } from "uuid";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
 
 interface ScoreCellProps {
   score: number;
@@ -13,13 +16,19 @@ const ScoreCell: FC<ScoreCellProps> = ({ score, label }) => (
   </div>
 );
 
-const ScoreCard: FC = () => {
+const ScoreCard = () => {
+  const { history } = useSelector((state: RootState) => state.wheel);
   return (
     <Card>
       <div className="flex justify-center items-center p-16 py-8 mx-4 my-6">
-        <ScoreCell score={0} label="Yes" />
-        <div className="divider divider-horizontal mx-score-divider-custom--sm"></div>
-        <ScoreCell score={0} label="No" />
+        {history.map(({ label, occurrences }, index) => (
+          <Fragment key={uuidv4()}>
+            <ScoreCell score={occurrences} label={label} />
+            {history.length - 1 !== index && (
+              <div className="divider divider-horizontal mx-score-divider-custom--sm"></div>
+            )}
+          </Fragment>
+        ))}
       </div>
     </Card>
   );

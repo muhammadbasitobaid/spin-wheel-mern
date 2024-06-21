@@ -3,8 +3,11 @@ import Modal from "../common/Modal";
 import { Tab } from "../common/Tab";
 import Login from "./Login";
 import Signup from "./Signup";
+import { useDispatch } from "react-redux";
+import { setActiveModal } from "src/store/actions/wheel";
 
 const Auth = () => {
+  const dispatch = useDispatch();
   const tabs = [
     {
       id: "login",
@@ -24,7 +27,7 @@ const Auth = () => {
       isOpen={true}
       useDefaultCloseIcon
       showOverlay
-      onClose={() => {}}
+      onClose={() => dispatch(setActiveModal(null))}
       className="w-[35%] flex justify-center"
     >
       <div className="flex flex-col">

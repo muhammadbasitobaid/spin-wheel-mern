@@ -1,57 +1,77 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import RadioButton from "src/components/common/RadioButton";
 import RangeInput from "src/components/common/RangeInput";
+import { RootState } from "src/store/store";
+import {
+  setSpinningSpeedLevel,
+  setSpinningDuration,
+  setManuallyStopOption,
+  setRandomInitialAngleOption,
+  setMysterySpinOption,
+  setSpinCountOption,
+} from "src/store/actions/wheel";
+import { defaultSpinConfig } from "src/constants";
 
 const SpinBehavior: React.FC = () => {
-  const [spinSpeed, setSpinSpeed] = useState(50);
-  const [spinDuration, setSpinDuration] = useState(50);
-  const [radioValue1, setRadioValue1] = useState("option1");
-  const [radioValue2, setRadioValue2] = useState("option2");
-  const [radioValue3, setRadioValue3] = useState("option3");
-  const [radioValue4, setRadioValue4] = useState("option4");
+  const dispatch = useDispatch();
+  const {
+    spinningSpeedLevel,
+    spinningDuration,
+    manuallyStopOption,
+    randomInitialAngleOption,
+    mysterySpinOption,
+    spinCountOption,
+  } = useSelector((state: RootState) => state.wheel.spinConfig);
 
   return (
     <div className="text-left w-full border border-light-gray rounded-custom-sm p-4 !text-xl">
       <div className="w-1/2 grid grid-cols-1 gap-4">
         <RangeInput
-          label="Spinning Speed Level: 5 (Default)"
-          value={spinSpeed}
-          onChange={setSpinSpeed}
+          label={`Spinning Speed Level: ${spinningSpeedLevel} ${
+            defaultSpinConfig.spinningSpeedLevel === spinningSpeedLevel
+              ? "(Default)"
+              : ""
+          }`}
+          value={spinningSpeedLevel}
+          onChange={(value: number) => dispatch(setSpinningSpeedLevel(value))}
         />
         <RangeInput
-          label="Spinning Duration: 9s (Default)"
-          value={spinDuration}
-          onChange={setSpinDuration}
+          label={`Spinning Duration: ${spinningDuration}s ${
+            defaultSpinConfig.spinningDuration === spinningDuration
+              ? "(Default)"
+              : ""
+          }`}
+          value={spinningDuration}
+          onChange={(value: number) => dispatch(setSpinningDuration(value))}
         />
       </div>
       <div className="grid grid-cols-2 gap-4 mt-4">
         <RadioButton
-          label="Manually Stop (Max 1 min, No custom speed)"
-          name="option1"
-          value="option1"
-          checked={radioValue1 === "option1"}
-          onChange={() => setRadioValue1("option1")}
+          label="Manually Stop (Max 1 min, No custom speed)"
+          name="manuallyStopOption"
+          checked={manuallyStopOption}
+          onChange={() => dispatch(setManuallyStopOption(!manuallyStopOption))}
         />
         <RadioButton
-          label="Random Initial Angle (When new input inserted)"
-          name="option2"
-          value="option2"
-          checked={radioValue2 === "option2"}
-          onChange={() => setRadioValue2("option2")}
+          label="Random Initial Angle (When new input inserted)"
+          name="randomInitialAngleOption"
+          checked={randomInitialAngleOption}
+          onChange={() =>
+            dispatch(setRandomInitialAngleOption(!randomInitialAngleOption))
+          }
         />
         <RadioButton
-          label="Mystery Spin (Hide inputs on wheel)"
-          name="option3"
-          value="option3"
-          checked={radioValue3 === "option3"}
-          onChange={() => setRadioValue3("option3")}
+          label="Mystery Spin (Hide inputs on wheel)"
+          name="mysterySpinOption"
+          checked={mysterySpinOption}
+          onChange={() => dispatch(setMysterySpinOption(!mysterySpinOption))}
         />
         <RadioButton
-          label="Spin Count (Show total spin number)"
-          name="option4"
-          value="option4"
-          checked={radioValue4 === "option4"}
-          onChange={() => setRadioValue4("option4")}
+          label="Spin Count (Show total spin number)"
+          name="spinCountOption"
+          checked={spinCountOption}
+          onChange={() => dispatch(setSpinCountOption(!spinCountOption))}
         />
       </div>
     </div>

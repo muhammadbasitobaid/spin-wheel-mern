@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { THEMES } from "src/constants";
+import { setSelectedTheme } from "src/store/actions/wheel";
+import { RootState } from "src/store/store";
 import { v4 as uuidv4 } from "uuid";
 
 const ThemeGrid: React.FC = () => {
-  const [selectedTheme, setSelectedTheme] = useState<string[]>([]);
+  const dispatch = useDispatch();
+  const { selectedTheme } = useSelector((state: RootState) => state.wheel);
 
   const selectTheme = (theme: string[]) => {
-    setSelectedTheme(theme);
+    dispatch(setSelectedTheme(theme));
   };
 
   return (

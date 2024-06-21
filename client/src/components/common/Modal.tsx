@@ -1,9 +1,10 @@
-import React, { ReactNode } from "react";
+import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import Button from "./Button";
+import { ModalNames } from "src/pages/HomePage";
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: Dispatch<SetStateAction<ModalNames | null>>;
   showOverlay?: boolean;
   showDoneButton?: boolean;
   useDefaultCloseIcon?: boolean;
@@ -35,6 +36,7 @@ const Modal: React.FC<ModalProps> = ({
       >
         <button
           className="absolute top-6 right-6 text-black hover:text-gray"
+          // @ts-ignore
           onClick={onClose}
         >
           {useDefaultCloseIcon && (

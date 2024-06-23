@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import Modal from "./common/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveModal } from "src/store/actions/wheel";
+import { setActiveModal, setConfetti } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
+import useWindowSize from 'react-use/lib/useWindowSize'
+import Confetti from 'react-confetti'
 
 const ResultModal: React.FC = () => {
   const dispatch = useDispatch();
-  const [showConfetti, setShowConfetti] = useState(true);
-  const { result } = useSelector((state: RootState) => state.wheel);
+  const { result, spinConfig } = useSelector((state: RootState) => state.wheel);
+  const {confetti} = spinConfig;
+  const { width, height } = useWindowSize()
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowConfetti(false);
+      dispatch(setConfetti(false));
     }, 5000); // Confetti will be shown for 5 seconds
 
     return () => clearTimeout(timer);
@@ -25,12 +28,15 @@ const ResultModal: React.FC = () => {
       showDoneButton
       useDefaultCloseIcon
     >
-      {showConfetti && (
+      {confetti && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <img
-            src="/assets/gifs/confetti.gif"
-            alt="Confetti"
-            className="w-full h-full object-cover"
+          <Confetti
+            width={width}
+            height={height}
+            tweenDuration={10000}
+            gravity={0.7}
+            friction={1}
+            initialVelocityY={20}
           />
         </div>
       )}

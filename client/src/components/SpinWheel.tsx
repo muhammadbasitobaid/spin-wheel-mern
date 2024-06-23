@@ -19,6 +19,7 @@ interface SpinWheelInstance {
     duration?: number,
     spinToCenter?: boolean,
     numberOfRevolutions?: number,
+    direction?: 1 | -1,
     easingFunction?: null | ((t: number) => number)
   ) => void;
   stop: () => void;
@@ -35,7 +36,8 @@ const SpinWheel = () => {
     mysterySpinOption,
     randomInitialAngleOption,
     spinCountOption,
-    // confetti,
+    manuallyStopOption,
+    spinningSpeedLevel,
     // sound,
     // confettiType,
     // soundType
@@ -112,6 +114,7 @@ const SpinWheel = () => {
         itemBackgroundColors: selectedTheme,
         items: wheelItems,
         rotation,
+        rotationSpeed: spinningSpeedLevel || 1, 
         onSpin: () => {
           // Placeholder for spin start logic
         },
@@ -125,7 +128,8 @@ const SpinWheel = () => {
             (option: WheelItem) => option.label === stoppedItemLabel
           );
           dispatch(setResult(stoppedItemLabel));
-          console.log(history);
+          dispatch(setActiveModal("result"));
+          ;
           const updatedHistory = [...history];
           const selectedItem = updatedHistory[selectedItemIndex];
 
@@ -133,6 +137,7 @@ const SpinWheel = () => {
             selectedItem.occurrences = (selectedItem.occurrences || 0) + 1;
           }
           dispatch(setHistory(updatedHistory));
+          setWheelSpinning(false);
           setActiveModal("result");
         },
       });
@@ -180,16 +185,18 @@ const SpinWheel = () => {
               if (mounted && !isWheelSpinning) {
                 wheel.spinToItem(
                   randomizeNumber(wheelItems.length),
-                  Number.MAX_SAFE_INTEGER,
+                  manuallyStopOption ? Number.MAX_SAFE_INTEGER : 1000,
                   true,
-                  Number.MAX_SAFE_INTEGER
+                  manuallyStopOption ? Number.MAX_SAFE_INTEGER : 4,
+                  1,
                 );
                 setWheelSpinning(true);
                 setSpinCount((prev) => prev + 1);
-              } else {
+              } else if(manuallyStopOption) {
                 wheel.stop();
                 wheel.raiseEvent_onRest();
                 setWheelSpinning(false);
+                dispatch(setActiveModal("result"));
               }
             }}
             className="p-0 m-0 border-none bg-none cursor-pointer animate-flick-commented relative"
@@ -208,15 +215,23 @@ const SpinWheel = () => {
         </div>
       </div>
       <div className="text-center flex justify-center gap-2 relative z-40">
-        {spinCountOption && `Spin Count: ${spinCount}`}
-        <button className="" onClick={() => setSpinCount(0)}>
-          <img
-            src="/assets/icons/refresh.svg"
-            alt="Show"
-            className="w-3.5  lg:w-[22px]"
-            title="Reset Spin Count"
-          />
-        </button>
+        {spinCountOption &&
+          <>
+            <strong>
+              {
+                `Spin Count: ${spinCount}`
+              }
+            </strong>
+            <button className="" onClick={() => setSpinCount(0)}>
+              <img
+                src="/assets/icons/refresh.svg"
+                alt="Show"
+                className="w-3.5  lg:w-[22px]"
+                title="Reset Spin Count"
+              />
+            </button>
+          </>
+        }
       </div>
     </div>
   );

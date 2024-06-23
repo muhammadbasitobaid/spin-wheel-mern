@@ -59,7 +59,6 @@ export const THEMES: string[][] = [
   ["#14279B", "#E6E6E6", "#3D56B2", "#5C7AEA"],
   ["#FBFBFB", "#756C83", "#B9E1DC", "#F38181"],
   ["#F7F7E8", "#557174", "#C7CFB7", "#9DAD7F"],
-  ["#F7F7E8", "#557174", "#C7CFB7", "#9DAD7F"]
 ]
 
 export interface WheelItem {

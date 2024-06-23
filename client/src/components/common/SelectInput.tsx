@@ -7,7 +7,6 @@ type SelectInputProps = {
   altLabel?: string;
   options: string[];
   value?: string;
-  defaultValue?: string;
   onChange?: (value: string) => void;
 };
 
@@ -16,7 +15,6 @@ const SelectInput: React.FC<SelectInputProps> = ({
   altLabel,
   options,
   value,
-  defaultValue = "Pick One",
   onChange,
 }) => {
   return (
@@ -27,7 +25,6 @@ const SelectInput: React.FC<SelectInputProps> = ({
       </div>
       <select
         className="select select-bordered"
-        defaultValue={defaultValue}
         value={value}
         onChange={(e) => onChange && onChange(e.target.value)}
       >

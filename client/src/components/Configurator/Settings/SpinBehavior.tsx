@@ -44,6 +44,7 @@ const SpinBehavior: React.FC = () => {
           }`}
           value={spinningDuration}
           onChange={(value: number) => dispatch(setSpinningDuration(value))}
+          max={30}
         />
       </div>
       <div className="grid grid-cols-2 gap-4 mt-4">

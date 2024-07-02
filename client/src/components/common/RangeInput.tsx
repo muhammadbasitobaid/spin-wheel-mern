@@ -20,6 +20,7 @@ const RangeInput: React.FC<RangeInputProps> = ({
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full horizontal-range"
         aria-orientation="horizontal"
+        min={1}
         max={max}
       />
     </div>

@@ -38,6 +38,7 @@ const SpinWheel = () => {
     spinCountOption,
     manuallyStopOption,
     spinningSpeedLevel,
+    spinningDuration,
     // sound,
     // confettiType,
     // soundType
@@ -59,7 +60,7 @@ const SpinWheel = () => {
       );
     }
     return items;
-  }, [selectedWheel.options, n, selectedTheme]);
+  }, [selectedWheel.options, n, selectedTheme, mysterySpinOption]);
 
   const container = useRef<HTMLDivElement | null>(null);
   const shadowCanvas = useRef<HTMLCanvasElement | null>(null);
@@ -114,7 +115,6 @@ const SpinWheel = () => {
         itemBackgroundColors: selectedTheme,
         items: wheelItems,
         rotation,
-        rotationSpeed: spinningSpeedLevel || 1, 
         onSpin: () => {
           // Placeholder for spin start logic
         },
@@ -129,7 +129,6 @@ const SpinWheel = () => {
           );
           dispatch(setResult(stoppedItemLabel));
           dispatch(setActiveModal("result"));
-          ;
           const updatedHistory = [...history];
           const selectedItem = updatedHistory[selectedItemIndex];
 
@@ -167,7 +166,15 @@ const SpinWheel = () => {
       }
       setWheel(null);
     };
-  }, [wheelItems]);
+  }, [
+    wheelItems,
+    dispatch,
+    history,
+    randomInitialAngleOption,
+    selectedTheme,
+    selectedWheel.options,
+    spinningSpeedLevel,
+  ]);
 
   return (
     <div className="w-full h-full">
@@ -185,14 +192,18 @@ const SpinWheel = () => {
               if (mounted && !isWheelSpinning) {
                 wheel.spinToItem(
                   randomizeNumber(wheelItems.length),
-                  manuallyStopOption ? Number.MAX_SAFE_INTEGER : 1000,
+                  manuallyStopOption
+                    ? Number.MAX_SAFE_INTEGER
+                    : spinningDuration * 1000,
                   true,
-                  manuallyStopOption ? Number.MAX_SAFE_INTEGER : 4,
-                  1,
+                  manuallyStopOption
+                    ? Number.MAX_SAFE_INTEGER
+                    : spinningSpeedLevel,
+                  1
                 );
                 setWheelSpinning(true);
                 setSpinCount((prev) => prev + 1);
-              } else if(manuallyStopOption) {
+              } else if (manuallyStopOption) {
                 wheel.stop();
                 wheel.raiseEvent_onRest();
                 setWheelSpinning(false);
@@ -215,13 +226,9 @@ const SpinWheel = () => {
         </div>
       </div>
       <div className="text-center flex justify-center gap-2 relative z-40">
-        {spinCountOption &&
+        {spinCountOption && (
           <>
-            <strong>
-              {
-                `Spin Count: ${spinCount}`
-              }
-            </strong>
+            <strong>{`Spin Count: ${spinCount}`}</strong>
             <button className="" onClick={() => setSpinCount(0)}>
               <img
                 src="/assets/icons/refresh.svg"
@@ -231,7 +238,7 @@ const SpinWheel = () => {
               />
             </button>
           </>
-        }
+        )}
       </div>
     </div>
   );

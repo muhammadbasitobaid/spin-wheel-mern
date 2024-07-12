@@ -23,7 +23,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
     </Button>
   ) : (
     <button
-      className={`px-4 py-2 m-2 text-base font-medium rounded ${className}`}
+      className={`px-4 mx-2 text-base font-medium rounded ${className}`}
       onClick={onClick}
     >
       {label}

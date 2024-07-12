@@ -59,7 +59,7 @@ export const THEMES: string[][] = [
   ["#14279B", "#E6E6E6", "#3D56B2", "#5C7AEA"],
   ["#FBFBFB", "#756C83", "#B9E1DC", "#F38181"],
   ["#F7F7E8", "#557174", "#C7CFB7", "#9DAD7F"],
-]
+];
 
 export interface WheelItem {
   label: string;
@@ -79,13 +79,13 @@ export const wheels: Wheel[] = [
     options: [
       {
         label: "Yes",
-        occurrences: 0
+        occurrences: 0,
       },
       {
         label: "No",
-        occurrences: 0
-      }
-    ]
+        occurrences: 0,
+      },
+    ],
   },
   {
     name: "yes-no-maybe-wheel",
@@ -93,47 +93,47 @@ export const wheels: Wheel[] = [
     options: [
       {
         label: "Yes",
-        occurrences: 0
+        occurrences: 0,
       },
       {
         label: "No",
-        occurrences: 0
+        occurrences: 0,
       },
       {
         label: "Maybe",
-        occurrences: 0
+        occurrences: 0,
       },
-    ]
-  }
-]
+    ],
+  },
+];
 export interface MenuItem {
-    label: string;
-    svgSrc: string;
-    value: ModalNames;
-  }
+  label: string;
+  svgSrc: string;
+  value: ModalNames;
+}
 
-  export const menuItems: MenuItem[] = [
-    {
-      label: "Login/Signup",
-      svgSrc: "/assets/icons/login.svg",
-      value: "profile",
-    },
-    {
-      label: "Switch Wheel",
-      svgSrc: "/assets/icons/wheel_page.svg",
-      value: "wheels",
-    },
-    {
-      label: "Setting",
-      svgSrc: "/assets/icons/setting_page.svg",
-      value: "settings",
-    },
-    {
-      label: "Tools",
-      svgSrc: "/assets/icons/hammer_page.svg",
-      value: "share",
-    },
-  ];
+export const menuItems: MenuItem[] = [
+  {
+    label: "Login/Signup",
+    svgSrc: "/assets/icons/login.svg",
+    value: "profile",
+  },
+  {
+    label: "Switch Wheel",
+    svgSrc: "/assets/icons/wheel_page.svg",
+    value: "wheels",
+  },
+  {
+    label: "Setting",
+    svgSrc: "/assets/icons/setting_page.svg",
+    value: "settings",
+  },
+  {
+    label: "Tools",
+    svgSrc: "/assets/icons/hammer_page.svg",
+    value: "share",
+  },
+];
 
 export interface SpinConfig {
   spinningSpeedLevel: number;
@@ -156,9 +156,9 @@ export const defaultSpinConfig: SpinConfig = {
   randomInitialAngleOption: false,
   mysterySpinOption: false,
   spinCountOption: false,
-  confetti: false,
+  confetti: true,
   sound: false,
   confettiType: "Confetti",
   soundType: "Sound",
-  inputNumbers: 1
-}
+  inputNumbers: 1,
+};

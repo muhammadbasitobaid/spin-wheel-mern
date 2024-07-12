@@ -53,7 +53,7 @@ const EditWheel = () => {
                   label={wheel.label}
                   isActive={wheel.name === selectedWheel.name}
                   onClick={() => dispatch(setSelectedWheel({ ...wheel }))}
-                  className="!text-xs lg:!text-xl"
+                  className="!text-xs lg:!text-xl flex-1"
                 />
               ))}
             </div>

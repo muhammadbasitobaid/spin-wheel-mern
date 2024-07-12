@@ -33,7 +33,7 @@ export default function Home() {
 
       {activeModal === "result" && <ResultModal />}
       <NavBar />
-      <div className="p-6 flex-1 lg:flex lg:flex-row lg:justify-between">
+      <div className="p-6 flex-1 lg:flex lg:flex-row lg:justify-between gap-6">
         <div className="mb-8 lg:mb-0 lg:w-1/2 lg:flex lg:flex-col lg:justify-center">
           <h1 className="text-black text-4xl font-medium">
             Yes No Picker Wheel
@@ -45,7 +45,7 @@ export default function Home() {
             <SpinWheel />
           </div>
         </div>
-        <div className="lg:flex lg:flex-col-reverse lg:justify-center">
+        <div className="flex-1 lg:flex lg:flex-col-reverse lg:justify-center">
           <div className="flex justify-between h-[60px] lg:hidden">
             <VolumeController />
             <img

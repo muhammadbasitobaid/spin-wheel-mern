@@ -33,7 +33,7 @@ const Button = ({
     <button
       onClick={onClick}
       className={`rounded-custom-sm text-white bg-blue text-xl font-medium leading-normal ${
-        !small ? "py-2.5 px-10 text-xl" : "!px-2 !py-1 !text-base !leading-none"
+        !small ? "py-2.5 px-10 text-xl" : "!text-base !leading-none"
       } ${className}`}
       type={type}
     >

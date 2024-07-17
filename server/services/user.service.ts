@@ -25,7 +25,8 @@ export const setResetPasswordToken = (
 export const findUserBy = async (prop: string, value: string) =>
   await User.findOne({ [prop]: value });
 
-export const findUserById = async (id: typeof Schema.Types.ObjectId) => await User.findById(id);
+export const findUserById = async (id: typeof Schema.Types.ObjectId) =>
+  await User.findById(id);
 
 export const saveUser = async (user: UserDocument) => await user.save();
 
@@ -41,7 +42,8 @@ export const setUserVerified = async (user: UserDocument) => {
   user.expires = undefined;
 };
 
-export const deleteUserById = async (user: UserDocument) => await User.findByIdAndDelete(user._id);
+export const deleteUserById = async (user: UserDocument) =>
+  await User.findByIdAndDelete(user._id);
 
 export const deleteUnverifiedUserByEmail = async (email: string) =>
   await User.findOneAndDelete({ email, isVerified: false });

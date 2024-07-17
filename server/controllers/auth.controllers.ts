@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import sanitize from "mongo-sanitize";
 import passport from "passport";
-import { validateEmail, validateLoginInput, validatePassword } from "@validations/user.validation";
+import {
+  validateEmail,
+  validateLoginInput,
+  validatePassword,
+} from "@validations/user.validation";
 
 import dayjs from "dayjs";
 
@@ -10,39 +14,81 @@ import UserService from "@services/user.service";
 import TokenService from "@services/token.service";
 import LoggerService from "@services/logger.service";
 import EmailService from "@services/email.service";
+import { Error } from "mongoose";
 
+// Local Authentication
 export const postLogin = (req: Request, res: Response, next: NextFunction) => {
   const { error } = validateLoginInput(req.body);
 
   if (error) return res.status(400).send({ message: error.details[0].message });
 
-  let sanitizedInput = sanitize<{ username: string; password: string }>(req.body);
+  let sanitizedInput = sanitize<{ username: string; password: string }>(
+    req.body
+  );
 
   sanitizedInput.username = req.body.username.toLowerCase();
 
-  passport.authenticate("local", (err: Error, user: UserDocument, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (info && info.message === "Missing credentials") {
-      return res.status(400).send({ message: "Missing credentials" });
-    }
-    if (!user) {
-      return res.status(400).send({ message: "Invalid email or password." });
-    }
-    if (!user.isVerified)
-      return res.status(401).send({
-        message: "Your account has not been verified. Please activate your account.",
-      });
-
-    req.login(user, (err: Error) => {
+  passport.authenticate(
+    "local",
+    (err: Error, user: UserDocument, info: any) => {
       if (err) {
-        res.status(401).send({ message: "Authentication failed", err });
+        return next(err);
       }
-      res.status(200).send({ message: "Login success", user: UserService.getUser(user) });
-    });
+      if (info && info.message === "Missing credentials") {
+        return res.status(400).send({ message: "Missing credentials" });
+      }
+      if (!user) {
+        return res.status(400).send({ message: "Invalid email or password." });
+      }
+      if (!user.isVerified)
+        return res.status(401).send({
+          message:
+            "Your account has not been verified. Please activate your account.",
+        });
+
+      req.login(user, (err: Error) => {
+        if (err) {
+          res.status(401).send({ message: "Authentication failed", err });
+        }
+        res
+          .status(200)
+          .send({ message: "Login success", user: UserService.getUser(user) });
+      });
+    }
+  )(req, res, next);
+};
+
+// Google Authentication
+export const googleLogin = passport.authenticate("google", {
+  scope: ["profile", "email"],
+});
+
+export const googleCallback = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  passport.authenticate("google", {
+    failureRedirect: "/login",
   })(req, res, next);
 };
+
+export const getProfile = async (req: Request, res: Response) => {
+  // @ts-ignore
+  if (!req.user?.id) {
+    res.status(401).send({ message: "Unauthorized" });
+  } else {
+    try {
+      // @ts-ignore
+      const user = await UserService.findUserById(req.user.id);
+      res.json(user);
+    } catch (error: any) {
+      res.status(500).send(error.message);
+    }
+  }
+};
+
+// Other functions remain the same...
 
 export const postLoginForgot = async (req: Request, res: Response) => {
   const { error } = validateEmail(req.body);
@@ -52,7 +98,10 @@ export const postLoginForgot = async (req: Request, res: Response) => {
 
   try {
     const user = await UserService.findUserBy("email", sanitizedInput.email);
-    if (!user) return res.status(404).send({ message: "No user found with this email address." });
+    if (!user || !user.id)
+      return res
+        .status(404)
+        .send({ message: "No user found with this email address." });
 
     const resetToken = TokenService.createToken();
     const tokenExpiryDate = dayjs().add(12, "hours").toDate();
@@ -64,12 +113,15 @@ export const postLoginForgot = async (req: Request, res: Response) => {
     await TokenService.saveToken(resetToken);
 
     try {
-      const email = EmailService.createResetPasswordEmail(user.email, resetToken.token);
+      const email = EmailService.createResetPasswordEmail(
+        user.email,
+        resetToken.token
+      );
       await EmailService.sendEmail(email);
 
-      return res
-        .status(200)
-        .send({ message: `A reset passowrd email has been sent to ${user.email}` });
+      return res.status(200).send({
+        message: `A reset password email has been sent to ${user.email}`,
+      });
     } catch (error) {
       LoggerService.log.error(error);
 
@@ -101,7 +153,9 @@ export const postLoginReset = async (req: Request, res: Response) => {
     const user = await UserService.findUserById(token._userId);
 
     if (!user) {
-      return res.status(404).send({ message: `We were unable to find a user for this token.` });
+      return res
+        .status(404)
+        .send({ message: `We were unable to find a user for this token.` });
     }
 
     if (user.passwordResetToken !== token.token)
@@ -124,7 +178,9 @@ export const postLoginReset = async (req: Request, res: Response) => {
     try {
       const email = EmailService.createResetConfirmationEmail(user.email);
       await EmailService.sendEmail(email);
-      return res.status(200).send({ message: "Password has been successfully changed." });
+      return res
+        .status(200)
+        .send({ message: "Password has been successfully changed." });
     } catch (error) {
       LoggerService.log.error(error);
 
@@ -145,7 +201,7 @@ export const postLogout = (req: Request, res: Response) => {
       res.status(500).send({ message: "Logout failed", err });
     }
     req.sessionID = "";
-    req.logout();
+    req.logout({}, () => {});
     res.status(200).send({ message: "Logout success" });
   });
 };
@@ -158,8 +214,10 @@ export const postVerify = async (req: Request, res: Response) => {
 
   try {
     const user = await UserService.findUserBy("email", sanitizedInput.email);
-    if (!user) {
-      return res.status(404).send({ message: "No user found with this email address." });
+    if (!user || !user.id) {
+      return res
+        .status(404)
+        .send({ message: "No user found with this email address." });
     }
     if (user.isVerified) {
       return res.status(400).send({
@@ -172,10 +230,15 @@ export const postVerify = async (req: Request, res: Response) => {
 
     await TokenService.saveToken(verificationToken);
     try {
-      const email = EmailService.createVerificationEmail(user.email, verificationToken.token);
+      const email = EmailService.createVerificationEmail(
+        user.email,
+        verificationToken.token
+      );
       await EmailService.sendEmail(email);
 
-      return res.status(200).send({ message: `A verification email has been sent.` });
+      return res
+        .status(200)
+        .send({ message: `A verification email has been sent.` });
     } catch (error) {
       LoggerService.log.error(error);
 
@@ -196,26 +259,31 @@ export const getConfirmation = async (req: Request, res: Response) => {
 
     if (!token) {
       return res.status(404).send({
-        message: "We were unable to find a valid token. Your token may have expired.",
+        message:
+          "We were unable to find a valid token. Your token may have expired.",
       });
     }
 
     const user = await UserService.findUserById(token._userId);
 
     if (!user) {
-      return res.status(404).send({ message: `We were unable to find a user for this token.` });
+      return res
+        .status(404)
+        .send({ message: `We were unable to find a user for this token.` });
     }
 
     if (user.isVerified) {
-      return res
-        .status(400)
-        .send({ message: "This user has already been verified. Please log in." });
+      return res.status(400).send({
+        message: "This user has already been verified. Please log in.",
+      });
     }
 
     UserService.setUserVerified(user);
     await UserService.saveUser(user);
 
-    return res.status(200).send({ message: "The account has been verified. Please log in." });
+    return res
+      .status(200)
+      .send({ message: "The account has been verified. Please log in." });
   } catch (error) {
     LoggerService.log.error(error);
 
@@ -225,6 +293,9 @@ export const getConfirmation = async (req: Request, res: Response) => {
 
 export default {
   postLogin,
+  googleLogin,
+  googleCallback,
+  getProfile,
   postLoginReset,
   postLogout,
   postVerify,

@@ -11,7 +11,7 @@ import { initCORS } from "@startup/cors";
 import { initLogger } from "@startup/logging";
 import { initPassportJS } from "@startup/passport";
 import { initRoutes } from "@routes/index";
-import { initRateLimit } from "@startup/rate-limit";
+// import { initRateLimit } from "@startup/rate-limit";
 
 const port = process.env.PORT || 3900;
 const app = express();
@@ -21,7 +21,7 @@ initLogger();
 initCORS(app);
 initDB();
 initProd(app);
-initRateLimit(app);
+// initRateLimit(app);
 
 // Create session
 app.use(
@@ -40,7 +40,7 @@ app.use(
 
 // Parse incoming request bodies in a middleware before your handlers, available under the req.body property.
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());

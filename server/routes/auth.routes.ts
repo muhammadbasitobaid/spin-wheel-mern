@@ -1,4 +1,5 @@
 import express from "express";
+// import UserService from "@services/user.service";
 
 import AuthControllers from "@controllers/auth.controllers";
 
@@ -30,5 +31,16 @@ router.post("/logout", AuthControllers.postLogout);
 router.post("/send-confirmation", AuthControllers.postVerify);
 
 router.get("/confirmation/:token", AuthControllers.getConfirmation);
+
+//  Initiates Google OAuth login
+router.get("/google", AuthControllers.googleLogin);
+
+//  Handles Google OAuth callback
+router.get("/google/callback", AuthControllers.googleCallback, (req, res) => {
+  res.redirect("http://localhost:3000/");
+});
+
+//  Retrieves the authenticated user's profile
+router.get("/profile", AuthControllers.getProfile);
 
 export default router;

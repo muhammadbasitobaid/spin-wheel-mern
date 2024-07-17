@@ -4,14 +4,18 @@ import bcrypt from "bcryptjs";
 import dayjs from "dayjs";
 
 export interface UserDocument extends Document {
+  id?: typeof Schema.Types.ObjectId;
   username: string;
   email: string;
-  password: string;
+  password?: string;
+  googleId?: string;
+  thumbnail?: string;
   passwordResetToken: string;
   passwordResetExpires: Date;
   isVerified: boolean;
   isAdmin: boolean;
   expires?: Date;
+  wheels: Schema.Types.ObjectId[];
 
   comparePassword(password: string): boolean;
   hidePassword(): void;
@@ -34,9 +38,16 @@ const userSchema = new Schema<UserDocument>({
   },
   password: {
     type: String,
-    required: true,
     minlength: 5,
     maxlength: 1024,
+  },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true, // Allows for multiple null values
+  },
+  thumbnail: {
+    type: String,
   },
   passwordResetToken: { type: String, default: "" },
   passwordResetExpires: { type: Date, default: dayjs().toDate() },
@@ -51,6 +62,7 @@ const userSchema = new Schema<UserDocument>({
     required: true,
   },
   expires: { type: Date, default: dayjs().toDate(), expires: 43200 },
+  wheels: [{ type: Schema.Types.ObjectId, ref: "Wheel" }],
 });
 
 userSchema.methods.comparePassword = function (password: string) {

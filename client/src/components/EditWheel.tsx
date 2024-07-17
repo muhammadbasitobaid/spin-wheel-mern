@@ -4,7 +4,12 @@ import ChoiceCounter from "./common/ChoiceCounter";
 import { wheels } from "src/constants";
 import { RootState } from "src/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { setInputNumbers, setSelectedWheel } from "src/store/actions/wheel";
+import {
+  resetHistory,
+  setActiveModal,
+  setInputNumbers,
+  setSelectedWheel,
+} from "src/store/actions/wheel";
 
 const EditWheel = () => {
   const { selectedWheel, inputNumbers, maxInputNumbers } = useSelector(
@@ -28,20 +33,24 @@ const EditWheel = () => {
                   className="w-5 lg:w-[28px]"
                 />
               </div>
-              <div className="">
+              <button className="" onClick={() => dispatch(resetHistory())}>
                 <img
                   src="/assets/icons/refresh.svg"
                   alt="Show"
                   className="w-3.5  lg:w-[22px]"
                 />
-              </div>
-              <div className="">
+              </button>
+              <button
+                role="button"
+                className=""
+                onClick={() => dispatch(setActiveModal("modify"))}
+              >
                 <img
                   src="/assets/icons/text.svg"
                   alt="Show"
                   className="w-3.5 lg:w-[24px]"
                 />
-              </div>
+              </button>
             </div>
           </div>
           <div className="w-full">
@@ -52,7 +61,10 @@ const EditWheel = () => {
                   key={wheel.name}
                   label={wheel.label}
                   isActive={wheel.name === selectedWheel.name}
-                  onClick={() => dispatch(setSelectedWheel({ ...wheel }))}
+                  onClick={() => {
+                    dispatch(setSelectedWheel({ ...wheel }));
+                    dispatch(resetHistory());
+                  }}
                   className="!text-xs lg:!text-xl flex-1"
                 />
               ))}

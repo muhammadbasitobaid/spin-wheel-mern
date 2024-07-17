@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import RadioButton from "src/components/common/RadioButton";
 import RangeInput from "src/components/common/RangeInput";
 import { RootState } from "src/store/store";
 import {
@@ -12,6 +11,7 @@ import {
   setSpinCountOption,
 } from "src/store/actions/wheel";
 import { defaultSpinConfig } from "src/constants";
+import Checkbox from "src/components/common/Checkbox";
 
 const SpinBehavior: React.FC = () => {
   const dispatch = useDispatch();
@@ -48,13 +48,13 @@ const SpinBehavior: React.FC = () => {
         />
       </div>
       <div className="grid grid-cols-2 gap-4 mt-4">
-        <RadioButton
+        <Checkbox
           label="Manually Stop (Max 1 min, No custom speed)"
           name="manuallyStopOption"
           checked={manuallyStopOption}
           onChange={() => dispatch(setManuallyStopOption(!manuallyStopOption))}
         />
-        <RadioButton
+        <Checkbox
           label="Random Initial Angle (When new input inserted)"
           name="randomInitialAngleOption"
           checked={randomInitialAngleOption}
@@ -62,13 +62,13 @@ const SpinBehavior: React.FC = () => {
             dispatch(setRandomInitialAngleOption(!randomInitialAngleOption))
           }
         />
-        <RadioButton
+        <Checkbox
           label="Mystery Spin (Hide inputs on wheel)"
           name="mysterySpinOption"
           checked={mysterySpinOption}
           onChange={() => dispatch(setMysterySpinOption(!mysterySpinOption))}
         />
-        <RadioButton
+        <Checkbox
           label="Spin Count (Show total spin number)"
           name="spinCountOption"
           checked={spinCountOption}

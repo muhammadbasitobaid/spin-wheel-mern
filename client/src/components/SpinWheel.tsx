@@ -2,10 +2,10 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // @ts-ignore
 import { Wheel } from "spin-wheel";
-import { WheelItem } from "src/constants";
 import { setActiveModal, setHistory, setResult } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import { getBgColorForLabel, getLabelColor } from "src/utils";
+import { Howl } from "howler";
 
 interface WheelListItem {
   label: string;
@@ -39,9 +39,6 @@ const SpinWheel = () => {
     manuallyStopOption,
     spinningSpeedLevel,
     spinningDuration,
-    // sound,
-    // confettiType,
-    // soundType
   } = spinConfig;
 
   const n = inputNumbers || 1;
@@ -52,10 +49,10 @@ const SpinWheel = () => {
     let items: WheelListItem[] = [];
     for (let i = 0; i < n; i++) {
       items = items.concat(
-        selectedWheel.options.map((item: WheelItem, index: number) => ({
-          label: mysterySpinOption ? "?" : item.label,
+        selectedWheel.options.map((item: string, index: number) => ({
+          label: mysterySpinOption ? "?" : item,
           labelColor: getLabelColor(getBgColorForLabel(index, selectedTheme)),
-          value: item.label,
+          value: item,
         }))
       );
     }
@@ -73,11 +70,16 @@ const SpinWheel = () => {
     const updateCanvasDimensions = () => {
       if (container.current && shadowCanvas.current) {
         const containerRect = container.current.getBoundingClientRect();
-        shadowCanvas.current.width = containerRect.width * 1.2;
-        shadowCanvas.current.height = containerRect.height * 1.2;
+        shadowCanvas.current.width = containerRect.width * 1.31;
+        shadowCanvas.current.height = containerRect.height * 1.31;
       }
     };
+
     const rotation = randomInitialAngleOption ? randomizeNumber(360) : 0;
+
+    const tickSound = new Howl({
+      src: ["/assets/sounds/tick.mp3"],
+    });
 
     const initializeWheel = () => {
       const shadowCtx = shadowCanvas.current!.getContext("2d");
@@ -111,7 +113,7 @@ const SpinWheel = () => {
         borderColor: "#ffff",
         itemLabelFontSizeMax: 28,
         lineColor: "#ffff",
-        lineWidth: 3,
+        lineWidth: 5,
         itemBackgroundColors: selectedTheme,
         items: wheelItems,
         rotation,
@@ -124,20 +126,16 @@ const SpinWheel = () => {
             wheelItems[stoppedItemIndex].label === "?"
               ? wheelItems[stoppedItemIndex].value
               : wheelItems[stoppedItemIndex].label;
-          const selectedItemIndex = selectedWheel.options.findIndex(
-            (option: WheelItem) => option.label === stoppedItemLabel
-          );
           dispatch(setResult(stoppedItemLabel));
           dispatch(setActiveModal("result"));
-          const updatedHistory = [...history];
-          const selectedItem = updatedHistory[selectedItemIndex];
+          const updatedHistory = [...(history ?? [])];
+          updatedHistory.push(stoppedItemLabel);
 
-          if (selectedItem) {
-            selectedItem.occurrences = (selectedItem.occurrences || 0) + 1;
-          }
           dispatch(setHistory(updatedHistory));
           setWheelSpinning(false);
-          setActiveModal("result");
+        },
+        onCurrentIndexChange: () => {
+          tickSound.play();
         },
       });
       setWheel(newWheel);
@@ -176,9 +174,28 @@ const SpinWheel = () => {
     spinningSpeedLevel,
   ]);
 
+  const handleSpinButtonClick = () => {
+    if (!wheel) return;
+    if (mounted && !isWheelSpinning) {
+      wheel.spinToItem(
+        randomizeNumber(wheelItems.length),
+        manuallyStopOption ? Number.MAX_SAFE_INTEGER : spinningDuration * 1000,
+        true,
+        manuallyStopOption ? Number.MAX_SAFE_INTEGER : spinningSpeedLevel * 2,
+        1
+      );
+      setWheelSpinning(true);
+      setSpinCount((prev) => prev + 1);
+    } else if (manuallyStopOption) {
+      wheel.stop();
+      wheel.raiseEvent_onRest();
+      setWheelSpinning(false);
+    }
+  };
+
   return (
-    <div className="w-full h-full">
-      <div className="relative flex justify-center items-center h-[380px] lg:h-[90%] lg:w-[90%]">
+    <div className="w-full h-full flex flex-col items-center">
+      <div className="p-8 relative flex justify-center items-center h-[280px] sm:h-[320px] md:h-[380px] lg:h-[90%] w-full">
         <canvas ref={shadowCanvas} className="absolute"></canvas>
         <div
           id="wheel"
@@ -187,53 +204,35 @@ const SpinWheel = () => {
         ></div>
         <div className="absolute inset-0 flex justify-center items-center">
           <button
-            onClick={() => {
-              if (!wheel) return;
-              if (mounted && !isWheelSpinning) {
-                wheel.spinToItem(
-                  randomizeNumber(wheelItems.length),
-                  manuallyStopOption
-                    ? Number.MAX_SAFE_INTEGER
-                    : spinningDuration * 1000,
-                  true,
-                  manuallyStopOption
-                    ? Number.MAX_SAFE_INTEGER
-                    : spinningSpeedLevel,
-                  1
-                );
-                setWheelSpinning(true);
-                setSpinCount((prev) => prev + 1);
-              } else if (manuallyStopOption) {
-                wheel.stop();
-                wheel.raiseEvent_onRest();
-                setWheelSpinning(false);
-                dispatch(setActiveModal("result"));
-              }
-            }}
-            className="p-0 m-0 border-none bg-none cursor-pointer animate-flick-commented relative"
-            title={isWheelSpinning ? "Stop the Wheel" : "Spin the Wheel"}
+            onClick={handleSpinButtonClick}
+            className="p-0 m-0 border-none bg-none cursor-pointer relative"
+            title={
+              isWheelSpinning && manuallyStopOption
+                ? "Stop the Wheel"
+                : "Spin the Wheel"
+            }
           >
             <img
               src="/assets/icons/indicator.svg"
               alt="indicator"
-              className="w-[50px] lg:w-[85px]"
+              className="w-[40px] sm:w-[50px] lg:w-[70px] xl:w-[85px]"
               style={{ filter: "drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))" }}
             />
-            <span className="absolute inset-0 mt-1 flex justify-center items-center font-medium text-xs lg:text-sm lg:mt-2">
-              {isWheelSpinning ? "STOP" : "SPIN"}
+            <span className="absolute inset-0 flex justify-center items-center font-medium text-xs sm:text-sm lg:text-base">
+              {isWheelSpinning && manuallyStopOption ? "STOP" : "SPIN"}
             </span>
           </button>
         </div>
       </div>
-      <div className="text-center flex justify-center gap-2 relative z-40">
+      <div className="text-center flex justify-center gap-2 mt-4 relative z-40">
         {spinCountOption && (
           <>
             <strong>{`Spin Count: ${spinCount}`}</strong>
             <button className="" onClick={() => setSpinCount(0)}>
               <img
                 src="/assets/icons/refresh.svg"
-                alt="Show"
-                className="w-3.5  lg:w-[22px]"
+                alt="Reset Spin Count"
+                className="w-4 sm:w-5 lg:w-6 xl:w-7"
                 title="Reset Spin Count"
               />
             </button>

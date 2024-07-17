@@ -1,3 +1,5 @@
+import React from "react";
+
 type RangeInputProps = {
   label: string;
   value: number;
@@ -13,7 +15,9 @@ const RangeInput: React.FC<RangeInputProps> = ({
 }) => {
   return (
     <div className="flex flex-col mb-4">
-      <label className="mb-2">{label}</label>
+      <label className="mb-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
+        {label}
+      </label>
       <input
         type="range"
         value={value}

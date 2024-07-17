@@ -16,7 +16,7 @@ const InputField: React.FC<InputFieldProps> = ({
   value,
   placeholder,
   onChange,
-  className,
+  className = "",
   type = "text",
 }) => {
   const [inputValue, setInputValue] = useState(value || "");
@@ -33,14 +33,16 @@ const InputField: React.FC<InputFieldProps> = ({
     <label className={`form-control w-full ${className}`} htmlFor={id ?? ""}>
       {label && (
         <div className="label">
-          <span className="label-text font-medium">{label}</span>
+          <span className="label-text font-medium text-sm md:text-base">
+            {label}
+          </span>
         </div>
       )}
       <input
         id={id}
         type={type}
         placeholder={placeholder}
-        className="input input-bordered w-full text-sm"
+        className="input input-bordered w-full text-sm md:text-base p-2 md:p-4"
         value={inputValue}
         onChange={handleInputChange}
       />

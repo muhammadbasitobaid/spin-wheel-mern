@@ -29,7 +29,7 @@ const Tab: React.FC<TabProps> = ({
         <button
           key={tab.id}
           role="tab"
-          className={`tab text-xl ${
+          className={`tab text-sm md:text-base lg:text-lg xl:text-xl ${
             activeTab === tab.id ? "tab-active !bg-blue !text-white" : ""
           } ${
             index === 0 && activeTab === tab.id ? "!rounded-r-custom-none" : ""

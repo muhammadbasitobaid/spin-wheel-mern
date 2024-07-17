@@ -1,5 +1,4 @@
 import React from "react";
-
 import { v4 as uuidv4 } from "uuid";
 
 type SelectInputProps = {
@@ -7,7 +6,7 @@ type SelectInputProps = {
   altLabel?: string;
   options: string[];
   value?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value: any) => void;
 };
 
 const SelectInput: React.FC<SelectInputProps> = ({
@@ -18,29 +17,31 @@ const SelectInput: React.FC<SelectInputProps> = ({
   onChange,
 }) => {
   return (
-    <label className="form-control w-full max-w-xs">
-      <div className="label">
-        <span className="label-text">{label}</span>
-        {altLabel && <span className="label-text-alt">{altLabel}</span>}
+    <label className="form-control w-full max-w-xs mb-4">
+      <div className="label flex justify-between">
+        <span className="label-text text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
+          {label}
+        </span>
+        {altLabel && (
+          <span className="label-text-alt text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
+            {altLabel}
+          </span>
+        )}
       </div>
       <select
-        className="select select-bordered"
+        className="select select-bordered w-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl p-2 md:p-3 lg:p-4 h-10 md:h-12 lg:h-14"
         value={value}
         onChange={(e) => onChange && onChange(e.target.value)}
       >
-        <option disabled value="Pick one">
+        <option disabled value="">
           Pick one
         </option>
         {options.map((option) => (
-          <option key={uuidv4()} value={option}>
+          <option key={uuidv4()} value={option} className="truncate">
             {option}
           </option>
         ))}
       </select>
-      <div className="label">
-        {altLabel && <span className="label-text-alt">{altLabel}</span>}
-        {altLabel && <span className="label-text-alt">{altLabel}</span>}
-      </div>
     </label>
   );
 };

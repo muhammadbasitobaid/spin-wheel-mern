@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import Modal from "../common/Modal";
-import { getRandomYesOrNo } from "src/utils";
+import { useDispatch, useSelector } from "react-redux";
+import Table from "../Table";
+import { setActiveModal } from "src/store/actions/wheel";
 
 const Results: React.FC = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
-
+  const { history } = useSelector((state: any) => state.wheel);
+  const dispatch = useDispatch();
   const handleClose = () => {
-    setIsOpen(false);
+    dispatch(setActiveModal(null));
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
+    <Modal isOpen onClose={handleClose}>
       <div className="flex flex-col w-full m-8 mt-6 mb-0">
-        <div className="flex w-full mb-16">
+        <div className="flex w-full">
           <div className="flex items-center w-1/4">
             <span>
               <img src="/assets/icons/upload.svg" alt="upload" width={20} />
@@ -29,22 +31,7 @@ const Results: React.FC = () => {
           </div>
         </div>
         <div className="flex-1 overflow-auto flex-grow pb-1  mx-5" id="style-2">
-          <table className="w-full ">
-            {" "}
-            {Array.from({ length: 3 }, (_, index) => (
-              <tr className=" text-base leading-none">
-                <td className="w-[10%]">{index + 1}</td>
-                <td>{getRandomYesOrNo()}</td>
-                <td className="w-[10%]">
-                  <img
-                    src="/assets/icons/select.svg"
-                    alt="Select"
-                    className="mx-auto"
-                  />
-                </td>
-              </tr>
-            ))}
-          </table>
+          <Table history={history || []} />
         </div>
         <div className="flex items-center justify-center w-full">
           <img src="/assets/icons/logo.svg" alt="logo" width={55} />

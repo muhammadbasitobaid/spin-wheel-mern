@@ -1,9 +1,3 @@
-// import {
-//   NavLink,
-//   NavLinkProps,
-// } from "react-router-dom";
-// import { useAppSelector } from "src/store/hooks";
-
 import { useDispatch } from "react-redux";
 import { menuItems } from "src/constants";
 import { ModalNames } from "src/pages/HomePage";
@@ -16,6 +10,7 @@ interface MenuItemProps {
   svgSrc: string;
   value: ModalNames;
   setActiveModal: (modal: string) => void;
+  disabled?: boolean;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
@@ -25,11 +20,15 @@ const MenuItem: React.FC<MenuItemProps> = ({
   height,
   value,
   setActiveModal,
+  disabled = false,
 }) => (
   <li>
     <div
-      onClick={() => value && setActiveModal(value)}
-      className="flex py-3.5 gap-3.5"
+      onClick={() => !disabled && value && setActiveModal(value)}
+      className={`flex py-3.5 gap-3.5 ${
+        disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+      }`}
+      title={disabled ? `${label}, feature currently unavailable!` : label}
     >
       <img
         src={svgSrc}
@@ -37,7 +36,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
         width={width}
         height={height}
       />
-      {label && <span>{label}</span>}
     </div>
   </li>
 );
@@ -64,15 +62,19 @@ export default function NavBar() {
         </a>
       </div>
       <div className="navbar-center"></div>
-      <div className="navbar-end  md:hidden">
-        <button className="btn btn-ghost btn-circle">
-          <img
-            src="/assets/icons/share_page.svg"
-            alt="SVG"
-            width={18}
-            height={18}
+      <div className="navbar-end md:hidden">
+        <ul>
+          <MenuItem
+            key={"/assets/icons/share_page.svg"}
+            svgSrc={"/assets/icons/share_page.svg"}
+            width={26}
+            height={26}
+            value={"share"}
+            label={"Share"}
+            disabled={false}
+            setActiveModal={() => dispatch(setActiveModal("share"))}
           />
-        </button>
+        </ul>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <svg
@@ -103,6 +105,7 @@ export default function NavBar() {
                 height={18}
                 value={item.value}
                 setActiveModal={() => dispatch(setActiveModal(item.value))}
+                disabled={item.disabled || false}
               />
             ))}
           </ul>
@@ -115,10 +118,12 @@ export default function NavBar() {
             <MenuItem
               key={item.svgSrc + index}
               svgSrc={item.svgSrc}
+              label={item.label}
               width={26}
               height={26}
               value={item.value}
               setActiveModal={() => dispatch(setActiveModal(item.value))}
+              disabled={item.disabled || false}
             />
           ))}
           <MenuItem
@@ -127,6 +132,8 @@ export default function NavBar() {
             width={26}
             height={26}
             value={"share"}
+            label={"Share"}
+            disabled={false}
             setActiveModal={() => dispatch(setActiveModal("share"))}
           />
         </ul>

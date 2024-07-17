@@ -22,8 +22,10 @@ const Button = ({
     <button
       onClick={onClick}
       className={`border border-black bg-white text-black rounded-custom-sm ${
-        !small ? "py-2.5 px-10 text-xl leading-none" : "text-base"
-      }  font-medium leading-normal ${className}`}
+        !small
+          ? "py-2 px-4 text-base leading-none md:py-2.5 md:px-10 md:text-xl"
+          : "py-1 px-2 text-sm md:py-2 md:px-4 md:text-base"
+      } font-medium ${className}`}
       type={type}
       {...props}
     >
@@ -32,9 +34,11 @@ const Button = ({
   ) : (
     <button
       onClick={onClick}
-      className={`rounded-custom-sm text-white bg-blue text-xl font-medium leading-normal ${
-        !small ? "py-2.5 px-10 text-xl" : "!text-base !leading-none"
-      } ${className}`}
+      className={`rounded-custom-sm text-white bg-blue ${
+        !small
+          ? "py-2 px-4 text-base leading-none md:py-2.5 md:px-10 md:text-xl"
+          : "py-1 px-2 text-sm md:py-2 md:px-4 md:text-base"
+      } font-medium ${className}`}
       type={type}
     >
       {children}

@@ -47,6 +47,23 @@ module.exports = {
       "custom-lg": "89px",
       full: "9999px",
     },
+    keyframes: {
+      spin: {
+        "0%": { transform: "rotate(0deg)" },
+        "100%": { transform: "rotate(360deg)" },
+      },
+      loading: {
+        "0%, 20%": { content: "'loading'" },
+        "40%": { content: "'loading.'" },
+        "60%": { content: "'loading..'" },
+        "80%": { content: "'loading...'" },
+        "100%": { content: "'loading....'" },
+      },
+    },
+    animation: {
+      spin: "spin 1s linear infinite",
+      loading: "loading 2.5s steps(5, end) infinite",
+    },
   },
   plugins: [require("daisyui")],
 };

@@ -1,14 +1,17 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavBar } from "src/components";
 import Auth from "src/components/Auth";
 import Configurator from "src/components/Configurator";
 import EditWheel from "src/components/EditWheel";
 import ResultModal from "src/components/ResultModal";
+import Results from "src/components/Results";
 import ScoreCard from "src/components/ScoreCard";
 import SpinWheel from "src/components/SpinWheel";
 import VolumeController from "src/components/VolumeController";
+import { setActiveModal } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
+import ModifyModal from "./ModifyModal";
 
 export type ModalNames =
   | "result"
@@ -16,10 +19,13 @@ export type ModalNames =
   | "wheels"
   | "settings"
   | "share"
+  | "history"
+  | "modify"
   | null;
 
 export default function Home() {
   const { activeModal } = useSelector((state: RootState) => state.wheel);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log(activeModal);
@@ -32,6 +38,8 @@ export default function Home() {
       {activeModal === "settings" && <Configurator />}
 
       {activeModal === "result" && <ResultModal />}
+      {activeModal === "history" && <Results />}
+      {activeModal === "modify" && <ModifyModal />}
       <NavBar />
       <div className="p-6 flex-1 lg:flex lg:flex-row lg:justify-between gap-6">
         <div className="mb-8 lg:mb-0 lg:w-1/2 lg:flex lg:flex-col lg:justify-center">
@@ -48,11 +56,19 @@ export default function Home() {
         <div className="flex-1 lg:flex lg:flex-col-reverse lg:justify-center">
           <div className="flex justify-between h-[60px] lg:hidden">
             <VolumeController />
-            <img
-              src="/assets/icons/history.svg"
-              alt="history"
-              className="h-[43px]"
-            />
+            <button
+              onClick={() => {
+                console.log("hsitory modal should open");
+                dispatch(setActiveModal("history"));
+              }}
+              className="flex justify-center items-center"
+            >
+              <img
+                src="/assets/icons/history.svg"
+                alt="history"
+                className="h-[43px]"
+              />
+            </button>
           </div>
           <div>
             <ScoreCard />
@@ -63,11 +79,16 @@ export default function Home() {
         </div>
         <div className="hidden lg:block lg:flex lg:flex-col lg:w-[66px] lg:gap-2">
           <VolumeController />
-          <img
-            src="/assets/icons/history.svg"
-            alt="history"
-            className="h-[43px]"
-          />
+          <button
+            className="flex justify-center items-center"
+            onClick={() => dispatch(setActiveModal("history"))}
+          >
+            <img
+              src="/assets/icons/history.svg"
+              alt="history"
+              className="h-[43px]"
+            />
+          </button>
         </div>
       </div>
     </div>

@@ -16,6 +16,7 @@ import {
 import { ProtectedRoute } from "./components";
 import { useAppDispatch } from "./store/hooks";
 import { AuthRoute } from "./components/AuthRoute";
+import Test from "./pages/Test";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -94,6 +95,7 @@ export default function App() {
       />
       <Route path="/" element={<Navigate to="/home" replace />} />
       <Route element={<Navigate to="/home" replace />} />
+      <Route element={<Test />} path="/test" />
     </Routes>
   );
 }

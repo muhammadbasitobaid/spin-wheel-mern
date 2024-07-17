@@ -1,13 +1,16 @@
 import React from "react";
-import { useGoogleLogin } from "@react-oauth/google";
 import Button from "../common/Button";
 import InputField from "../common/InputField";
 import FacebookLogin from "./FacebookLogin";
 
 const Login: React.FC = () => {
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
-  });
+  const handleGoogleLogin = async () => {
+    try {
+      window.location.href = "http://localhost:8081/api/auth/google";
+    } catch (error) {
+      console.error("Error during Google login:", error);
+    }
+  };
 
   const handleFacebookClick = () => {
     const fbButton = document.getElementsByClassName(".fb_iframe_widget")[0];
@@ -43,7 +46,7 @@ const Login: React.FC = () => {
         <Button
           className="!text-lg rounded-full flex justify-center items-center relative"
           invertedVariant
-          onClick={() => login()}
+          onClick={handleGoogleLogin}
         >
           <img
             src="/assets/icons/google.svg"

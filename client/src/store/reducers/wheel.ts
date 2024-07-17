@@ -1,3 +1,4 @@
+// src/store/reducers/wheel.ts
 import {
   SET_THEME,
   SET_VOLUME,
@@ -16,13 +17,13 @@ import {
   SET_SOUND,
   SET_CONFETTI_TYPE,
   SET_SOUND_TYPE,
+  RESET_HISTORY,
   WheelActions,
 } from "../actions/wheel";
 
 import {
   THEMES,
   Wheel,
-  WheelItem,
   wheels,
   defaultSpinConfig,
   SpinConfig,
@@ -31,7 +32,7 @@ import { ModalNames } from "src/pages/HomePage";
 
 export interface WheelState {
   volume: number;
-  history: WheelItem[];
+  history?: string[];
   selectedWheel: Wheel;
   inputNumbers: number;
   maxInputNumbers: number;
@@ -43,9 +44,8 @@ export interface WheelState {
 
 export const initialState: WheelState = {
   volume: 50,
-  history: wheels[0].options,
   selectedWheel: wheels[0],
-  inputNumbers: 1,
+  inputNumbers: 3,
   maxInputNumbers: 5,
   activeModal: null,
   result: null,
@@ -131,6 +131,8 @@ const wheelReducer = (
         ...state,
         spinConfig: { ...state.spinConfig, soundType: action.payload },
       };
+    case RESET_HISTORY:
+      return { ...state, history: [] };
     default:
       return state;
   }

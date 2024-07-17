@@ -17,14 +17,38 @@ const ScoreCell: FC<ScoreCellProps> = ({ score, label }) => (
 );
 
 const ScoreCard = () => {
-  const { history } = useSelector((state: RootState) => state.wheel);
+  const { history, selectedWheel } = useSelector(
+    (state: RootState) => state.wheel
+  );
+  const { options } = selectedWheel;
+
+  const countOccurrences = (arr?: string[]) => {
+    const counts: { [key: string]: number } = {};
+
+    // Initialize counts with 0 for each option label
+    options.forEach((option: string) => {
+      counts[option] = 0;
+    });
+
+    // Update counts based on the history array
+    if (arr && arr.length > 0) {
+      arr.forEach((item) => {
+        counts[item] = (counts[item] || 0) + 1;
+      });
+    }
+
+    return counts;
+  };
+
+  const occurrences = countOccurrences(history);
+
   return (
     <Card>
       <div className="flex justify-center items-center p-8 mx-4 my-6">
-        {history.map(({ label, occurrences }, index) => (
+        {Object.entries(occurrences).map(([label, score], index) => (
           <div key={uuidv4()} className="flex flex-1">
-            <ScoreCell score={occurrences} label={label} />
-            {history.length - 1 !== index && (
+            <ScoreCell score={score} label={label} />
+            {Object.entries(occurrences).length - 1 !== index && (
               <div className="divider divider-horizontal m-0 w-px"></div>
             )}
           </div>

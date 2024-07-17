@@ -61,55 +61,30 @@ export const THEMES: string[][] = [
   ["#F7F7E8", "#557174", "#C7CFB7", "#9DAD7F"],
 ];
 
-export interface WheelItem {
-  label: string;
-  occurrences: number;
-}
-
 export interface Wheel {
   name: string;
   label: string;
-  options: WheelItem[];
+  options: string[];
 }
 
 export const wheels: Wheel[] = [
   {
     name: "yes-no-wheel",
     label: "YES or NO",
-    options: [
-      {
-        label: "Yes",
-        occurrences: 0,
-      },
-      {
-        label: "No",
-        occurrences: 0,
-      },
-    ],
+    options: ["Yes", "No"],
   },
   {
     name: "yes-no-maybe-wheel",
     label: "YES or NO or MAYBE",
-    options: [
-      {
-        label: "Yes",
-        occurrences: 0,
-      },
-      {
-        label: "No",
-        occurrences: 0,
-      },
-      {
-        label: "Maybe",
-        occurrences: 0,
-      },
-    ],
+
+    options: ["Yes", "No", "Maybe"],
   },
 ];
 export interface MenuItem {
   label: string;
   svgSrc: string;
   value: ModalNames;
+  disabled?: boolean;
 }
 
 export const menuItems: MenuItem[] = [
@@ -132,6 +107,7 @@ export const menuItems: MenuItem[] = [
     label: "Tools",
     svgSrc: "/assets/icons/hammer_page.svg",
     value: "share",
+    disabled: true,
   },
 ];
 
@@ -157,7 +133,7 @@ export const defaultSpinConfig: SpinConfig = {
   mysterySpinOption: false,
   spinCountOption: false,
   confetti: true,
-  sound: false,
+  sound: true,
   confettiType: "Confetti",
   soundType: "Sound",
   inputNumbers: 1,

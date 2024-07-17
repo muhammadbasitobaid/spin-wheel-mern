@@ -1,4 +1,4 @@
-import React, { Dispatch, ReactNode, SetStateAction } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, MouseEvent } from "react";
 import Button from "./Button";
 import { ModalNames } from "src/pages/HomePage";
 
@@ -19,25 +19,31 @@ const Modal: React.FC<ModalProps> = ({
   showDoneButton = false,
   useDefaultCloseIcon = false,
   children,
-  className,
+  className = "",
 }) => {
   if (!isOpen) return null;
+
+  const handleOverlayClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose(null);
+    }
+  };
 
   return (
     <div
       className={`min-h-screen fixed inset-0 z-50 flex flex-col items-center justify-center ${
         showOverlay && "bg-black bg-opacity-50 backdrop-blur-sm"
       }`}
+      onClick={handleOverlayClick}
     >
       <div
-        className={`bg-white p-6 ${
+        className={`bg-white p-4 md:p-6 ${
           showOverlay ? "rounded-custom relative" : "rounded-custom-lg relative"
-        } shadow-3xl  w-[50%]  ${className}`}
+        } shadow-3xl w-[90%] md:w-[50%] max-w-[900px] ${className}`}
       >
         <button
-          className="absolute top-6 right-6 text-black hover:text-gray"
-          // @ts-ignore
-          onClick={onClose}
+          className="absolute top-4 right-4 md:top-6 md:right-6 text-black hover:text-gray"
+          onClick={() => onClose(null)}
         >
           {useDefaultCloseIcon && (
             <img
@@ -55,8 +61,7 @@ const Modal: React.FC<ModalProps> = ({
         <div className="flex justify-center mt-4">
           <Button
             className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-            onClick={onClose}
-            // invertedVariant
+            onClick={() => onClose(null)}
           >
             Done
           </Button>

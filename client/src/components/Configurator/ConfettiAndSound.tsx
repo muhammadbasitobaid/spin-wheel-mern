@@ -1,14 +1,16 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import RadioButton from "src/components/common/RadioButton";
 import SelectInput from "src/components/common/SelectInput";
 import {
-  SET_CONFETTI,
-  SET_SOUND,
-  SET_CONFETTI_TYPE,
-  SET_SOUND_TYPE,
+  ConfettiTypes,
+  setConfetti,
+  setConfettiType,
+  setSound,
+  setSoundType,
+  SoundTypes,
 } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
+import Checkbox from "../common/Checkbox";
 
 const ConfettiAndSound: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,19 +19,19 @@ const ConfettiAndSound: React.FC = () => {
     (state: RootState) => state.wheel.spinConfig
   );
   const handleConfettiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: SET_CONFETTI, payload: e.target.value === "on" });
+    dispatch(setConfetti(e.target.checked));
   };
 
   const handleSoundOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: SET_SOUND, payload: e.target.value === "on" });
+    dispatch(setSound(e.target.checked));
   };
 
-  const handleConfettiTypeChange = (value: string) => {
-    dispatch({ type: SET_CONFETTI_TYPE, payload: value });
+  const handleConfettiTypeChange = (value: ConfettiTypes) => {
+    dispatch(setConfettiType(value));
   };
 
-  const handleSoundTypeChange = (value: string) => {
-    dispatch({ type: SET_SOUND_TYPE, payload: value });
+  const handleSoundTypeChange = (value: SoundTypes) => {
+    dispatch(setSoundType(value));
   };
 
   return (
@@ -49,13 +51,13 @@ const ConfettiAndSound: React.FC = () => {
         />
       </div>
       <div className="grid grid-cols-2 gap-4 mt-4">
-        <RadioButton
+        <Checkbox
           label="Confetti On"
           name="confetti"
           checked={confetti}
           onChange={handleConfettiChange}
         />
-        <RadioButton
+        <Checkbox
           label="Sound On"
           name="sound"
           checked={sound}

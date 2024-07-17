@@ -22,43 +22,37 @@ const ThemeGrid: React.FC = () => {
         {THEMES.map((item) => (
           <button
             key={uuidv4()}
-            className={`flex items-center justify-center gap-2 w-[60px] leading-none ${
+            className={`flex items-center justify-center gap-2 w-[40px] lg:w-[50px] xl:w-[60px] leading-none ${
               selectedTheme === item
                 ? "rounded-custom-sm border-2 border-blue border-opacity-100"
                 : "border-2 border-transparent"
             }`}
             onClick={() => selectTheme(item)}
           >
-            <div className="flex flex-1 ">
+            <div className="flex flex-1 h-[30px] lg:h-[40px]">
               <div
                 style={{
                   backgroundColor: item[0],
-                  height: "40px",
-                  flex: "1",
                 }}
-                className="border-0 rounded-l-custom-sm"
+                className="flex-1 h-full border-0 rounded-l-custom-sm"
               ></div>
               <div
                 style={{
                   backgroundColor: item[1],
-                  height: "40px",
-                  flex: "1",
                 }}
+                className="flex-1 h-full"
               ></div>
               <div
                 style={{
                   backgroundColor: item[2],
-                  height: "40px",
-                  flex: "1",
                 }}
+                className="flex-1 h-full"
               ></div>
               <div
                 style={{
                   backgroundColor: item[3],
-                  height: "40px",
-                  flex: "1",
                 }}
-                className="border-0 rounded-r-custom-sm"
+                className="flex-1 h-full border-0 rounded-r-custom-sm"
               ></div>
             </div>
           </button>

@@ -61,8 +61,7 @@ module.exports = {
       },
     },
     animation: {
-      spin: "spin 1s linear infinite",
-      loading: "loading 2.5s steps(5, end) infinite",
+      spin: "spin 0.7s linear infinite both",
     },
   },
   plugins: [require("daisyui")],

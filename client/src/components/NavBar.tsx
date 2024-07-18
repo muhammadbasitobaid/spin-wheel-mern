@@ -23,18 +23,16 @@ const MenuItem: React.FC<MenuItemProps> = ({
   disabled = false,
 }) => (
   <li>
-    <div
-      onClick={() => !disabled && value && setActiveModal(value)}
-      className={`flex py-3.5 gap-3.5 ${
-        disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-      }`}
-      title={disabled ? `${label}, feature currently unavailable!` : label}
-    >
+    <div onClick={() => !disabled && value && setActiveModal(value)}>
       <img
         src={svgSrc}
         alt={label || "label wasn't provided"}
         width={width}
         height={height}
+        className={`${
+          disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+        }`}
+        title={disabled ? `${label} (feature currently unavailable!)` : label}
       />
     </div>
   </li>

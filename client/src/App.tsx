@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Route, Navigate, Routes } from "react-router-dom";
 import { attemptGetUser } from "./store/thunks/user";
-
 import {
   ConfirmPage,
   ProfilePage,
@@ -17,10 +16,12 @@ import { ProtectedRoute } from "./components";
 import { useAppDispatch } from "./store/hooks";
 import { AuthRoute } from "./components/AuthRoute";
 import Test from "./pages/Test";
+import Spinner from "./components/common/Spinner";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(attemptGetUser())
       .then(() => {
@@ -32,7 +33,9 @@ export default function App() {
   }, [dispatch]);
 
   return loading ? (
-    <p>Loading, API cold start</p>
+    <div className="flex items-center justify-center min-h-screen">
+      <Spinner />
+    </div>
   ) : (
     <Routes>
       <Route path="/healthcheck" element={<HealthPage />} />

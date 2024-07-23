@@ -3,11 +3,14 @@ import Modal from "../common/Modal";
 import { Tab } from "../common/Tab";
 import Login from "./Login";
 import Signup from "./Signup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setActiveModal } from "src/store/actions/wheel";
+import { RootState } from "src/store/store";
 
 const Auth = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.user);
+
   const tabs = [
     {
       id: "login",
@@ -22,31 +25,45 @@ const Auth = () => {
   ];
 
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
+
   return (
     <Modal
       isOpen={true}
       useDefaultCloseIcon
       showOverlay
       onClose={() => dispatch(setActiveModal(null))}
-      className="w-[35%] flex justify-center"
+      className="w-full max-w-lg p-6 flex justify-center bg-white rounded-lg shadow-lg"
     >
-      <div className="flex flex-col">
-        <div className="w-[417px] my-14 mb-8">
-          <Tab
-            tabs={tabs}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            className="tabs-lg"
-          />
-          <div className="w-full">
-            {tabs.find((tab) => tab.id === activeTab)!.content}
+      {user ? (
+        <div className="p-4 space-y-4 flex flex-col items-center">
+          <h2 className="text-2xl font-semibold text-gray-800">Account Info</h2>
+          <div className="text-left">
+            <p className="text-lg text-gray-600">
+              <span className="font-medium">Username:</span> {user.username}
+            </p>
+            <p className="text-lg text-gray-600">
+              <span className="font-medium">Email:</span> {user.email}
+            </p>
           </div>
         </div>
-
-        <div className="flex items-center justify-center w-full">
-          <img src="/assets/icons/logo.svg" alt="logo" width={55} />
+      ) : (
+        <div className="flex flex-col items-center space-y-6">
+          <div className="w-full max-w-md">
+            <Tab
+              tabs={tabs}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              className="tabs-lg"
+            />
+            <div className="w-full mt-4">
+              {tabs.find((tab) => tab.id === activeTab)?.content}
+            </div>
+          </div>
+          <div className="flex items-center justify-center w-full mt-6">
+            <img src="/assets/icons/logo.svg" alt="logo" width={55} />
+          </div>
         </div>
-      </div>
+      )}
     </Modal>
   );
 };

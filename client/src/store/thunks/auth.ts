@@ -15,18 +15,26 @@ import {
 import { NavigateFunction } from "react-router";
 
 export const attemptLogin =
-  (credentials: Credentials, navigate: NavigateFunction) => (dispatch: Dispatch) =>
+  (credentials: Credentials, navigate: NavigateFunction) =>
+  (dispatch: Dispatch) =>
     postLogin(credentials).then(({ data }) => {
       dispatch(login(data.user));
       navigate("/home", { replace: true });
     });
 
-export const attemptSendResetPasswordLink = (email: string, navigate: NavigateFunction) =>
+export const attemptSendResetPasswordLink = (
+  email: string,
+  navigate: NavigateFunction
+) =>
   sendResetPasswordLink(email).then(() => {
     navigate("/login/forgot", { replace: true });
   });
 
-export const attemptResetPassword = (password: string, token: string, navigate: NavigateFunction) =>
+export const attemptResetPassword = (
+  password: string,
+  token: string,
+  navigate: NavigateFunction
+) =>
   resetPassword(password, token)
     .then(() => {
       navigate("/login", { replace: true });
@@ -35,14 +43,15 @@ export const attemptResetPassword = (password: string, token: string, navigate: 
       navigate(`/login/reset/${token}`, { replace: true });
     });
 
-export const attemptLogout = (navigate: NavigateFunction) => (dispatch: Dispatch) =>
-  postLogout()
-    .then(() => {
-      dispatch(logout());
-    })
-    .finally(() => {
-      navigate("/login", { replace: true });
-    });
+export const attemptLogout =
+  (navigate: NavigateFunction) => (dispatch: Dispatch) =>
+    postLogout()
+      .then(() => {
+        dispatch(logout());
+      })
+      .finally(() => {
+        navigate("/login", { replace: true });
+      });
 
 export const attemptRegister = (newUser: User) => () => postUser(newUser);
 

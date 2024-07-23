@@ -26,13 +26,13 @@ const EditWheel = () => {
               Edit Wheel
             </div>
             <div className="flex gap-2 items-center">
-              <div className="">
+              <button className="" onClick={() => {}}>
                 <img
                   src="/assets/icons/show.svg"
                   alt="Show"
                   className="w-5 lg:w-[28px]"
                 />
-              </div>
+              </button>
               <button className="" onClick={() => dispatch(resetHistory())}>
                 <img
                   src="/assets/icons/refresh.svg"

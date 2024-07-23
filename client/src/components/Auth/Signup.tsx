@@ -40,7 +40,7 @@ const Signup = () => {
           />
           <span>Google</span>
         </Button>
-        <Button
+        {/* <Button
           className="!text-lg rounded-full flex justify-center items-center relative"
           invertedVariant
         >
@@ -50,7 +50,7 @@ const Signup = () => {
             className="absolute left-3.5"
           />
           <span>Facebook</span>
-        </Button>
+        </Button> */}
       </div>
       <div className="mt-8 text-justify text-xs">
         By clicking Sign Up, you are indicating that you accept our 

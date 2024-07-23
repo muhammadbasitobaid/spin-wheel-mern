@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Button from "../common/Button";
 import InputField from "../common/InputField";
-import FacebookLogin from "./FacebookLogin";
+// import FacebookLogin from "./FacebookLogin";
+import { attemptLogin } from "src/store/thunks/auth";
 
 const Login: React.FC = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleGoogleLogin = async () => {
     try {
       window.location.href = "http://localhost:8081/api/auth/google";
@@ -12,27 +20,32 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleFacebookClick = () => {
-    const fbButton = document.getElementsByClassName(".fb_iframe_widget")[0];
-    if (fbButton) {
-      // @ts-ignore
-      fbButton.click();
-    }
+  // const handleFacebookClick = () => {
+  //   const fbButton = document.querySelector(".fb_iframe_widget") as HTMLElement;
+  //   if (fbButton) {
+  //     fbButton.click();
+  //   }
+  // };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // @ts-ignore
+    dispatch(attemptLogin({ username, password }, navigate));
   };
 
   return (
     <>
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField
-          id="email"
-          placeholder="Enter your email"
-          onChange={() => {}}
-          label="Please enter your email and password"
+          id="username"
+          placeholder="Enter your username"
+          onChange={setUsername}
+          label="Please enter your username and password"
         />
         <InputField
           id="password"
           placeholder="Enter your password"
-          onChange={() => {}}
+          onChange={setPassword}
           type="password"
         />
         <Button type="submit" className="w-full text-lg">
@@ -55,7 +68,7 @@ const Login: React.FC = () => {
           />
           <span>Google</span>
         </Button>
-        <div className="relative">
+        {/* <div className="relative">
           <Button
             className="!text-lg !w-full rounded-full flex justify-center items-center relative"
             invertedVariant
@@ -69,7 +82,7 @@ const Login: React.FC = () => {
             <span>Facebook</span>
           </Button>
           <FacebookLogin />
-        </div>
+        </div> */}
       </div>
       <div className="mt-8 text-justify text-xs">
         By clicking Log In, you are indicating that you accept our

@@ -1,7 +1,9 @@
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { menuItems } from "src/constants";
 import { ModalNames } from "src/pages/HomePage";
 import { setActiveModal } from "src/store/actions/wheel";
+import SharePopup from "./SharePopup";
 
 interface MenuItemProps {
   label?: string;
@@ -40,13 +42,18 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
 export default function NavBar() {
   const dispatch = useDispatch();
-  // const { isAuth, user } = useAppSelector((state) => state.user);
+  const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
 
-  // const navLinkClass: NavLinkProps["className"] = ({ isActive }) =>
-  //   isActive ? "active" : "inactive";
+  const toggleSharePopup = () => {
+    setIsSharePopupOpen(!isSharePopupOpen);
+  };
+
+  const closeSharePopup = () => {
+    setIsSharePopupOpen(false);
+  };
 
   return (
-    <nav className="navbar bg-base-100 px-6 lg:px-10">
+    <nav className="navbar bg-base-100 px-6 lg:px-10 relative">
       <div className="navbar-start">
         <a href="/" className="btn btn-ghost text-xl flex p-0 gap-0">
           <img
@@ -61,20 +68,8 @@ export default function NavBar() {
       </div>
       <div className="navbar-center"></div>
       <div className="navbar-end md:hidden">
-        <ul>
-          <MenuItem
-            key={"/assets/icons/share_page.svg"}
-            svgSrc={"/assets/icons/share_page.svg"}
-            width={26}
-            height={26}
-            value={"share"}
-            label={"Share"}
-            disabled={false}
-            setActiveModal={() => dispatch(setActiveModal("share"))}
-          />
-        </ul>
-        <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+        <details className="dropdown">
+          <summary className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -89,11 +84,8 @@ export default function NavBar() {
                 d="M4 6h16M4 12h16M4 18h7"
               />
             </svg>
-          </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-          >
+          </summary>
+          <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
             {menuItems?.map((item) => (
               <MenuItem
                 key={item.label}
@@ -107,7 +99,22 @@ export default function NavBar() {
               />
             ))}
           </ul>
-        </div>
+        </details>
+        <ul>
+          <div className="relative">
+            <MenuItem
+              key={"/assets/icons/share_page.svg"}
+              svgSrc={"/assets/icons/share_page.svg"}
+              width={26}
+              height={26}
+              value={"share"}
+              label={"Share"}
+              disabled={false}
+              setActiveModal={toggleSharePopup}
+            />
+            {isSharePopupOpen && <SharePopup onClose={closeSharePopup} />}
+          </div>
+        </ul>
       </div>
 
       <div className="navbar-end hidden md:flex md:justify-end">
@@ -124,16 +131,19 @@ export default function NavBar() {
               disabled={item.disabled || false}
             />
           ))}
-          <MenuItem
-            key={"/assets/icons/share_page.svg"}
-            svgSrc={"/assets/icons/share_page.svg"}
-            width={26}
-            height={26}
-            value={"share"}
-            label={"Share"}
-            disabled={false}
-            setActiveModal={() => dispatch(setActiveModal("share"))}
-          />
+          <div className="relative">
+            <MenuItem
+              key={"/assets/icons/share_page.svg"}
+              svgSrc={"/assets/icons/share_page.svg"}
+              width={26}
+              height={26}
+              value={"share"}
+              label={"Share"}
+              disabled={false}
+              setActiveModal={toggleSharePopup}
+            />
+            {isSharePopupOpen && <SharePopup onClose={closeSharePopup} />}
+          </div>
         </ul>
       </div>
     </nav>

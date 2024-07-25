@@ -26,11 +26,16 @@ const EditWheel = () => {
               Edit Wheel
             </div>
             <div className="flex gap-2 items-center">
-              <button className="" onClick={() => {}}>
+              <button
+                className="opacity-50 cursor-not-allowed"
+                onClick={() => {}}
+                disabled
+              >
                 <img
                   src="/assets/icons/show.svg"
                   alt="Show"
                   className="w-5 lg:w-[28px]"
+                  title={`Fullscreen (feature currently unavailable!)`}
                 />
               </button>
               <button className="" onClick={() => dispatch(resetHistory())}>

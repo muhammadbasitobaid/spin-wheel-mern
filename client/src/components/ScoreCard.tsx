@@ -44,7 +44,7 @@ const ScoreCard = () => {
 
   return (
     <Card>
-      <div className="flex justify-center items-center p-8 mx-4 my-6">
+      <div className="flex justify-center items-center p-8 my-6">
         {Object.entries(occurrences).map(([label, score], index) => (
           <div key={uuidv4()} className="flex flex-1">
             <ScoreCell score={score} label={label} />

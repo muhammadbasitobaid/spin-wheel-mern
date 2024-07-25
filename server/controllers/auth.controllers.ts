@@ -69,7 +69,9 @@ export const googleCallback = (
   next: NextFunction
 ) => {
   passport.authenticate("google", {
-    failureRedirect: "/login",
+    failureRedirect: `${
+      process.env.HOST || "http://localhost:3000"
+    }/home?error=google`,
   })(req, res, next);
 };
 

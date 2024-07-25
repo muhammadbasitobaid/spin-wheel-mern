@@ -7,8 +7,7 @@ import InputField from "../common/InputField";
 import { attemptLogin } from "src/store/thunks/auth";
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [formValues, setFormValues] = useState({ username: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,10 +26,18 @@ const Login: React.FC = () => {
   //   }
   // };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // @ts-ignore
-    dispatch(attemptLogin({ username, password }, navigate));
+    dispatch(attemptLogin(formValues, navigate));
   };
 
   return (
@@ -38,15 +45,19 @@ const Login: React.FC = () => {
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField
           id="username"
+          name="username"
           placeholder="Enter your username"
-          onChange={setUsername}
+          onChange={handleChange}
           label="Please enter your username and password"
+          value={formValues.username}
         />
         <InputField
           id="password"
+          name="password"
           placeholder="Enter your password"
-          onChange={setPassword}
+          onChange={handleChange}
           type="password"
+          value={formValues.password}
         />
         <Button type="submit" className="w-full text-lg">
           Login

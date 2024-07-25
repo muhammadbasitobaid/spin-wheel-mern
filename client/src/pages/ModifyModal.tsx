@@ -1,20 +1,46 @@
-// src/ModifyModal.tsx
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "src/components/common/Button";
 import InputField from "src/components/common/InputField";
 import Modal from "src/components/common/Modal";
-import { setActiveModal } from "src/store/actions/wheel";
+import { setActiveModal, setWheelDetails } from "src/store/actions/wheel";
+import { RootState } from "src/store/store";
+import { attemptSaveWheel } from "src/store/thunks/auth";
 
 const ModifyModal: React.FC = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [popupMsg, setPopupMsg] = useState("");
   const dispatch = useDispatch();
+  const { wheel, user } = useSelector((state: RootState) => state);
+  // const {_id } = user.user;
+
+  const [formValues, setFormValues] = useState({
+    title: "",
+    description: "",
+    popupMsg: "",
+  });
 
   const handleSave = () => {
-    console.log("Saved data:", { title, description, popupMsg });
+    const payload = {
+      ...wheel,
+      name: formValues.title,
+      description: formValues.description,
+      popupMsg: formValues.popupMsg,
+    };
+    if (!user.user) {
+      toast.error("Please login to save changes");
+      return;
+    }
+    const { id } = user.user;
+    // @ts-ignore
+    dispatch(attemptSaveWheel(payload, id));
     dispatch(setActiveModal(null));
+    dispatch(
+      setWheelDetails(
+        formValues.title,
+        formValues.description,
+        formValues.popupMsg
+      )
+    );
   };
 
   const handleClose = () => {
@@ -22,9 +48,15 @@ const ModifyModal: React.FC = () => {
   };
 
   const handleReset = () => {
-    setTitle("");
-    setDescription("");
-    setPopupMsg("");
+    setFormValues({ title: "", description: "", popupMsg: "" });
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
   };
 
   return (
@@ -47,25 +79,28 @@ const ModifyModal: React.FC = () => {
           <div className="mb-4">
             <InputField
               label="Title"
-              value={title}
+              name="title"
+              value={formValues.title}
               placeholder="Enter title"
-              onChange={setTitle}
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
             <InputField
               label="Description"
-              value={description}
+              name="description"
+              value={formValues.description}
               placeholder="Enter description"
-              onChange={setDescription}
+              onChange={handleChange}
             />
           </div>
-          <div className="">
+          <div>
             <InputField
               label="Popup Msg"
-              value={popupMsg}
+              name="popupMsg"
+              value={formValues.popupMsg}
               placeholder="Enter popup message"
-              onChange={setPopupMsg}
+              onChange={handleChange}
             />
           </div>
         </div>

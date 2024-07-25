@@ -50,11 +50,9 @@ export function initPassportJS() {
         accessToken: string,
         refreshToken: string,
         profile: Profile,
-        done: (error: any, user?: any) => void
+        done: (error: any, user?: any, options?: { message: string }) => void
       ) => {
         try {
-          console.log("accessToken, refreshToken:");
-          console.log(accessToken, refreshToken);
           const existingUser = await User.findOne({ googleId: profile.id });
 
           if (existingUser) {
@@ -73,7 +71,7 @@ export function initPassportJS() {
           done(null, newUser);
         } catch (err) {
           console.log("error is getting catch here");
-          done(err);
+          done(undefined, false, { message: "Google login failed" });
         }
       }
     )

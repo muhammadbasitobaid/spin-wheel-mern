@@ -9,7 +9,9 @@ import { Howl } from "howler";
 
 const ResultModal: React.FC = () => {
   const dispatch = useDispatch();
-  const { result, spinConfig } = useSelector((state: RootState) => state.wheel);
+  const { result, spinConfig, popUpMessage } = useSelector(
+    (state: RootState) => state.wheel
+  );
   const { confetti } = spinConfig;
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
@@ -62,6 +64,13 @@ const ResultModal: React.FC = () => {
         </div>
       )}
       <div className="mb-7 flex flex-col items-center justify-center space-y-4 mx-auto">
+        {popUpMessage && (
+          <div className="flex-1 flex flex-col items-center justify-center ">
+            <span className="text-center text-2xl font-semibold mb-4">
+              {popUpMessage}
+            </span>
+          </div>
+        )}
         <img
           src="/assets/icons/result.svg"
           alt="Result"

@@ -1,5 +1,11 @@
 import { model, Schema, Document } from "mongoose";
 
+export interface Wheel {
+  name: string;
+  label: string;
+  options: string[];
+}
+
 export interface SpinConfig {
   spinningSpeedLevel: number;
   spinningDuration: number;
@@ -17,12 +23,29 @@ export interface SpinConfig {
 export interface WheelDocument extends Document {
   name: string;
   createdAt: Date;
-  history: string[]; // Define more specific type if needed
-  selectedWheel: string; // Define more specific type if needed
+  history: string[];
+  selectedWheel: Wheel; // Updated to use the Wheel interface
   inputNumbers: number;
   selectedTheme: string[];
   spinConfig: SpinConfig;
 }
+
+const wheelSchema = new Schema<Wheel>({
+  name: {
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 50,
+  },
+  label: {
+    type: String,
+    required: true,
+  },
+  options: {
+    type: [String],
+    required: true,
+  },
+});
 
 const spinConfigSchema = new Schema<SpinConfig>({
   spinningSpeedLevel: { type: Number, required: true },
@@ -42,7 +65,7 @@ const spinConfigSchema = new Schema<SpinConfig>({
   inputNumbers: { type: Number, required: true },
 });
 
-const wheelSchema = new Schema<WheelDocument>({
+const wheelDocumentSchema = new Schema<WheelDocument>({
   name: {
     type: String,
     required: true,
@@ -54,11 +77,11 @@ const wheelSchema = new Schema<WheelDocument>({
     default: Date.now,
   },
   history: {
-    type: [String], // Define a more specific schema if needed
+    type: [String],
     required: true,
   },
   selectedWheel: {
-    type: String, // Define a more specific schema if needed
+    type: wheelSchema,
     required: true,
   },
   inputNumbers: {
@@ -75,6 +98,6 @@ const wheelSchema = new Schema<WheelDocument>({
   },
 });
 
-export const Wheel = model<WheelDocument>("Wheel", wheelSchema);
+export const Wheel = model<WheelDocument>("Wheel", wheelDocumentSchema);
 
 export default Wheel;

@@ -18,8 +18,11 @@ import {
   SET_CONFETTI_TYPE,
   SET_SOUND_TYPE,
   RESET_HISTORY,
+  SET_WHEEL_DETAILS,
   WheelActions,
 } from "../actions/wheel";
+
+import { v4 as uuidv4 } from "uuid";
 
 import {
   THEMES,
@@ -31,6 +34,7 @@ import {
 import { ModalNames } from "src/pages/HomePage";
 
 export interface WheelState {
+  name: string;
   volume: number;
   history?: string[];
   selectedWheel: Wheel;
@@ -40,9 +44,12 @@ export interface WheelState {
   result: string | null;
   selectedTheme: string[];
   spinConfig: SpinConfig;
+  description: string;
+  popUpMessage: string;
 }
 
 export const initialState: WheelState = {
+  name: `Wheel ${uuidv4()}`,
   volume: 50,
   selectedWheel: wheels[0],
   inputNumbers: 3,
@@ -51,6 +58,8 @@ export const initialState: WheelState = {
   result: null,
   selectedTheme: THEMES[0],
   spinConfig: defaultSpinConfig,
+  description: "",
+  popUpMessage: "",
 };
 
 type ActionTypes = WheelActions;
@@ -67,8 +76,7 @@ const wheelReducer = (
     case SET_SELECTED_WHEEL:
       return {
         ...state,
-        selectedWheel: action.payload,
-        history: action.payload.options,
+        ...action.payload,
       };
     case SET_INPUT_NUMBERS:
       return { ...state, inputNumbers: action.payload };
@@ -133,6 +141,13 @@ const wheelReducer = (
       };
     case RESET_HISTORY:
       return { ...state, history: [] };
+    case SET_WHEEL_DETAILS:
+      return {
+        ...state,
+        name: action.payload.name,
+        description: action.payload.description,
+        popUpMessage: action.payload.popUpMessage,
+      };
     default:
       return state;
   }

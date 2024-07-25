@@ -62,6 +62,7 @@ export const THEMES: string[][] = [
 ];
 
 export interface Wheel {
+  _id?: string;
   name: string;
   label: string;
   options: string[];

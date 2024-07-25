@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { NavBar } from "src/components";
 import Auth from "src/components/Auth";
 import Configurator from "src/components/Configurator";
@@ -12,6 +14,8 @@ import VolumeController from "src/components/VolumeController";
 import { setActiveModal } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import ModifyModal from "./ModifyModal";
+import WheelsListModal from "src/components/WheelsListModal";
+import { fetchWheelById } from "src/store/thunks/wheel";
 
 export type ModalNames =
   | "result"
@@ -26,17 +30,33 @@ export type ModalNames =
 export default function Home() {
   const { activeModal } = useSelector((state: RootState) => state.wheel);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(activeModal);
-  }, [activeModal]);
+    const params = new URLSearchParams(location.search);
+    const error = params.get("error");
+    const wheelId = params.get("id");
+
+    if (error === "google") {
+      toast.error("Google login failed");
+      params.delete("error");
+      setTimeout(() => {
+        navigate({ search: params.toString() }, { replace: true });
+      }, 1000);
+    }
+
+    if (wheelId) {
+      // @ts-ignore
+      dispatch(fetchWheelById(wheelId));
+    }
+  }, [activeModal, location, navigate, dispatch]);
 
   return (
     <div className="max-w-[1360px] mx-auto min-h-screen flex flex-col">
       {activeModal === "profile" && <Auth />}
-      {activeModal === "wheels" && <Auth />}
+      {activeModal === "wheels" && <WheelsListModal />}
       {activeModal === "settings" && <Configurator />}
-
       {activeModal === "result" && <ResultModal />}
       {activeModal === "history" && <Results />}
       {activeModal === "modify" && <ModifyModal />}
@@ -58,7 +78,7 @@ export default function Home() {
             <VolumeController />
             <button
               onClick={() => {
-                console.log("hsitory modal should open");
+                console.log("history modal should open");
                 dispatch(setActiveModal("history"));
               }}
               className="flex justify-center items-center"

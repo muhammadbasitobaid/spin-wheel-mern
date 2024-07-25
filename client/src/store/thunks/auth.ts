@@ -11,14 +11,18 @@ import {
   resetRegister,
   sendResetPasswordLink,
   resetPassword,
+  postWheel,
 } from "../../api/index";
 import { NavigateFunction } from "react-router";
+import toast from "react-hot-toast";
+import { WheelState } from "../reducers/wheel";
 
 export const attemptLogin =
   (credentials: Credentials, navigate: NavigateFunction) =>
   (dispatch: Dispatch) =>
     postLogin(credentials).then(({ data }) => {
       dispatch(login(data.user));
+      toast.success("Login successful");
       navigate("/home", { replace: true });
     });
 
@@ -53,12 +57,32 @@ export const attemptLogout =
         navigate("/login", { replace: true });
       });
 
-export const attemptRegister = (newUser: User) => () => postUser(newUser);
+export const attemptRegister = (newUser: User) => (dispatch: Dispatch) => {
+  return postUser(newUser)
+    .then(() => {
+      toast.success(
+        "Verification Email has been sent. Please check your inbox."
+      );
+    })
+    .catch((error) => {
+      toast.error(
+        `Registration failed: ${error.response?.data?.message || error.message}`
+      );
+    });
+};
+
+export const attemptSaveWheel = (wheel: WheelState, id: string) => () =>
+  postWheel(wheel, id)
+    .then((data) => {
+      toast.success("Wheel created successfully");
+      return data;
+    })
+    .catch(() => toast.error("Wheel creation failed"));
 
 export const attemptGetConfirmation =
   (token: string, navigate: NavigateFunction) => (dispatch: Dispatch) =>
     getConfirmation(token).then(() => {
-      navigate("/login", { replace: true });
+      navigate("/", { replace: true });
     });
 
 export const attemptResendConfirmation =

@@ -1,12 +1,18 @@
+import { Wheel } from "src/constants";
+
 export const LOGIN_USER = "LOGIN_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const SET_USER = "SET_USER";
+export const SET_USER_WHEELS = "SET_USER_WHEELS";
 export const RESET_USER = "RESET_USER";
 
 export type User = {
+  id?: string;
+  _id?: string;
   username: string;
   email: string;
   password: string;
+  wheels?: Wheel[];
 };
 
 export type Credentials = {
@@ -41,4 +47,8 @@ export function setUser(user: User): UserAction<User> {
 
 export function resetUser(): UserAction<never> {
   return { type: RESET_USER };
+}
+
+export function setUserWheels(wheels: Wheel[]): UserAction<Wheel[]> {
+  return { type: SET_USER_WHEELS, payload: wheels };
 }

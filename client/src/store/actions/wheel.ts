@@ -20,6 +20,7 @@ export const SET_SOUND = "SET_SOUND";
 export const SET_CONFETTI_TYPE = "SET_CONFETTI_TYPE";
 export const SET_SOUND_TYPE = "SET_SOUND_TYPE";
 export const RESET_HISTORY = "RESET_HISTORY";
+export const SET_WHEEL_DETAILS = "SET_WHEEL_DETAILS";
 
 export interface SetVolumeAction {
   type: typeof SET_VOLUME;
@@ -110,6 +111,15 @@ export interface ResetHistoryAction {
   type: typeof RESET_HISTORY;
 }
 
+interface SetWheelDetailsAction {
+  type: typeof SET_WHEEL_DETAILS;
+  payload: {
+    name: string;
+    description: string;
+    popUpMessage: string;
+  };
+}
+
 export type WheelActions =
   | SetVolumeAction
   | SetHistoryAction
@@ -128,7 +138,8 @@ export type WheelActions =
   | SetSoundAction
   | SetConfettiTypeAction
   | SetSoundTypeAction
-  | ResetHistoryAction;
+  | ResetHistoryAction
+  | SetWheelDetailsAction;
 
 export const resetHistory = (): ResetHistoryAction => ({
   type: RESET_HISTORY,
@@ -236,4 +247,13 @@ export const setConfettiType = (
 export const setSoundType = (value: SoundTypes): SetSoundTypeAction => ({
   type: SET_SOUND_TYPE,
   payload: value,
+});
+
+export const setWheelDetails = (
+  name: string,
+  description: string,
+  popUpMessage: string
+): SetWheelDetailsAction => ({
+  type: SET_WHEEL_DETAILS,
+  payload: { name, description, popUpMessage },
 });

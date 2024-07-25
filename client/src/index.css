@@ -105,3 +105,40 @@ td:first-child {
     height: 40px!important;
     opacity: 0;
 }
+
+/* Custom scrollbar styles for Webkit browsers */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the entire scrollbar */
+}
+
+/* Hide the scrollbar arrows */
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5ebe8; /* Background of the scrollbar track */
+  border-radius: 10px; /* Round corners of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4a4a4a; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Round corners of the thumb */
+  border: 3px solid #f5ebe8; /* Space around the thumb */
+}
+
+/* Custom scrollbar styles for Firefox */
+* {
+  scrollbar-width: thin; /* Thin scrollbar */
+  scrollbar-color: #4a4a4a #f5ebe8; /* Thumb and track color */
+}
+
+/* Hide scrollbar for IE and Edge */
+body {
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Additional style to ensure cross-browser compatibility */
+body::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+}

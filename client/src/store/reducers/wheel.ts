@@ -19,6 +19,7 @@ import {
   SET_SOUND_TYPE,
   RESET_HISTORY,
   SET_WHEEL_DETAILS,
+  SET_WHEEL_LIST,
   WheelActions,
 } from "../actions/wheel";
 
@@ -39,6 +40,7 @@ export interface WheelState {
   history?: string[];
   selectedWheel: Wheel;
   inputNumbers: number;
+  wheelList?: string[];
   maxInputNumbers: number;
   activeModal: ModalNames | null;
   result: string | null;
@@ -80,6 +82,11 @@ const wheelReducer = (
       };
     case SET_INPUT_NUMBERS:
       return { ...state, inputNumbers: action.payload };
+    case SET_WHEEL_LIST:
+      return {
+        ...state,
+        wheelList: action.payload,
+      };
     case SET_ACTIVE_MODAL:
       return { ...state, activeModal: action.payload };
     case SET_RESULT:

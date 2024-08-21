@@ -65,8 +65,14 @@ export interface Wheel {
   _id?: string;
   name: string;
   label: string;
-  options: string[];
+  options?: string[];
 }
+
+export const ALPHABETS_OPTION = "A-Z / a-z;eg: A,B,C,D"
+export const CONSONANT_OPTION = "Consonant;eg: B,C,D,F"
+export const VOWEL_OPTION = "Vowel;eg:A,E,I,O"
+export const LETTERS_OPTION = "A-Z + a-z;eg:A,B,a,b"
+export const CUSTOM_LETTERS_OPTION = "Custom Letters;eg: Picker"
 
 export const wheels: Wheel[] = [
   {
@@ -80,7 +86,18 @@ export const wheels: Wheel[] = [
 
     options: ["Yes", "No", "Maybe"],
   },
+  {
+    name: "letter-wheel",
+    label: "Letter Picker Wheel",
+    options: [ALPHABETS_OPTION, CONSONANT_OPTION, VOWEL_OPTION, LETTERS_OPTION, CUSTOM_LETTERS_OPTION],
+  },
+  {
+    name: "number-wheel",
+    label: "Number Picker Wheel"
+  },
 ];
+
+
 export interface MenuItem {
   label: string;
   svgSrc: string;

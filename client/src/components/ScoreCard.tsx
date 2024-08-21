@@ -26,7 +26,7 @@ const ScoreCard = () => {
     const counts: { [key: string]: number } = {};
 
     // Initialize counts with 0 for each option label
-    options.forEach((option: string) => {
+    options?.forEach((option: string) => {
       counts[option] = 0;
     });
 

@@ -5,6 +5,7 @@ export const SET_VOLUME = "SET_VOLUME";
 export const SET_HISTORY = "SET_HISTORY";
 export const SET_SELECTED_WHEEL = "SET_SELECTED_WHEEL";
 export const SET_INPUT_NUMBERS = "SET_INPUT_NUMBERS";
+export const SET_WHEEL_LIST = 'SET_WHEEL_LIST';
 export const SET_ACTIVE_MODAL = "SET_ACTIVE_MODAL";
 export const SET_RESULT = "SET_RESULT";
 export const SET_THEME = "SET_THEME";
@@ -41,6 +42,11 @@ export interface SetInputNumbersAction {
   type: typeof SET_INPUT_NUMBERS;
   payload: number;
 }
+
+export const setWheelList = (wheelList: string[]) => ({
+  type: SET_WHEEL_LIST,
+  payload: wheelList,
+});
 
 export interface SetActiveModalAction {
   type: typeof SET_ACTIVE_MODAL;

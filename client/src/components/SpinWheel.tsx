@@ -6,6 +6,7 @@ import { setActiveModal, setHistory, setResult } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import { getBgColorForLabel, getLabelColor } from "src/utils";
 import { Howl } from "howler";
+import { wheels } from "src/constants";
 
 interface WheelListItem {
   label: string;
@@ -27,10 +28,9 @@ interface SpinWheelInstance {
 }
 
 const randomizeNumber = (number: number) => Math.floor(Math.random() * number);
-
 const SpinWheel = () => {
   const dispatch = useDispatch();
-  const { selectedWheel, inputNumbers, history, selectedTheme, spinConfig } =
+  const { selectedWheel, inputNumbers, wheelList, history, selectedTheme, spinConfig } =
     useSelector((state: RootState) => state.wheel);
   const {
     mysterySpinOption,
@@ -49,11 +49,13 @@ const SpinWheel = () => {
     let items: WheelListItem[] = [];
     for (let i = 0; i < n; i++) {
       items = items.concat(
-        selectedWheel.options.map((item: string, index: number) => ({
-          label: mysterySpinOption ? "?" : item,
-          labelColor: getLabelColor(getBgColorForLabel(index, selectedTheme)),
-          value: item,
-        }))
+        [...(selectedWheel?.options || wheels[0].options!)].map(
+          (item: string, index: number) => ({
+            label: mysterySpinOption ? "?" : item,
+            labelColor: getLabelColor(getBgColorForLabel(index, selectedTheme)),
+            value: item,
+          })
+        )
       );
     }
     return items;

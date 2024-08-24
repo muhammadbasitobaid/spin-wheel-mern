@@ -25,10 +25,11 @@ import {
 
 import { v4 as uuidv4 } from "uuid";
 
+import { YesNoWheel} from '../../constants'
+
 import {
   THEMES,
   Wheel,
-  wheels,
   defaultSpinConfig,
   SpinConfig,
 } from "src/constants";
@@ -53,7 +54,7 @@ export interface WheelState {
 export const initialState: WheelState = {
   name: `Wheel ${uuidv4()}`,
   volume: 50,
-  selectedWheel: wheels[0],
+  selectedWheel: YesNoWheel,
   inputNumbers: 3,
   maxInputNumbers: 5,
   activeModal: null,
@@ -78,7 +79,7 @@ const wheelReducer = (
     case SET_SELECTED_WHEEL:
       return {
         ...state,
-        ...action.payload,
+        selectedWheel: action.payload,
       };
     case SET_INPUT_NUMBERS:
       return { ...state, inputNumbers: action.payload };

@@ -4,6 +4,7 @@ import { menuItems } from "src/constants";
 import { ModalNames } from "src/pages/HomePage";
 import { setActiveModal } from "src/store/actions/wheel";
 import SharePopup from "./SharePopup";
+import WheelsPopup from "./WheelsPopup";
 
 interface MenuItemProps {
   label?: string;
@@ -43,14 +44,28 @@ const MenuItem: React.FC<MenuItemProps> = ({
 export default function NavBar() {
   const dispatch = useDispatch();
   const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
+  const [isWheelsPopupOpen, setIsWheelsPopupOpen] = useState(false);
 
   const toggleSharePopup = () => {
     setIsSharePopupOpen(!isSharePopupOpen);
+    if(isWheelsPopupOpen) setIsWheelsPopupOpen(false);
   };
 
   const closeSharePopup = () => {
     setIsSharePopupOpen(false);
   };
+
+
+  const toggleWheelsPopup = () => {
+    setIsWheelsPopupOpen(!isWheelsPopupOpen);
+    if(isSharePopupOpen) setIsSharePopupOpen(false);
+  };
+
+  const closeWheelsPopup = () => {
+    setIsWheelsPopupOpen(false);
+  };
+
+
 
   return (
     <nav className="navbar bg-base-100 px-6 lg:px-10 relative">
@@ -98,6 +113,18 @@ export default function NavBar() {
                 disabled={item.disabled || false}
               />
             ))}
+
+            <MenuItem
+              key={"/assets/icons/hammer_page.svg"}
+              svgSrc={"/assets/icons/hammer_page.svg"}
+              width={26}
+              height={26}
+              value={"switch_wheels"}
+              label={"Switch Wheels"}
+              disabled={false}
+              setActiveModal={toggleWheelsPopup}
+            />
+            {isWheelsPopupOpen && <WheelsPopup onClose={closeWheelsPopup} />}
           </ul>
         </details>
         <ul>
@@ -131,6 +158,17 @@ export default function NavBar() {
               disabled={item.disabled || false}
             />
           ))}
+
+            <MenuItem
+              key={"/assets/icons/hammer_page.svg"}
+              svgSrc={"/assets/icons/hammer_page.svg"}
+              width={26}
+              height={26}
+              value={"switch_wheels"}
+              label={"Switch Wheels"}
+              disabled={false}
+              setActiveModal={toggleWheelsPopup}
+            />
           <div className="relative">
             <MenuItem
               key={"/assets/icons/share_page.svg"}
@@ -143,6 +181,7 @@ export default function NavBar() {
               setActiveModal={toggleSharePopup}
             />
             {isSharePopupOpen && <SharePopup onClose={closeSharePopup} />}
+            {isWheelsPopupOpen && <WheelsPopup onClose={closeWheelsPopup} />}
           </div>
         </ul>
       </div>

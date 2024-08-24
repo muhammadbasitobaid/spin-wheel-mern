@@ -16,10 +16,12 @@ import { RootState } from "src/store/store";
 import ModifyModal from "./ModifyModal";
 import WheelsListModal from "src/components/WheelsListModal";
 import { fetchWheelById } from "src/store/thunks/wheel";
+import { YesNoWheel } from '../constants'
 
 export type ModalNames =
   | "result"
   | "profile"
+  | "switch_wheels"
   | "wheels"
   | "settings"
   | "share"
@@ -28,7 +30,7 @@ export type ModalNames =
   | null;
 
 export default function Home() {
-  const { activeModal } = useSelector((state: RootState) => state.wheel);
+  const { activeModal, selectedWheel } = useSelector((state: RootState) => state.wheel);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -90,9 +92,14 @@ export default function Home() {
               />
             </button>
           </div>
+
+          {
+            selectedWheel.name === YesNoWheel.name && (
           <div>
             <ScoreCard />
           </div>
+            )
+          }
           <div>
             <EditWheel />
           </div>

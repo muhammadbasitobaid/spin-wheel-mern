@@ -7,9 +7,13 @@ interface InputFieldProps {
   id?: string;
   placeholder?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void; // Optional onBlur handler
   className?: string;
   type?: "text" | "number" | "email" | "password";
   disabled?: boolean; // Added disabled prop
+  note?: string; // New optional prop for notes
+  min?: string; // Optional min for number input
+  max?: string; // Optional max for number input
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -19,9 +23,13 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   name,
   onChange,
+  onBlur, // Optional onBlur prop
   className = "",
   type = "text",
   disabled = false, // Default to false if not provided
+  note, // Optional note
+  min, // Optional min value for number input
+  max, // Optional max value for number input
 }) => {
   const [inputValue, setInputValue] = useState(value || "");
 
@@ -55,9 +63,18 @@ const InputField: React.FC<InputFieldProps> = ({
         }`}
         value={inputValue}
         onChange={handleInputChange}
+        onBlur={onBlur} // Optional onBlur prop
         name={name}
         disabled={disabled} // Apply the disabled prop
+        min={min} // Pass the min prop
+        max={max} // Pass the max prop
       />
+      {/* Display the note if it exists */}
+      {note && (
+        <p className="text-xs mt-1 text-gray">
+          * {note}
+        </p>
+      )}
     </label>
   );
 };

@@ -43,6 +43,12 @@ export interface SetInputNumbersAction {
   payload: number;
 }
 
+
+export interface SetWheelListAction {
+  type: typeof SET_WHEEL_LIST;
+  payload: string[];
+}
+
 export const setWheelList = (wheelList: string[]) => ({
   type: SET_WHEEL_LIST,
   payload: wheelList,
@@ -131,6 +137,7 @@ export type WheelActions =
   | SetHistoryAction
   | SetSelectedWheelAction
   | SetInputNumbersAction
+  | SetWheelListAction
   | SetActiveModalAction
   | SetResultAction
   | SetThemeAction

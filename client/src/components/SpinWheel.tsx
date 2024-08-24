@@ -6,7 +6,6 @@ import { setActiveModal, setHistory, setResult } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import { getBgColorForLabel, getLabelColor } from "src/utils";
 import { Howl } from "howler";
-import { wheels } from "src/constants";
 
 interface WheelListItem {
   label: string;
@@ -28,9 +27,10 @@ interface SpinWheelInstance {
 }
 
 const randomizeNumber = (number: number) => Math.floor(Math.random() * number);
+
 const SpinWheel = () => {
   const dispatch = useDispatch();
-  const { selectedWheel, inputNumbers, wheelList, history, selectedTheme, spinConfig } =
+  const { wheelList, inputNumbers, history, selectedTheme, spinConfig } =
     useSelector((state: RootState) => state.wheel);
   const {
     mysterySpinOption,
@@ -45,21 +45,35 @@ const SpinWheel = () => {
   const [isWheelSpinning, setWheelSpinning] = useState(false);
   const [spinCount, setSpinCount] = useState(0);
 
+  // Dynamic itemLabelRadiusMax based on the number of wheel items
+  const itemLabelRadiusMax = useMemo(() => {
+    if (!wheelList || wheelList.length === 0) return 0.5; // Default value
+    const numItems = wheelList.length;
+    if (numItems > 10) {
+      return 0.8; // Larger radius for more items
+    } else if (numItems > 5) {
+      return 0.6; // Medium radius for moderate number of items
+    } else {
+      return 0.4; // Smaller radius for fewer items
+    }
+  }, [wheelList]);
+
+  // Generate wheel items based on wheelList and repeat them according to inputNumbers
   const wheelItems: WheelListItem[] = useMemo(() => {
     let items: WheelListItem[] = [];
+    if (!wheelList || wheelList.length === 0) return items;
+
     for (let i = 0; i < n; i++) {
       items = items.concat(
-        [...(selectedWheel?.options || wheels[0].options!)].map(
-          (item: string, index: number) => ({
-            label: mysterySpinOption ? "?" : item,
-            labelColor: getLabelColor(getBgColorForLabel(index, selectedTheme)),
-            value: item,
-          })
-        )
+        wheelList.map((item: string, index: number) => ({
+          label: mysterySpinOption ? "?" : item,
+          labelColor: getLabelColor(getBgColorForLabel(index, selectedTheme)),
+          value: item,
+        }))
       );
     }
     return items;
-  }, [selectedWheel.options, n, selectedTheme, mysterySpinOption]);
+  }, [wheelList, n, selectedTheme, mysterySpinOption]);
 
   const container = useRef<HTMLDivElement | null>(null);
   const shadowCanvas = useRef<HTMLCanvasElement | null>(null);
@@ -113,9 +127,9 @@ const SpinWheel = () => {
         radius: 1,
         borderWidth: 5,
         borderColor: "#ffff",
-        itemLabelFontSizeMax: 28,
+        itemLabelFontSizeMax: 14, // You can adjust or remove this if you want full dynamic font sizing
+        itemLabelRadiusMax, // Dynamically set itemLabelRadiusMax based on wheelList size
         lineColor: "#ffff",
-        lineWidth: 5,
         itemBackgroundColors: selectedTheme,
         items: wheelItems,
         rotation,
@@ -172,7 +186,6 @@ const SpinWheel = () => {
     history,
     randomInitialAngleOption,
     selectedTheme,
-    selectedWheel.options,
     spinningSpeedLevel,
   ]);
 

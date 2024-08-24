@@ -1,5 +1,8 @@
 import { ModalNames } from "src/pages/HomePage";
 
+export const NUMBER_WHEEL_HIGHEST_PORTION = 1000;
+export const NUMBER_WHEEL_LOWEST_PORTION = 1;
+
 export const THEMES: string[][] = [
   ["#CFFDE1", "#3D5656", "#FED049", "#68B984"],
   ["#F2CC8F", "#E07A5F", "#81B29A", "#3D405B"],
@@ -65,7 +68,7 @@ export interface Wheel {
   _id?: string;
   name: string;
   label: string;
-  options?: string[];
+  options: string[];
 }
 
 export const ALPHABETS_OPTION = "A-Z / a-z;eg: A,B,C,D"
@@ -74,27 +77,31 @@ export const VOWEL_OPTION = "Vowel;eg:A,E,I,O"
 export const LETTERS_OPTION = "A-Z + a-z;eg:A,B,a,b"
 export const CUSTOM_LETTERS_OPTION = "Custom Letters;eg: Picker"
 
-export const wheels: Wheel[] = [
-  {
+export const YES_NO_OPTION = "Yes or No";
+export const YES_NO_MAYBE_OPTION = "Yes, No or Maybe";
+
+export const YesNoWheel: Wheel = {
     name: "yes-no-wheel",
     label: "YES or NO",
-    options: ["Yes", "No"],
-  },
-  {
-    name: "yes-no-maybe-wheel",
-    label: "YES or NO or MAYBE",
+    options: [YES_NO_OPTION, YES_NO_MAYBE_OPTION],
+};
 
-    options: ["Yes", "No", "Maybe"],
-  },
-  {
+export const NumberWheel: Wheel = {
+    name: "number-wheel",
+    label: "Number Picker Wheel",
+    options: [""]
+};
+
+export const LetterWheel: Wheel = {
     name: "letter-wheel",
     label: "Letter Picker Wheel",
     options: [ALPHABETS_OPTION, CONSONANT_OPTION, VOWEL_OPTION, LETTERS_OPTION, CUSTOM_LETTERS_OPTION],
-  },
-  {
-    name: "number-wheel",
-    label: "Number Picker Wheel"
-  },
+};
+
+export const wheels: Wheel[] = [
+  YesNoWheel,
+  NumberWheel,
+  LetterWheel,
 ];
 
 
@@ -120,12 +127,6 @@ export const menuItems: MenuItem[] = [
     label: "Setting",
     svgSrc: "/assets/icons/setting_page.svg",
     value: "settings",
-  },
-  {
-    label: "Tools",
-    svgSrc: "/assets/icons/hammer_page.svg",
-    value: "share",
-    disabled: true,
   },
 ];
 

@@ -18,6 +18,14 @@ You have to set the following environment variables in `server.dev.env` file (re
 
 - SENDING_EMAIL, the email address you want to use to send confirmation email to the user.
 
+- GOOGLE_CLIENT_ID
+
+- GOOGLE_CLIENT_SECRET
+
+- MONGO_URI
+
+- PORT
+
 ## Development
 
 in the root directory:

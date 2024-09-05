@@ -17,9 +17,11 @@ const ScoreCell: FC<ScoreCellProps> = ({ score, label }) => (
 );
 
 const ScoreCard = () => {
-  const { history,  wheelList: options } = useSelector(
+  const { wheelSnapshot,  wheelList: options } = useSelector(
     (state: RootState) => state.wheel
   );
+
+  const {history} = wheelSnapshot;
 
   const countOccurrences = (arr?: string[]) => {
     const counts: { [key: string]: number } = {};

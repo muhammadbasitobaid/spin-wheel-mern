@@ -11,11 +11,9 @@ import {
   resetRegister,
   sendResetPasswordLink,
   resetPassword,
-  postWheel,
 } from "../../api/index";
 import { NavigateFunction } from "react-router";
 import toast from "react-hot-toast";
-import { WheelState } from "../reducers/wheel";
 
 export const attemptLogin =
   (credentials: Credentials, navigate: NavigateFunction) =>
@@ -70,14 +68,6 @@ export const attemptRegister = (newUser: User) => (dispatch: Dispatch) => {
       );
     });
 };
-
-export const attemptSaveWheel = (wheel: WheelState, id: string) => () =>
-  postWheel(wheel, id)
-    .then((data) => {
-      toast.success("Wheel created successfully");
-      return data;
-    })
-    .catch(() => toast.error("Wheel creation failed"));
 
 export const attemptGetConfirmation =
   (token: string, navigate: NavigateFunction) => (dispatch: Dispatch) =>

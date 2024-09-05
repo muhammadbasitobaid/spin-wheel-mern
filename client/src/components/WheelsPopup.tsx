@@ -1,13 +1,15 @@
 import React, { useRef } from "react";
 import { wheels, Wheel } from "src/constants"; // Assuming you import wheels from a constants file
 import {useDispatch} from 'react-redux';
-import { setSelectedWheel } from "../store/actions/wheel";
+import { setSelectedWheel, setWheelSnapshot } from "../store/actions/wheel";
 
 const WheelsPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+
   const popupRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const handleWheelSelection = (wheel: Wheel) =>{
   dispatch(setSelectedWheel(wheel));
+  dispatch(setWheelSnapshot({history: []}));  // Reset history when wheel mode changes
   onClose();
   } 
 

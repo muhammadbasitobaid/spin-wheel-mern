@@ -5,6 +5,7 @@ import Button from "./common/Button";
 import InputField from "./common/InputField";
 import Modal from "./common/Modal";
 import toast from "react-hot-toast";
+import { attemptSaveWheel } from "src/store/thunks/wheel";
 
 const SaveWheel: React.FC = () => {
   const dispatch = useDispatch();

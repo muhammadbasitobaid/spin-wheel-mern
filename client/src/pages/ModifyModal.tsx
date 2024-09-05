@@ -6,7 +6,7 @@ import InputField from "src/components/common/InputField";
 import Modal from "src/components/common/Modal";
 import { setActiveModal, setWheelDetails } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
-import { attemptSaveWheel } from "src/store/thunks/auth";
+import { attemptSaveWheel } from "src/store/thunks/wheel";
 
 const ModifyModal: React.FC = () => {
   const dispatch = useDispatch();

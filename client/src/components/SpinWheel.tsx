@@ -2,10 +2,11 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // @ts-ignore
 import { Wheel } from "spin-wheel";
-import { setActiveModal, setHistory, setResult } from "src/store/actions/wheel";
+import { setActiveModal, setResult, setWheelSnapshot } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import { getBgColorForLabel, getLabelColor } from "src/utils";
 import { Howl } from "howler";
+import {toast} from 'react-hot-toast';
 
 interface WheelListItem {
   label: string;
@@ -30,8 +31,9 @@ const randomizeNumber = (number: number) => Math.floor(Math.random() * number);
 
 const SpinWheel = () => {
   const dispatch = useDispatch();
-  const { wheelList, inputNumbers, history, selectedTheme, spinConfig } =
+  const { wheelList, wheelSnapshot,  selectedTheme, spinConfig } =
     useSelector((state: RootState) => state.wheel);
+  const {inputNumbers, history,} = wheelSnapshot;
   const {
     mysterySpinOption,
     randomInitialAngleOption,
@@ -127,8 +129,8 @@ const SpinWheel = () => {
         radius: 1,
         borderWidth: 5,
         borderColor: "#ffff",
-        itemLabelFontSizeMax: 14, // You can adjust or remove this if you want full dynamic font sizing
-        itemLabelRadiusMax, // Dynamically set itemLabelRadiusMax based on wheelList size
+        itemLabelFontSizeMax: 28, 
+        itemLabelRadiusMax, 
         lineColor: "#ffff",
         itemBackgroundColors: selectedTheme,
         items: wheelItems,
@@ -147,7 +149,7 @@ const SpinWheel = () => {
           const updatedHistory = [...(history ?? [])];
           updatedHistory.push(stoppedItemLabel);
 
-          dispatch(setHistory(updatedHistory));
+          dispatch(setWheelSnapshot({history: updatedHistory}));
           setWheelSpinning(false);
         },
         onCurrentIndexChange: () => {
@@ -190,7 +192,8 @@ const SpinWheel = () => {
   ]);
 
   const handleSpinButtonClick = () => {
-    if (!wheel) return;
+    !wheelList?.length && toast.error("Please add atleast one letter for Custom Letter wheel to work!")
+    if (!wheel || !wheelList?.length) return;
     if (mounted && !isWheelSpinning) {
       wheel.spinToItem(
         randomizeNumber(wheelItems.length),

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { menuItems } from "src/constants";
+import { menuItems, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL } from "src/constants";
 import { ModalNames } from "src/pages/HomePage";
-import { setActiveModal } from "src/store/actions/wheel";
+import { setActiveModal, setWheelSnapshot } from "src/store/actions/wheel";
 import SharePopup from "./SharePopup";
 import WheelsPopup from "./WheelsPopup";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store/store";
 
 interface MenuItemProps {
   label?: string;
@@ -46,6 +48,9 @@ export default function NavBar() {
   const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
   const [isWheelsPopupOpen, setIsWheelsPopupOpen] = useState(false);
 
+    const { selectedWheel } = useSelector(
+      (state: RootState) => state.wheel
+    );
   const toggleSharePopup = () => {
     setIsSharePopupOpen(!isSharePopupOpen);
     if(isWheelsPopupOpen) setIsWheelsPopupOpen(false);
@@ -63,6 +68,7 @@ export default function NavBar() {
 
   const closeWheelsPopup = () => {
     setIsWheelsPopupOpen(false);
+    dispatch(setWheelSnapshot({inputNumbers: selectedWheel.name === "yes-no-wheel" ? DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL: 1} ))
   };
 
 

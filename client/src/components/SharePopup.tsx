@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store/store";
 import InputField from "./common/InputField";
 import Button from "./common/Button";
-import { attemptSaveWheel } from "src/store/thunks/auth";
+import { attemptSaveWheel } from "src/store/thunks/wheel";
 
 const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const dispatch = useDispatch();

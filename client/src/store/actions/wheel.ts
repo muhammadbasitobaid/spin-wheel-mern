@@ -1,9 +1,11 @@
-import { Wheel } from "src/constants";
+import { Wheel, WheelSnapshot } from "src/constants";
 import { ModalNames } from "src/pages/HomePage";
 
 export const SET_VOLUME = "SET_VOLUME";
 export const SET_HISTORY = "SET_HISTORY";
 export const SET_SELECTED_WHEEL = "SET_SELECTED_WHEEL";
+export const SET_SELECTED_OPTION = "SET_SELECTED_OPTION"
+export const SET_WHEEL_SNAPSHOT = "SET_WHEEL_SNAPSHOT";
 export const SET_INPUT_NUMBERS = "SET_INPUT_NUMBERS";
 export const SET_WHEEL_LIST = 'SET_WHEEL_LIST';
 export const SET_ACTIVE_MODAL = "SET_ACTIVE_MODAL";
@@ -36,6 +38,12 @@ export interface SetHistoryAction {
 export interface SetSelectedWheelAction {
   type: typeof SET_SELECTED_WHEEL;
   payload: Wheel;
+}
+
+
+export interface SetSelectedOptionAction {
+  type: typeof SET_SELECTED_OPTION;
+  payload: string;
 }
 
 export interface SetInputNumbersAction {
@@ -132,6 +140,12 @@ interface SetWheelDetailsAction {
   };
 }
 
+
+interface SetWheelSnapshotAction {
+  type: typeof SET_WHEEL_SNAPSHOT;
+  payload:  Partial<WheelSnapshot>;
+}
+
 export type WheelActions =
   | SetVolumeAction
   | SetHistoryAction
@@ -152,6 +166,7 @@ export type WheelActions =
   | SetConfettiTypeAction
   | SetSoundTypeAction
   | ResetHistoryAction
+  | SetWheelSnapshotAction 
   | SetWheelDetailsAction;
 
 export const resetHistory = (): ResetHistoryAction => ({
@@ -269,4 +284,10 @@ export const setWheelDetails = (
 ): SetWheelDetailsAction => ({
   type: SET_WHEEL_DETAILS,
   payload: { name, description, popUpMessage },
+});
+
+
+export const setWheelSnapshot = (payload: Partial<WheelSnapshot>) => ({
+  type: SET_WHEEL_SNAPSHOT,
+  payload,
 });

@@ -12,16 +12,19 @@ import {
   VOWEL_OPTION ,
   CUSTOM_LETTERS_OPTION ,
 YES_NO_OPTION,
-NUMBER_WHEEL_LOWEST_PORTION,
-NUMBER_WHEEL_HIGHEST_PORTION
+DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL,
+// NUMBER_WHEEL_LOWEST_PORTION,
+// NUMBER_WHEEL_HIGHEST_PORTION,
+// MAX_INPUT_NUMBER
 } from "src/constants";
 import { RootState } from "src/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
   resetHistory,
   setActiveModal,
-  setInputNumbers,
-  setWheelList
+  // setinputNumbers,
+  setWheelList,
+  setWheelSnapshot
 } from "src/store/actions/wheel";
 import InputField from "./common/InputField";
 
@@ -29,23 +32,26 @@ import InputField from "./common/InputField";
 
 export const YesNoWheelControls = () => {
   const dispatch = useDispatch();
-  const { selectedWheel, inputNumbers, maxInputNumbers } = useSelector(
+  const { wheelSnapshot, selectedWheel } = useSelector(
     (state: RootState) => state.wheel
   );
 
-  const [selectedOption, setSelectedOption] = useState(YesNoWheel?.options[0]!)
+  const {  selectedOption, inputNumbers } = wheelSnapshot;
 
   useEffect(() => {
     // Update the wheel list based on the selected wheel option
-      if (selectedOption === YES_NO_OPTION) {
-        dispatch(setWheelList(["Yes", "No"]));
-      } else {
-        dispatch(setWheelList(["Yes", "No", "Maybe"]));
-      }
-  }, [selectedWheel, dispatch, selectedOption]);
+    if (selectedOption === YES_NO_OPTION) {
+      dispatch(setWheelList(["Yes", "No"]));
+    } else {
+      dispatch(setWheelList(["Yes", "No", "Maybe"]));
+    }
+  }, [selectedOption, selectedWheel, dispatch]);
+
+  useEffect(() => {
+    dispatch(setWheelSnapshot({inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL}))
 
 
-
+  }, []);
 
   return (
     <>
@@ -59,9 +65,9 @@ export const YesNoWheelControls = () => {
               label={option}
               isActive={selectedOption === option}
               onClick={() => {
-                setSelectedOption(option)
-                // dispatch(setSelectedWheel({ ...YesNoWheel, options: [option] }));
-                // dispatch(resetHistory());  // Reset history when wheel mode changes
+                dispatch(setWheelSnapshot({ selectedOption: option }));
+                // Reset history when wheel mode changes
+                dispatch(setWheelSnapshot({ history: [] })); 
               }}
               className="!text-xs lg:!text-xl flex-1"
             />
@@ -73,10 +79,10 @@ export const YesNoWheelControls = () => {
       <div className="w-full">
         <div className="!text-xs lg:!text-xl">Input Numbers</div>
         <ChoiceCounter
-          max={maxInputNumbers}
-          value={inputNumbers}
+          max={5}
+          value={inputNumbers ?? 1}
           onChange={(newNumber: number) =>
-            dispatch(setInputNumbers(newNumber))
+            dispatch(setWheelSnapshot({ inputNumbers: newNumber }))
           }
         />
       </div>
@@ -99,14 +105,12 @@ const generateConsonantArray = (isUpperCase: boolean) => {
   return isUpperCase ? consonants : consonants.map(consonant => consonant.toLowerCase());
 };
 
+
 export const LetterWheelControls = () => {
   const [styleOption, setStyleOption] = useState<string>("UPPERCASE");
   const [letterOption, setLetterOption] = useState<string>(ALPHABETS_OPTION);
-  const [customLetters, setCustomLetters] = useState<string>(""); // State to store custom letters input
+  const [customLetters, setCustomLetters] = useState<string>("");
   const dispatch = useDispatch();
-
-  // Options for the select dropdown
-  const letterOptions = [ALPHABETS_OPTION, CONSONANT_OPTION, VOWEL_OPTION, CUSTOM_LETTERS_OPTION];
 
   // Function to return array based on letter option and style
   const getLetterArray = () => {
@@ -123,68 +127,58 @@ export const LetterWheelControls = () => {
         return customLetters
           .split(",")
           .map(letter => letter.trim())
-          .filter(letter => letter.length > 0); // Ensure non-empty letters
+          .filter(letter => letter.length > 0);
       default:
         return [];
     }
   };
 
   useEffect(() => {
-
-    dispatch(setInputNumbers(1));
-  }, [])
-
-  useEffect(() => {
     const selectedLetters = getLetterArray();
     dispatch(setWheelList(selectedLetters));
+    dispatch(setWheelSnapshot({ selectedOption: letterOption,  casing: styleOption}));
+
+    if(letterOption === CUSTOM_LETTERS_OPTION ) dispatch(setWheelSnapshot({ customLetterList: customLetters}));
   }, [styleOption, letterOption, customLetters, dispatch]);
+
+
+  useEffect(() => {
+    dispatch(setWheelSnapshot({inputNumbers: 1}))
+  }, []);
 
   return (
     <>
-      {/* Letter Options */}
-      <div className="mb-6">
-        <SelectInput
-          label="Letter Options:"
-          options={letterOptions}
-          value={letterOption}
-          onChange={(value: string) => setLetterOption(value)}
-        />
-      </div>
+      <SelectInput
+        label="Letter Options:"
+        options={[ALPHABETS_OPTION, CONSONANT_OPTION, VOWEL_OPTION, CUSTOM_LETTERS_OPTION]}
+        value={letterOption}
+        onChange={(value: string) => setLetterOption(value)}
+      />
 
-      {/* Custom Letters Input (shown only when CUSTOM_LETTERS_OPTION is selected) */}
       {letterOption === CUSTOM_LETTERS_OPTION && (
-        <div className="mb-6">
-          <InputField
-            label="Enter Custom Letters (comma-separated):"
-            value={customLetters}
-            onChange={(e) => setCustomLetters(e.target.value)}
-            placeholder="e.g., A, B, C"
+        <InputField
+          label="Enter Custom Letters (comma-separated):"
+          value={customLetters}
+          onChange={(e) => setCustomLetters(e.target.value)}
+          placeholder="e.g., A, B, C"
+        />
+      )}
+
+      <div className="mb-6">
+        <label className="block text-lg font-medium mb-2">Style Options:</label>
+        <div className="flex space-x-2">
+          <ToggleButton
+            label="UPPERCASE"
+            isActive={styleOption === "UPPERCASE"}
+            onClick={() => setStyleOption("UPPERCASE")}
+          />
+          <ToggleButton
+            label="lowercase"
+            isActive={styleOption === "lowercase"}
+            onClick={() => setStyleOption("lowercase")}
           />
         </div>
-      )}
-
-      {/* Style Options */}
-      {letterOption !== CUSTOM_LETTERS_OPTION && (
-        <>
-          <div className="mb-6">
-            <label className="block text-lg font-medium mb-2">Style Options:</label>
-            <div className="flex space-x-2">
-              <ToggleButton
-                label="UPPERCASE"
-                isActive={styleOption === "UPPERCASE"}
-                onClick={() => setStyleOption("UPPERCASE")}
-                className="w-1/2"
-              />
-              <ToggleButton
-                label="lowercase"
-                isActive={styleOption === "lowercase"}
-                onClick={() => setStyleOption("lowercase")}
-                className="w-1/2"
-              />
-            </div>
-          </div>
-        </>
-      )}
+      </div>
     </>
   );
 };
@@ -193,31 +187,28 @@ export const LetterWheelControls = () => {
 
 
 
+
 export const NumberWheelControls = () => {
-  const [lowerNumber, setLowerNumber] = useState<string>("1");
-  const [highestNumber, setHighestNumber] = useState<string>("10");
-  const [excludeNumbers, setExcludeNumbers] = useState<string>("");
-  const [interval, setInterval] = useState<string>("1");
   const dispatch = useDispatch();
 
-  // Helper function to generate the number list
+  const { wheelSnapshot } = useSelector((state: RootState) => state.wheel);
+
+  const {
+      interval = 1,
+      lowerNumber = 1,
+      highestNumber = 10,
+      customLetterList: excludeNumbers = ""
+    } = wheelSnapshot;
+
   const generateNumberList = useCallback(() => {
-    let lower = parseInt(lowerNumber, 10);
-    let highest = parseInt(highestNumber, 10);
-    const step = parseInt(interval, 10);
-
-    // Apply limits to the lower and highest numbers
-    if (isNaN(lower) || lower < NUMBER_WHEEL_LOWEST_PORTION) lower = NUMBER_WHEEL_LOWEST_PORTION;
-    if (isNaN(highest) || highest > NUMBER_WHEEL_HIGHEST_PORTION) highest = NUMBER_WHEEL_HIGHEST_PORTION;
-
-    if (isNaN(step) || step <= 0) {
-      return [];
-    }
+    let lower = parseInt(lowerNumber?.toString() || "1", 10);
+    let highest = parseInt(highestNumber?.toString() || "10", 10);
+    const step = parseInt(interval?.toString() || "1", 10);
 
     const exclude = excludeNumbers
-      .split(",")
+      ?.split(",")
       .map(num => parseInt(num.trim(), 10))
-      .filter(num => !isNaN(num));
+      .filter(num => !isNaN(num)) || [];
 
     const numberList = [];
     for (let i = lower; i <= highest; i += step) {
@@ -225,90 +216,65 @@ export const NumberWheelControls = () => {
         numberList.push(i);
       }
     }
-
     return numberList;
   }, [lowerNumber, highestNumber, interval, excludeNumbers]);
 
   useEffect(() => {
-    dispatch(setInputNumbers(1));
-  }, [dispatch]);
+    const numberList = generateNumberList();
+    dispatch(setWheelList(numberList.map(String)));
+    // Update the lower and highest numbers in the snapshot
+    dispatch(setWheelSnapshot({ lowerNumber: lowerNumber, highestNumber: highestNumber }));
+  }, [lowerNumber, highestNumber, interval, excludeNumbers, dispatch, generateNumberList]);
 
   useEffect(() => {
-    const numberList = generateNumberList();
-    dispatch(setWheelList(numberList.map(number => number + "")));
-    dispatch(setInputNumbers(1));
-  }, [lowerNumber, highestNumber, excludeNumbers, interval, dispatch, generateNumberList]);
-
-  const handleHighestNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10);
-
-    // Update the state but ensure it doesn't exceed the max
-    if (!isNaN(value)) {
-      setHighestNumber(value > NUMBER_WHEEL_HIGHEST_PORTION ? NUMBER_WHEEL_HIGHEST_PORTION.toString() : e.target.value);
-    }
-  };
-
-  const handleHighestNumberBlur = () => {
-    const value = parseInt(highestNumber, 10);
-    // Ensure the value is not greater than the max limit
-    if (value > NUMBER_WHEEL_HIGHEST_PORTION) {
-      setHighestNumber(NUMBER_WHEEL_HIGHEST_PORTION.toString());
-    }
-  };
+    dispatch(setWheelSnapshot({inputNumbers: 1}))
+  }, []);
 
   return (
     <>
-      {/* Section for Lower and Highest Number in one row */}
       <div className="flex space-x-4 mb-6">
         <InputField
           label="Lower Number"
           type="number"
-          value={lowerNumber}
-          onChange={(e) => {
-            const value = parseInt(e.target.value, 10);
-            setLowerNumber(isNaN(value) || value < NUMBER_WHEEL_LOWEST_PORTION ? NUMBER_WHEEL_LOWEST_PORTION.toString() : e.target.value);
-          }}
-          className="w-1/2"
+          value={"" + lowerNumber}
+          onChange={(e) =>
+            dispatch(setWheelSnapshot({ lowerNumber: parseInt(e.target.value, 10) }))
+          }
           placeholder="1"
-          min={NUMBER_WHEEL_LOWEST_PORTION.toString()}
-          max={NUMBER_WHEEL_HIGHEST_PORTION.toString()}
         />
         <InputField
           label="Highest Number"
           type="number"
-          value={highestNumber}
-          onChange={handleHighestNumberChange}
-          onBlur={handleHighestNumberBlur} 
-          className="w-1/2"
+          value={"" + highestNumber}
+          onChange={(e) =>
+            dispatch(setWheelSnapshot({ highestNumber: parseInt(e.target.value, 10) }))
+          }
           placeholder="10"
-          min={NUMBER_WHEEL_LOWEST_PORTION.toString()}
-          max={NUMBER_WHEEL_HIGHEST_PORTION.toString()}
-          note={"Max number can be 1000 at max"}
         />
       </div>
 
-      {/* Section for Advance Wheel */}
-      <div className="mt-6">
-        <h2 className="font-semibold text-lg mb-4">Advance Wheel</h2>
-
-        <div className="flex space-x-4">
-          <InputField
-            label="Exclude Number"
-            type="text"
-            value={excludeNumbers}
-            onChange={(e) => setExcludeNumbers(e.target.value)}
-            className="w-1/2"
-            placeholder="e.g. 1,2,3"
-          />
-          <InputField
-            label="Interval/steps"
-            type="number"
-            value={interval}
-            onChange={(e) => setInterval(e.target.value)}
-            className="w-1/2"
-            placeholder="1"
-          />
-        </div>
+      <h2 className="font-semibold text-lg mb-4">Advance Wheel</h2>
+      <div className="flex space-x-4">
+        <InputField
+          label="Exclude Number"
+          type="text"
+          value={excludeNumbers}
+          onChange={(e) =>
+            dispatch(setWheelSnapshot({ customLetterList: e.target.value }))
+          }
+          className="w-1/2"
+          placeholder="e.g. 1,2,3"
+        />
+        <InputField
+          label="Interval/steps"
+          type="number"
+          value={"" + interval}
+          onChange={(e) =>
+            dispatch(setWheelSnapshot({ interval: parseInt(e.target.value, 10) }))
+          }
+          className="w-1/2"
+          placeholder="1"
+        />
       </div>
     </>
   );

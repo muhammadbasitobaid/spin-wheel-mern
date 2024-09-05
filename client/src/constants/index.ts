@@ -2,6 +2,7 @@ import { ModalNames } from "src/pages/HomePage";
 
 export const NUMBER_WHEEL_HIGHEST_PORTION = 1000;
 export const NUMBER_WHEEL_LOWEST_PORTION = 1;
+export const DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL = 3;
 
 export const THEMES: string[][] = [
   ["#CFFDE1", "#3D5656", "#FED049", "#68B984"],
@@ -70,6 +71,20 @@ export interface Wheel {
   label: string;
   options: string[];
 }
+
+export interface WheelSnapshot {
+  selectedOption?: string;
+  inputNumbers?: number;
+  history: string[];
+  lowerNumber?: number;
+  highestNumber?: number;
+  excludeNumbers?: string
+  interval?: number;
+  customLetterList?: string;
+  casing?: string;
+}
+
+export const MAX_INPUT_NUMBER = 5;
 
 export const ALPHABETS_OPTION = "A-Z / a-z;eg: A,B,C,D"
 export const CONSONANT_OPTION = "Consonant;eg: B,C,D,F"

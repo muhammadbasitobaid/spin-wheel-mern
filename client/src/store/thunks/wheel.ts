@@ -1,6 +1,8 @@
 import { Dispatch } from "redux";
 import http from "src/services/httpService";
 import { setSelectedWheel } from "../actions/wheel";
+import { WheelState } from "../reducers/wheel";
+import { postWheel } from "../../api";
 import toast from "react-hot-toast";
 
 export const fetchWheelById =
@@ -15,3 +17,12 @@ export const fetchWheelById =
       toast.error("Failed to fetch wheel details");
     }
   };
+
+export const attemptSaveWheel = (wheel: WheelState, id: string) => () =>
+  postWheel(wheel, id)
+    .then((data) => {
+      toast.success("Wheel created successfully");
+      return data;
+    })
+    .catch(() => toast.error("Wheel creation failed"));
+

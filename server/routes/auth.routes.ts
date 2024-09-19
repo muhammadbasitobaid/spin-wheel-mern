@@ -37,7 +37,7 @@ router.get("/google", AuthControllers.googleLogin);
 
 //  Handles Google OAuth callback
 router.get("/google/callback", AuthControllers.googleCallback, (req, res) => {
-  res.redirect("http://localhost:3000/");
+  res.redirect("http://5.183.8.4:80/");
 });
 
 //  Retrieves the authenticated user's profile

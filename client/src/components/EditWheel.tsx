@@ -24,9 +24,11 @@ import {
   setActiveModal,
   // setinputNumbers,
   setWheelList,
-  setWheelSnapshot
+  setWheelSnapshot,
+  // setWheelFormValues,
 } from "src/store/actions/wheel";
 import InputField from "./common/InputField";
+// import { getDefaultWheelName } from "src/utils";
 
 
 
@@ -49,6 +51,7 @@ export const YesNoWheelControls = () => {
 
   useEffect(() => {
     dispatch(setWheelSnapshot({inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL}))
+    // dispatch(setWheelFormValues(getDefaultWheelName(), "", ""));
 
 
   }, []);
@@ -143,7 +146,8 @@ export const LetterWheelControls = () => {
 
 
   useEffect(() => {
-    dispatch(setWheelSnapshot({inputNumbers: 1}))
+    dispatch(setWheelSnapshot({inputNumbers: 1}));
+    // dispatch(setWheelFormValues(getDefaultWheelName(), "", ""));
   }, []);
 
   return (
@@ -227,7 +231,8 @@ export const NumberWheelControls = () => {
   }, [lowerNumber, highestNumber, interval, excludeNumbers, dispatch, generateNumberList]);
 
   useEffect(() => {
-    dispatch(setWheelSnapshot({inputNumbers: 1}))
+    dispatch(setWheelSnapshot({inputNumbers: 1}));
+    // dispatch(setWheelFormValues(getDefaultWheelName(), "", ""));
   }, []);
 
   return (

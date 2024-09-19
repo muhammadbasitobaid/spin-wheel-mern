@@ -1,4 +1,4 @@
-import { Wheel } from "src/constants";
+import { WheelState } from "src/store/reducers/wheel"
 
 export const LOGIN_USER = "LOGIN_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
@@ -12,7 +12,7 @@ export type User = {
   username: string;
   email: string;
   password: string;
-  wheels?: Wheel[];
+  wheels?: WheelState[];
 };
 
 export type Credentials = {
@@ -49,6 +49,6 @@ export function resetUser(): UserAction<never> {
   return { type: RESET_USER };
 }
 
-export function setUserWheels(wheels: Wheel[]): UserAction<Wheel[]> {
+export function setUserWheels(wheels: WheelState[]): UserAction<WheelState[]> {
   return { type: SET_USER_WHEELS, payload: wheels };
 }

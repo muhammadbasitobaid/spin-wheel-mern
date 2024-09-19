@@ -17,15 +17,27 @@ export interface SpinConfig {
   sound: boolean;
   confettiType: "Confetti" | "Fireworks";
   soundType: "Sound" | "No Sound";
-  inputNumbers: number;
+}
+
+export interface WheelSnapshot {
+  selectedOption?: string;
+  inputNumbers?: number;
+  history: string[];
+  lowerNumber?: number;
+  highestNumber?: number;
+  excludeNumbers?: string;
+  interval?: number;
+  customLetterList?: string;
+  casing?: string;
 }
 
 export interface WheelDocument extends Document {
   name: string;
   createdAt: Date;
-  history: string[];
-  selectedWheel: Wheel; // Updated to use the Wheel interface
-  inputNumbers: number;
+  selectedWheel: Wheel;
+  description: string;           // New field for description
+  popUpMessage: string;          // New field for popUpMessage
+  wheelSnapshot: WheelSnapshot;
   selectedTheme: string[];
   spinConfig: SpinConfig;
 }
@@ -62,7 +74,18 @@ const spinConfigSchema = new Schema<SpinConfig>({
     required: true,
   },
   soundType: { type: String, enum: ["Sound", "No Sound"], required: true },
-  inputNumbers: { type: Number, required: true },
+});
+
+const wheelSnapshotSchema = new Schema<WheelSnapshot>({
+  selectedOption: { type: String, required: false },
+  inputNumbers: { type: Number, required: false },
+  history: { type: [String], required: true },
+  lowerNumber: { type: Number, required: false },
+  highestNumber: { type: Number, required: false },
+  excludeNumbers: { type: String, required: false },
+  interval: { type: Number, required: false },
+  customLetterList: { type: String, required: false },
+  casing: { type: String, required: false },
 });
 
 const wheelDocumentSchema = new Schema<WheelDocument>({
@@ -76,16 +99,20 @@ const wheelDocumentSchema = new Schema<WheelDocument>({
     type: Date,
     default: Date.now,
   },
-  history: {
-    type: [String],
-    required: true,
-  },
   selectedWheel: {
     type: wheelSchema,
     required: true,
   },
-  inputNumbers: {
-    type: Number,
+  description: {
+    type: String,  
+    required: true,
+  },
+  popUpMessage: {
+    type: String,  
+    required: true,
+  },
+  wheelSnapshot: {
+    type: wheelSnapshotSchema,
     required: true,
   },
   selectedTheme: {

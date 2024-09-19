@@ -15,8 +15,12 @@ const postLogout = () => http.post<void>("/auth/logout");
 
 const postUser = (user: User) => http.post<void>("/user/register", user);
 
-const postWheel = (wheel: WheelState, userId: string) =>
-  http.post<void>(`/user/users/${userId}/wheels`, wheel);
+const postWheel = (wheel: WheelState, userId: string) =>{
+  delete wheel?._id
+  delete wheel?.__v
+  return http.post<void>(`/user/users/${userId}/wheels`, wheel);
+}
+  
 
 const getWheels = (userId: string) =>
   http.get<void>(`/user/users/${userId}/wheels`);

@@ -39,7 +39,7 @@ const Signup = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      window.location.href = "http://localhost:8081/api/auth/google";
+      window.location.href = "http://5.183.8.4:8081/api/auth/google";
     } catch (error) {
       console.error("Error during Google login:", error);
     }

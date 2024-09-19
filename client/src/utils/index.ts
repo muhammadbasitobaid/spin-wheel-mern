@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 // Reference: https://gist.github.com/krabs-github/ec56e4f1c12cddf86ae9c551aa9d9e04
 function getLabelColor(color: string): '#000000'  | '#FFFFFF' {
   let r: number, g: number, b: number;
@@ -46,4 +48,8 @@ function getRandomYesOrNo() {
   return randomNumber < 0.5 ? "Yes" : "No";
 }
 
-export { getLabelColor, getBgColorForLabel, getRandomYesOrNo };
+function getDefaultWheelName() {
+ return `Wheel ${uuidv4()}`;
+}
+
+export { getLabelColor, getBgColorForLabel, getRandomYesOrNo, getDefaultWheelName };

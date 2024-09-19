@@ -4,7 +4,7 @@ import { Express } from "express";
 export function initCORS(app: Express) {
   app.use(
     cors({
-      origin: [process.env.HOST ?? "http://localhost:3000"],
+      origin: [process.env.HOST ?? "http://localhost:80"],
       methods: ["GET", "POST", "PUT", "OPTIONS", "DELETE"],
       credentials: true, // enable set cookie
     })

@@ -3,6 +3,7 @@ import { ModalNames } from "src/pages/HomePage";
 export const NUMBER_WHEEL_HIGHEST_PORTION = 1000;
 export const NUMBER_WHEEL_LOWEST_PORTION = 1;
 export const DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL = 3;
+export const DEFAULT_VOLUME = 50;
 
 export const THEMES: string[][] = [
   ["#CFFDE1", "#3D5656", "#FED049", "#68B984"],

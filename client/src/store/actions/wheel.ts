@@ -1,7 +1,9 @@
 import { Wheel, WheelSnapshot } from "src/constants";
 import { ModalNames } from "src/pages/HomePage";
+import { WheelState } from "src/store/reducers/wheel"
 
 export const SET_VOLUME = "SET_VOLUME";
+export const SET_STATE = "SET_STATE";
 export const SET_HISTORY = "SET_HISTORY";
 export const SET_SELECTED_WHEEL = "SET_SELECTED_WHEEL";
 export const SET_SELECTED_OPTION = "SET_SELECTED_OPTION"
@@ -24,10 +26,17 @@ export const SET_CONFETTI_TYPE = "SET_CONFETTI_TYPE";
 export const SET_SOUND_TYPE = "SET_SOUND_TYPE";
 export const RESET_HISTORY = "RESET_HISTORY";
 export const SET_WHEEL_DETAILS = "SET_WHEEL_DETAILS";
+export const SET_WHEEL_FORM_VALUES = 'SET_WHEEL_FORM_VALUES';
 
 export interface SetVolumeAction {
   type: typeof SET_VOLUME;
   payload: number;
+}
+
+
+export interface SetStateAction {
+  type: typeof SET_STATE;
+  payload: WheelState;
 }
 
 export interface SetHistoryAction {
@@ -141,6 +150,16 @@ interface SetWheelDetailsAction {
 }
 
 
+interface SetWheelFormValuesAction {
+  type: typeof SET_WHEEL_FORM_VALUES;
+  payload: {
+    name: string;
+    description: string;
+    popUpMessage: string;
+  };
+}
+
+
 interface SetWheelSnapshotAction {
   type: typeof SET_WHEEL_SNAPSHOT;
   payload:  Partial<WheelSnapshot>;
@@ -148,6 +167,7 @@ interface SetWheelSnapshotAction {
 
 export type WheelActions =
   | SetVolumeAction
+  | SetStateAction 
   | SetHistoryAction
   | SetSelectedWheelAction
   | SetInputNumbersAction
@@ -167,7 +187,8 @@ export type WheelActions =
   | SetSoundTypeAction
   | ResetHistoryAction
   | SetWheelSnapshotAction 
-  | SetWheelDetailsAction;
+  | SetWheelDetailsAction
+  | SetWheelFormValuesAction;
 
 export const resetHistory = (): ResetHistoryAction => ({
   type: RESET_HISTORY,
@@ -176,6 +197,12 @@ export const resetHistory = (): ResetHistoryAction => ({
 export const setVolume = (volume: number): SetVolumeAction => ({
   type: SET_VOLUME,
   payload: volume,
+});
+
+
+export const setWheelState = (state: WheelState): SetStateAction => ({
+  type: SET_STATE,
+  payload: state,
 });
 
 export const setHistory = (history: string[]): SetHistoryAction => ({
@@ -290,4 +317,10 @@ export const setWheelDetails = (
 export const setWheelSnapshot = (payload: Partial<WheelSnapshot>) => ({
   type: SET_WHEEL_SNAPSHOT,
   payload,
+});
+
+
+export const setWheelFormValues = (name: string, description: string, popUpMessage: string) => ({
+  type: SET_WHEEL_FORM_VALUES,
+  payload: { name, description, popUpMessage },
 });

@@ -39,7 +39,7 @@ const Signup = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      window.location.href = "https://thespinnerwheel.com:8082/api/auth/google";
+      window.location.href = "https://thespinnerwheel.com/api/auth/google";
     } catch (error) {
       console.error("Error during Google login:", error);
     }

@@ -3,3 +3,4 @@ logfile.log
 uncaughtExceptions.log
 build
 yarn-error.log
+.env

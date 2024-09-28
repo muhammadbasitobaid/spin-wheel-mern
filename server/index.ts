@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import winston from "winston";
 import passport from "passport";
 import session from "express-session";
@@ -27,11 +30,11 @@ initProd(app);
 app.use(
   session({
     // Used to compute a hash
-    secret: process.env.SESSION_KEY!,
+    secret: process.env.SESSION_KEY || 'default_session_secret', // Fallback if SESSION_KEY is undefined
     resave: false,
     saveUninitialized: false,
     // cookie: { secure: true } when using HTTPS
-    // Store session on DB
+    // Store session in DB
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URI || "mongodb://localhost:27017/test",
     }),

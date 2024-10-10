@@ -21,7 +21,7 @@ export const attemptLogin =
     postLogin(credentials).then(({ data }) => {
       dispatch(login(data.user));
       toast.success("Login successful");
-      navigate("/home", { replace: true });
+      navigate("/", { replace: true });
     });
 
 export const attemptSendResetPasswordLink = (

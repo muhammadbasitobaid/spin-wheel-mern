@@ -34,7 +34,7 @@ export default function ResetPasswordPage() {
   });
 
   if (!token) {
-    return <Navigate to='/home' replace />;
+    return <Navigate to="/" replace />;
   }
 
   const onSubmit = (values: ResetPasswordFormValues) => {
@@ -43,15 +43,20 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className='container'>
-      <form className='form' onSubmit={handleSubmit(onSubmit)}>
-        <div className='field'>
-          <label htmlFor='password'>Password</label>
-          <input {...register("password")} id='password' type='password' placeholder='Password' />
+    <div className="container">
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
+        <div className="field">
+          <label htmlFor="password">Password</label>
+          <input
+            {...register("password")}
+            id="password"
+            type="password"
+            placeholder="Password"
+          />
           {errors.password && <Error>{errors.password.message}</Error>}
         </div>
 
-        <button type='submit'>Reset password</button>
+        <button type="submit">Reset password</button>
         {serverError && <Error>{serverError}</Error>}
       </form>
     </div>

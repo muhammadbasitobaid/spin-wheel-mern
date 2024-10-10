@@ -40,9 +40,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   const generateShareLink = (id: string) => {
     setShareLink(
-      `${
-        process.env.REACT_APP_BASE_URL ?? "http://localhost:3000"
-      }/home?id=${id}`
+      `${process.env.REACT_APP_BASE_URL ?? "http://localhost:3000"}/?id=${id}`
     );
   };
 

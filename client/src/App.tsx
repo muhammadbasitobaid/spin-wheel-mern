@@ -28,7 +28,6 @@ export default function App() {
   ) : (
     <Routes>
       <Route path="/healthcheck" element={<HealthPage />} />
-      <Route path="/home" element={<HomePage />} />
       <Route
         path="/account/confirm/:token"
         element={
@@ -37,9 +36,9 @@ export default function App() {
           </AuthRoute>
         }
       />
-      <Route path="/" element={<Navigate to="/home" replace />} />
-      <Route element={<Navigate to="/home" replace />} />
+      <Route path="/" element={<HomePage />} />
       <Route element={<Test />} path="/test" />
+      <Route element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

@@ -66,10 +66,10 @@ export default function Home() {
       <div className="p-6 flex-1 lg:flex lg:flex-row lg:justify-between gap-6">
         <div className="mb-8 lg:mb-0 lg:w-1/2 lg:flex lg:flex-col lg:justify-center">
           <h1 className="text-black text-4xl font-medium">
-            Yes No Picker Wheel
+          {selectedWheel.label || "N/A"} Picker Wheel
           </h1>
           <span className="text-light-gray text-base font-normal">
-            Decide yes or no by wheel
+            Decide {selectedWheel.label || "N/A"} by wheel
           </span>
           <div className="lg:flex-1 lg:flex lg:justify-center lg:items-center">
             <SpinWheel />

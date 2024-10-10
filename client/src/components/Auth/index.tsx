@@ -32,7 +32,7 @@ const Auth = () => {
       useDefaultCloseIcon
       showOverlay
       onClose={() => dispatch(setActiveModal(null))}
-      className="w-full max-w-lg p-6 flex justify-center bg-white rounded-lg shadow-lg"
+      className="w-[90%] md:w-full max-w-lg p-6 flex justify-center bg-white rounded-lg shadow-lg sm:max-w-md md:max-w-lg"
     >
       {user ? (
         <div className="p-4 space-y-4 flex flex-col items-center">
@@ -48,7 +48,7 @@ const Auth = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center space-y-6">
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-xs sm:max-w-sm md:max-w-md">
             <Tab
               tabs={tabs}
               activeTab={activeTab}
@@ -59,8 +59,8 @@ const Auth = () => {
               {tabs.find((tab) => tab.id === activeTab)?.content}
             </div>
           </div>
-          <div className="flex items-center justify-center w-full mt-6">
-            <img src="/assets/icons/logo.svg" alt="logo" width={55} />
+          <div className="flex items-center justify-center w-full mt-4 md:mt-6">
+            <img src="/assets/icons/logo.svg" alt="logo" className="w-12 sm:w-14 md:w-16" />
           </div>
         </div>
       )}

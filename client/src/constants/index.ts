@@ -104,13 +104,13 @@ export const YesNoWheel: Wheel = {
 
 export const NumberWheel: Wheel = {
     name: "number-wheel",
-    label: "Number Picker Wheel",
+    label: "Number",
     options: [""]
 };
 
 export const LetterWheel: Wheel = {
     name: "letter-wheel",
-    label: "Letter Picker Wheel",
+    label: "Letter",
     options: [ALPHABETS_OPTION, CONSONANT_OPTION, VOWEL_OPTION, LETTERS_OPTION, CUSTOM_LETTERS_OPTION],
 };
 

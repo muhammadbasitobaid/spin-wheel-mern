@@ -21,7 +21,7 @@ const Results: React.FC = () => {
             </span>
           </div>
           <div className="flex flex-col items-center justify-center w-1/2">
-            <span className="text-2xl font-semibold mb-4">All Results</span>
+            <span className="text-lg font-semibold mb-4 md:text-2xl">All Results</span>
             <img src="/assets/icons/custom-border.svg" alt="custom-border" />
           </div>
           <div className="flex items-center justify-end w-1/4">

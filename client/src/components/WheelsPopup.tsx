@@ -27,7 +27,7 @@ const WheelsPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       <ul className="space-y-2">
         {wheels.map((wheel) => (
           <li key={wheel.name} onClick={() => handleWheelSelection(wheel)}className="p-2 bg-gray-100 rounded-lg">
-            <span className="font-semibold">{wheel.label}</span>
+            <span className="font-semibold">{wheel.label} Wheel</span>
           </li>
         ))}
       </ul>

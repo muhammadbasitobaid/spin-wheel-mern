@@ -42,7 +42,7 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-2 md:space-y-4" onSubmit={handleSubmit}>
         <InputField
           id="username"
           name="username"
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
         </Button>
       </form>
 
-      <div className="divider text-gray my-8 px-8">or</div>
+      <div className="divider text-gray my-4 md:my-8 px-8">or</div>
 
       <div className="space-y-2 px-8 flex flex-col">
         <Button

@@ -47,7 +47,7 @@ const Signup = () => {
 
   return (
     <>
-      <form className="space-y-4" onSubmit={onSubmit}>
+      <form className="space-y-2 md:space-y-4" onSubmit={onSubmit}>
         <InputField
           id="username"
           name="username"
@@ -76,7 +76,7 @@ const Signup = () => {
         </Button>
       </form>
 
-      <div className="divider text-gray my-8 px-8">or</div>
+      <div className="divider text-gray my-4 md:my-8 px-8">or</div>
 
       <div className="space-y-2 px-8 flex flex-col">
         <Button

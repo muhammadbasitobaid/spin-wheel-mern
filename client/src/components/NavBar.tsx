@@ -39,6 +39,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         }`}
         title={disabled ? `${label} (feature currently unavailable!)` : label}
       />
+      <span className="md:hidden">{label}</span>
     </div>
   </li>
 );
@@ -48,9 +49,10 @@ export default function NavBar() {
   const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
   const [isWheelsPopupOpen, setIsWheelsPopupOpen] = useState(false);
 
-    const { selectedWheel } = useSelector(
-      (state: RootState) => state.wheel
-    );
+  const { selectedWheel } = useSelector(
+    (state: RootState) => state.wheel
+  );
+
   const toggleSharePopup = () => {
     setIsSharePopupOpen(!isSharePopupOpen);
     if(isWheelsPopupOpen) setIsWheelsPopupOpen(false);
@@ -72,7 +74,6 @@ export default function NavBar() {
   };
 
 
-
   return (
     <nav className="navbar bg-base-100 px-6 lg:px-10 relative">
       <div className="navbar-start">
@@ -89,7 +90,7 @@ export default function NavBar() {
       </div>
       <div className="navbar-center"></div>
       <div className="navbar-end md:hidden">
-        <details className="dropdown">
+        <details className="dropdown  dropdown-bottom dropdown-end">
           <summary className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +107,7 @@ export default function NavBar() {
               />
             </svg>
           </summary>
-          <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+          <ul className="menu menu-xs dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
             {menuItems?.map((item) => (
               <MenuItem
                 key={item.label}
@@ -123,8 +124,8 @@ export default function NavBar() {
             <MenuItem
               key={"/assets/icons/hammer_page.svg"}
               svgSrc={"/assets/icons/hammer_page.svg"}
-              width={26}
-              height={26}
+              width={18}
+              height={18}
               value={"switch_wheels"}
               label={"Switch Wheels"}
               disabled={false}
@@ -138,10 +139,9 @@ export default function NavBar() {
             <MenuItem
               key={"/assets/icons/share_page.svg"}
               svgSrc={"/assets/icons/share_page.svg"}
-              width={26}
-              height={26}
+              width={18}
+              height={18}
               value={"share"}
-              label={"Share"}
               disabled={false}
               setActiveModal={toggleSharePopup}
             />

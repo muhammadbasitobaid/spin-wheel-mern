@@ -75,9 +75,10 @@ export default function NavBar() {
 
 
   return (
-    <nav className="navbar bg-base-100 px-6 lg:px-10 relative">
+    <nav className="bg-base-100 px-6 lg:px-10 sticky top-0 shadow-lg">
+    <div className="navbar max-w-[1360px] mx-auto">
       <div className="navbar-start">
-        <a href="/" className="btn btn-ghost text-xl flex p-0 gap-0">
+        <div className="btn btn-ghost text-xl flex p-0 gap-0 !h-auto">
           <img
             src="/assets/icons/logo.svg"
             alt="SVG"
@@ -86,7 +87,7 @@ export default function NavBar() {
           <span className="mx-2 font-semibold text-lg lg:text-2xl">
             Spin Wheel
           </span>
-        </a>
+        </div>
       </div>
       <div className="navbar-center"></div>
       <div className="navbar-end md:hidden">
@@ -191,6 +192,7 @@ export default function NavBar() {
           </div>
         </ul>
       </div>
+    </div>
     </nav>
   );
 }

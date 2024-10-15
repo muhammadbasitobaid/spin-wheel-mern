@@ -1,4 +1,3 @@
-// src/store/reducers/wheel.ts
 import {
   SET_THEME,
   SET_STATE,
@@ -20,6 +19,7 @@ import {
   SET_WHEEL_DETAILS,
   SET_WHEEL_LIST,
   SET_WHEEL_FORM_VALUES,
+  SET_FULL_SCREEN_MODE,
   WheelActions,
 } from "../actions/wheel";
 
@@ -51,6 +51,7 @@ export interface WheelState {
   result: string | null;
   selectedTheme: string[];
   spinConfig: SpinConfig;
+  fullScreenMode: boolean;
 }
 
 export const initialState: WheelState = {
@@ -68,6 +69,7 @@ export const initialState: WheelState = {
   spinConfig: defaultSpinConfig,
   description: "",
   popUpMessage: "",
+  fullScreenMode: false
 };
 
 type ActionTypes = WheelActions;
@@ -164,12 +166,17 @@ const wheelReducer = (
         popUpMessage: action.payload.popUpMessage,
       };
     case SET_WHEEL_FORM_VALUES:
-          return {
-            ...state,
-            name: action.payload.name,
-            description: action.payload.description,
-            popUpMessage: action.payload.popUpMessage,
-          };
+      return {
+        ...state,
+        name: action.payload.name,
+        description: action.payload.description,
+        popUpMessage: action.payload.popUpMessage,
+      };
+    case SET_FULL_SCREEN_MODE:
+      return {
+        ...state,
+        fullScreenMode: action.payload,
+      }
     default:
       return state;
   }

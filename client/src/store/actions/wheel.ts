@@ -26,6 +26,7 @@ export const SET_CONFETTI_TYPE = "SET_CONFETTI_TYPE";
 export const SET_SOUND_TYPE = "SET_SOUND_TYPE";
 export const RESET_HISTORY = "RESET_HISTORY";
 export const SET_WHEEL_DETAILS = "SET_WHEEL_DETAILS";
+export const SET_FULL_SCREEN_MODE = "SET_FULL_SCREEN_MODE";
 export const SET_WHEEL_FORM_VALUES = 'SET_WHEEL_FORM_VALUES';
 
 export interface SetVolumeAction {
@@ -149,6 +150,10 @@ interface SetWheelDetailsAction {
   };
 }
 
+interface SetFullScreenMode {
+  type: typeof SET_FULL_SCREEN_MODE;
+  payload: boolean;
+}
 
 interface SetWheelFormValuesAction {
   type: typeof SET_WHEEL_FORM_VALUES;
@@ -188,6 +193,7 @@ export type WheelActions =
   | ResetHistoryAction
   | SetWheelSnapshotAction 
   | SetWheelDetailsAction
+  | SetFullScreenMode
   | SetWheelFormValuesAction;
 
 export const resetHistory = (): ResetHistoryAction => ({
@@ -313,12 +319,17 @@ export const setWheelDetails = (
   payload: { name, description, popUpMessage },
 });
 
+export const setFullScreenMode = (
+  updatedFullScreenModeState: boolean 
+): SetFullScreenMode => ({
+  type: SET_FULL_SCREEN_MODE,
+  payload: updatedFullScreenModeState,
+});
 
 export const setWheelSnapshot = (payload: Partial<WheelSnapshot>) => ({
   type: SET_WHEEL_SNAPSHOT,
   payload,
 });
-
 
 export const setWheelFormValues = (name: string, description: string, popUpMessage: string) => ({
   type: SET_WHEEL_FORM_VALUES,

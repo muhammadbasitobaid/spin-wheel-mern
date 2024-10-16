@@ -30,7 +30,7 @@ const VolumeController: FC = () => {
   };
 
   return (
-    <div className="relative lg:h-[78vh] lg:flex lg:items-end">
+    <div className="relative  lg:flex lg:items-end">
       <div className="w-[64px] absolute group inline-block rounded-full shadow-3xl bg-white p-5 leading-none">
         <button onClick={handleMuteToggle} disabled={!sound}>
           <img

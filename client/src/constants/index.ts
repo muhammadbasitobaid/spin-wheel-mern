@@ -135,7 +135,7 @@ export const menuItems: MenuItem[] = [
     value: "profile",
   },
   {
-    label: "Switch Wheel",
+    label: "Select Wheel",
     svgSrc: "/assets/icons/wheel_page.svg",
     value: "wheels",
   },

@@ -39,7 +39,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         }`}
         title={disabled ? `${label} (feature currently unavailable!)` : label}
       />
-      <span className="md:hidden">{label}</span>
+      <span className="">{label}</span>
     </div>
   </li>
 );
@@ -75,9 +75,9 @@ export default function NavBar() {
 
 
   return (
-    <nav className="bg-base-100 px-6 lg:px-10 sticky top-0 shadow-lg">
+    <nav className="bg-base-100 px-6 lg:px-10 sticky top-0 shadow-lg z-[999]">
     <div className="navbar max-w-[1360px] mx-auto">
-      <div className="navbar-start">
+      <div className="navbar-start w-auto">
         <div className="btn btn-ghost text-xl flex p-0 gap-0 !h-auto">
           <img
             src="/assets/icons/logo.svg"
@@ -90,7 +90,7 @@ export default function NavBar() {
         </div>
       </div>
       <div className="navbar-center"></div>
-      <div className="navbar-end md:hidden">
+      <div className="navbar-end flex-1 md:hidden" >
         <details className="dropdown  dropdown-bottom dropdown-end">
           <summary className="btn btn-ghost btn-circle">
             <svg
@@ -151,7 +151,7 @@ export default function NavBar() {
         </ul>
       </div>
 
-      <div className="navbar-end hidden md:flex md:justify-end">
+      <div className="navbar-end hidden md:flex md:justify-end md:flex-1">
         <ul className="menu menu-horizontal px-1">
           {menuItems?.map((item, index) => (
             <MenuItem

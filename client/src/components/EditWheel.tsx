@@ -298,7 +298,7 @@ export const EditWheel = () => {
               Edit Wheel
             </div>
             <div className="flex gap-2 items-center">
-              <button className="" onClick={()=> dispatch(setFullScreenMode(true))}>
+              <button className="hidden lg:block" onClick={()=> dispatch(setFullScreenMode(true))}>
                 <img
                   src="/assets/icons/show.svg"
                   alt="Show"

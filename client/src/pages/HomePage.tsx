@@ -13,7 +13,7 @@ import ScoreCard from "src/components/ScoreCard";
 import VerticalScoreCard from "src/components/VerticalScoreCard"; // Import the VerticalScoreCard
 import SpinWheel from "src/components/SpinWheel";
 import VolumeController from "src/components/VolumeController";
-import { setActiveModal } from "src/store/actions/wheel";
+import { setActiveModal, setFullScreenMode } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import ModifyModal from "./ModifyModal";
 import WheelsListModal from "src/components/WheelsListModal";
@@ -70,21 +70,27 @@ export default function Home() {
         {activeModal === "history" && <Results />}
         {activeModal === "modify" && <ModifyModal />}
         <NavBar />
-        <div className="max-w-[1360px] mx-auto p-6 py-0 flex-1 lg:flex lg:flex-row lg:justify-between gap-6 mt-8 overflow-hidden">
-          <div className={clsx("mb-8 lg:mb-0 lg:w-1/2 lg:flex lg:flex-col lg:justify-center", {"flex-1": !fullScreenMode})}>
-            <h1 className="text-black text-4xl font-medium">
-              {selectedWheel.label || "N/A"} Picker Wheel
-            </h1>
-            <span className="text-light-gray text-base font-normal">
-              Decide {selectedWheel.label || "N/A"} by wheel
-            </span>
+        <div className="max-w-[1360px] mx-auto p-6 py-0 flex-1 lg:flex lg:flex-row lg:justify-between gap-6 mt-8 overflow-hidden min-h-[85vh]">
+          <div className={clsx("mb-8 lg:mb-0 lg:w-1/2 lg:flex lg:flex-col lg:justify-center", {"flex-1": fullScreenMode})}>
+          {
+            !fullScreenMode && (
+              <>
+                <h1 className="text-black text-4xl font-medium">
+                  {selectedWheel.label || "N/A"} Picker Wheel
+                </h1>
+                <span className="text-light-gray text-base font-normal">
+                  Decide {selectedWheel.label || "N/A"} by wheel
+                </span>
+            </>
+            )
+          }
             {/*TODO: put flex-1 only if the fullScreenMode is not true*/}
             <div className="lg:flex-1 lg:flex lg:justify-center lg:items-center">
               <SpinWheel />
             </div>
           </div>
             <div className={clsx("lg:flex lg:flex-col-reverse lg:justify-center", { "flex-1": !fullScreenMode })}>
-              <div className="flex justify-between h-[60px] lg:hidden">
+              <div className="flex justify-between items-end h-[60px] lg:hidden">
               <VolumeController />
               <button
                 onClick={() => {
@@ -112,7 +118,7 @@ export default function Home() {
               <EditWheel />
             </div>
           </div >
-          <div className="hidden lg:block lg:flex lg:flex-col lg:w-[66px] lg:gap-2">
+          <div className="hidden lg:block lg:flex lg:flex-col lg:justify-end lg:w-[66px] lg:gap-2">
             <VolumeController />
             <button
               className="flex justify-center items-center"
@@ -124,6 +130,21 @@ export default function Home() {
                 className="h-[43px]"
               />
             </button>
+
+            {
+                fullScreenMode && (
+                  <button onClick={()=> dispatch(setFullScreenMode(false))} className="flex justify-center">
+                    <img
+                      src={
+                          "/assets/icons/exit_fullscreen.svg"
+                      }
+                      alt={"Close Fullscreen mode"}
+                      title={"Close Fullscreen mode"}
+                      className={`w-[30px] aspect-square cursor-pointer`}
+                    />
+                  </button>
+                )
+            }
           </div>
         </div>
       </div>

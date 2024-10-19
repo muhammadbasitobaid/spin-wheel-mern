@@ -213,8 +213,8 @@ const SpinWheel = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center">
-      <div className="p-8 relative flex justify-center items-center h-[320px] w-full sm:h-[380px] md:h-[450px] lg:h-[100%] lg:w-[100%]">
+    <div className="flex flex-col">
+      <div className="p-8 relative flex justify-center items-center h-[320px] w-full sm:h-[380px] md:h-[450px] lg:min-h-[100%] lg:w-[100%]">
 
         <canvas ref={shadowCanvas} className="absolute"></canvas>
         <div

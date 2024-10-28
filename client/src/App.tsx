@@ -6,6 +6,10 @@ import { useAppDispatch } from "./store/hooks";
 import { AuthRoute } from "./components/AuthRoute";
 import Test from "./pages/Test";
 import Spinner from "./components/common/Spinner";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import AboutUs from "./pages/AboutUs";
+import TermsAndConditions from "./pages/TermsAndConditions";
+
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -37,6 +41,9 @@ export default function App() {
         }
       />
       <Route path="/" element={<HomePage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
       <Route element={<Test />} path="/test" />
       <Route element={<Navigate to="/" replace />} />
     </Routes>

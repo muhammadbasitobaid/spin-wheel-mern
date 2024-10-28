@@ -20,6 +20,7 @@ import {
   SET_WHEEL_LIST,
   SET_WHEEL_FORM_VALUES,
   SET_FULL_SCREEN_MODE,
+  SET_INPUT_NUMBERS,
   WheelActions,
 } from "../actions/wheel";
 
@@ -61,6 +62,7 @@ export const initialState: WheelState = {
   wheelSnapshot: {
     selectedOption: YesNoWheel?.options[0]!,
     inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL,
+    options: [],
     history: [],
   },
   activeModal: null,
@@ -89,6 +91,13 @@ const wheelReducer = (
         ...state,
         wheelSnapshot: { ...state.wheelSnapshot, ...action.payload },
       };
+
+    case SET_INPUT_NUMBERS:
+      return {
+        ...state,
+        wheelSnapshot: { ...state.wheelSnapshot, inputNumbers: action.payload },
+      };
+
     case SET_SELECTED_WHEEL:
       return {
         ...state,

@@ -107,7 +107,7 @@ const Signup = () => {
         By clicking Sign Up, you are indicating that you accept our{" "}
         <span className="text-blue font-bold">Terms</span>,
         <span className="text-blue font-bold"> Conditions </span> and 
-        <span className="text-blue font-bold">Privacy Policy</span>.
+        <span className="text-blue font-bold"><a href="/privacy-policy"> Privacy Policy</a></span>.
       </div>
     </>
   );

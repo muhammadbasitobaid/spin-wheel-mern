@@ -28,7 +28,7 @@ export default function HomeFullScreen() {
 
   return (
 
-          <div className="absolute top-0 w-full h-full">
+          <div className="absolute top-0 w-full h-full mt-[80px]">
         <div className={clsx("min-h-screen opacity-0 max-w-[1360px] mx-auto p-6 pb-0 flex-1 lg:flex lg:flex-row lg:justify-between lg:items-center overflow-hidden ", { "block animate-fadeIn ": fullScreenMode })}>
         <div
           className={clsx(

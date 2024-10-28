@@ -77,6 +77,7 @@ export interface WheelSnapshot {
   selectedOption?: string;
   inputNumbers?: number;
   history: string[];
+  options?: string[];
   lowerNumber?: number;
   highestNumber?: number;
   excludeNumbers?: string
@@ -102,6 +103,13 @@ export const YesNoWheel: Wheel = {
     options: [YES_NO_OPTION, YES_NO_MAYBE_OPTION],
 };
 
+
+export const CustomOptionsWheel: Wheel = {
+    name: "custom-options-wheel",
+    label: "Custom Options",
+    options: [],
+};
+
 export const NumberWheel: Wheel = {
     name: "number-wheel",
     label: "Number",
@@ -116,6 +124,7 @@ export const LetterWheel: Wheel = {
 
 export const wheels: Wheel[] = [
   YesNoWheel,
+  CustomOptionsWheel,
   NumberWheel,
   LetterWheel,
 ];

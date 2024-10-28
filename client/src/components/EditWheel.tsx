@@ -7,6 +7,7 @@ import {
   YesNoWheel,
   NumberWheel,
   LetterWheel,
+  CustomOptionsWheel,
   ALPHABETS_OPTION,
   CONSONANT_OPTION,
   VOWEL_OPTION ,
@@ -25,10 +26,105 @@ import {
   // setinputNumbers,
   setWheelList,
   setWheelSnapshot,
-  setFullScreenMode
+  setFullScreenMode,
 } from "src/store/actions/wheel";
 import InputField from "./common/InputField";
 // import { getDefaultWheelName } from "src/utils";
+
+export const CustomOptionsWheelControls = () => {
+  const dispatch = useDispatch();
+  const { wheelSnapshot } = useSelector((state: RootState) => state.wheel);
+  const options = wheelSnapshot?.options || [];
+  const [newOption, setNewOption] = useState<string>("");
+
+  // Add new option to the list
+  const addOption = () => {
+    if (newOption.trim()) {
+      dispatch(setWheelSnapshot({ options: [...options, newOption.trim()] }));
+      setNewOption(""); // Clear input after adding
+    }
+  };
+
+  const moveOptionUp = (index: number) => {
+    if (index > 0 && options.length > 1) {
+      const updatedOptions = [...options];
+      [updatedOptions[index - 1], updatedOptions[index]] = [updatedOptions[index], updatedOptions[index - 1]];
+      dispatch(setWheelSnapshot({ options: updatedOptions }));
+    }
+  };
+
+  // Move option down
+  const moveOptionDown = (index: number) => {
+    if (index < options.length - 1) {
+      const updatedOptions = [...options];
+      [updatedOptions[index], updatedOptions[index + 1]] = [updatedOptions[index + 1], updatedOptions[index]];
+      dispatch(setWheelSnapshot({ options: updatedOptions }));
+    }
+  };
+
+  // Duplicate option
+  const duplicateOption = (index: number) => {
+    const updatedOptions = [...options];
+    updatedOptions.splice(index, 0, options[index]);
+    dispatch(setWheelSnapshot({ options: updatedOptions }));
+  };
+
+  // Delete option
+  const deleteOption = (index: number) => {
+    const updatedOptions = options.filter((_, i) => i !== index);
+    dispatch(setWheelSnapshot({ options: updatedOptions }));
+  };
+
+  useEffect(() => {
+    dispatch(setWheelList([]));
+    dispatch(setWheelSnapshot({ inputNumbers: 1 }));
+  }, []);
+
+  return (
+    <div className="custom-options-wheel-controls">
+      {/* Input to add new options */}
+      <div className="flex items-center mb-4">
+        <InputField
+          value={newOption}
+          onChange={(e) => setNewOption(e.target.value)}
+          placeholder="Add new option"
+        />
+        <button onClick={addOption} className="ml-2 flex items-center bg-green-500 text-white p-2 rounded-full hover:bg-green-600 aspect-square">
+          <img src="/assets/icons/tick.svg" alt="Tick" className="w-8 h-8 mr-1" />
+        </button>
+      </div>
+
+      {/* List of current options with actions */}
+      <div className="option-list space-y-2">
+        {options.map((option, index) => (
+          <div key={index} className="flex items-center space-x-2">
+            <span className="flex-1">{option}</span>
+
+            {/* Move up button */}
+            <button onClick={() => moveOptionUp(index)} className="text-blue-500 hover:text-blue-700">
+              ↑
+            </button>
+
+            {/* Move down button */}
+            <button onClick={() => moveOptionDown(index)} className="text-blue-500 hover:text-blue-700">
+              ↓
+            </button>
+
+            {/* Duplicate button */}
+            <button onClick={() => duplicateOption(index)} className="text-green-500 hover:text-green-700">
+              ⧉
+            </button>
+
+            {/* Delete button */}
+            <button onClick={() => deleteOption(index)} className="text-red-500 hover:text-red-700">
+              ✕
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 
 
@@ -330,6 +426,13 @@ export const EditWheel = () => {
           {
             selectedWheel.name === YesNoWheel.name && (
               <YesNoWheelControls/>
+            )
+          }
+
+          {
+
+            selectedWheel.name === CustomOptionsWheel.name && (
+              <CustomOptionsWheelControls/>
             )
           }
 

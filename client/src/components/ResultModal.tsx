@@ -28,7 +28,7 @@ const ResultModal: React.FC = () => {
         setShowConfetti(false);
         // dispatch(setConfetti(false));
         sound.stop();
-      }, 2000); // Confetti will be shown for 5 seconds
+      }, 4000); // Confetti will be shown for 5 seconds
 
       return () => {
         clearTimeout(timer);

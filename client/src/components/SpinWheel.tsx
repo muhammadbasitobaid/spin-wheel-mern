@@ -6,7 +6,7 @@ import { setActiveModal, setResult, setWheelSnapshot } from "src/store/actions/w
 import { RootState } from "src/store/store";
 import { getBgColorForLabel, getLabelColor } from "src/utils";
 import { Howl } from "howler";
-import {toast} from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 
 interface WheelListItem {
   label: string;
@@ -31,9 +31,9 @@ const randomizeNumber = (number: number) => Math.floor(Math.random() * number);
 
 const SpinWheel = () => {
   const dispatch = useDispatch();
-  const { wheelList, wheelSnapshot,  selectedTheme, spinConfig } =
+  const { wheelList, wheelSnapshot, selectedTheme, spinConfig } =
     useSelector((state: RootState) => state.wheel);
-  const {inputNumbers, history,} = wheelSnapshot;
+  const { inputNumbers, history, options } = wheelSnapshot;
   const {
     mysterySpinOption,
     randomInitialAngleOption,
@@ -47,35 +47,35 @@ const SpinWheel = () => {
   const [isWheelSpinning, setWheelSpinning] = useState(false);
   const [spinCount, setSpinCount] = useState(0);
 
-  // Dynamic itemLabelRadiusMax based on the number of wheel items
   const itemLabelRadiusMax = useMemo(() => {
-    if (!wheelList || wheelList.length === 0) return 0.5; // Default value
+    if (!wheelList || wheelList.length === 0) return 0.5;
     const numItems = wheelList.length;
     if (numItems > 10) {
-      return 0.8; // Larger radius for more items
+      return 0.8;
     } else if (numItems > 5) {
-      return 0.6; // Medium radius for moderate number of items
+      return 0.6;
     } else {
-      return 0.4; // Smaller radius for fewer items
+      return 0.4;
     }
   }, [wheelList]);
 
-  // Generate wheel items based on wheelList and repeat them according to inputNumbers
-  const wheelItems: WheelListItem[] = useMemo(() => {
-    let items: WheelListItem[] = [];
-    if (!wheelList || wheelList.length === 0) return items;
+const wheelItems: WheelListItem[] = useMemo(() => {
+  let items: WheelListItem[] = [];
+  const optionsToUse = wheelList && wheelList.length > 0 ? wheelList : options; // Fallback to options in wheelSnapshot
 
-    for (let i = 0; i < n; i++) {
-      items = items.concat(
-        wheelList.map((item: string, index: number) => ({
-          label: mysterySpinOption ? "?" : item,
-          labelColor: getLabelColor(getBgColorForLabel(index, selectedTheme)),
-          value: item,
-        }))
-      );
-    }
-    return items;
-  }, [wheelList, n, selectedTheme, mysterySpinOption]);
+  if (!optionsToUse || optionsToUse.length === 0) return items;
+
+  for (let i = 0; i < n; i++) {
+    items = items.concat(
+      optionsToUse.map((item: string, index: number) => ({
+        label: mysterySpinOption ? "?" : item,
+        labelColor: getLabelColor(getBgColorForLabel(index, selectedTheme)),
+        value: item,
+      }))
+    );
+  }
+  return items;
+}, [wheelList, options, n, selectedTheme, mysterySpinOption]);
 
   const container = useRef<HTMLDivElement | null>(null);
   const shadowCanvas = useRef<HTMLCanvasElement | null>(null);
@@ -88,8 +88,8 @@ const SpinWheel = () => {
     const updateCanvasDimensions = () => {
       if (container.current && shadowCanvas.current) {
         const containerRect = container.current.getBoundingClientRect();
-        shadowCanvas.current.width = containerRect.width * 1.31;
-        shadowCanvas.current.height = containerRect.height * 1.31;
+        shadowCanvas.current.width = containerRect.width * 1.3;
+        shadowCanvas.current.height = containerRect.height * 1.3;
       }
     };
 
@@ -129,16 +129,14 @@ const SpinWheel = () => {
         radius: 1,
         borderWidth: 5,
         borderColor: "#ffff",
-        itemLabelFontSizeMax: 28, 
-        itemLabelRadiusMax, 
+        itemLabelFontSizeMax: 28,
+        itemLabelRadiusMax,
         lineColor: "#ffff",
         lineWidth: 5,
         itemBackgroundColors: selectedTheme,
         items: wheelItems,
         rotation,
-        onSpin: () => {
-          // Placeholder for spin start logic
-        },
+        onSpin: () => {},
         onRest: (event: any) => {
           const stoppedItemIndex = event.currentIndex;
           const stoppedItemLabel =
@@ -150,7 +148,7 @@ const SpinWheel = () => {
           const updatedHistory = [...(history ?? [])];
           updatedHistory.push(stoppedItemLabel);
 
-          dispatch(setWheelSnapshot({history: updatedHistory}));
+          dispatch(setWheelSnapshot({ history: updatedHistory }));
           setWheelSpinning(false);
         },
         onCurrentIndexChange: () => {
@@ -183,18 +181,14 @@ const SpinWheel = () => {
       }
       setWheel(null);
     };
-  }, [
-    wheelItems,
-    dispatch,
-    history,
-    randomInitialAngleOption,
-    selectedTheme,
-    spinningSpeedLevel,
-  ]);
+  }, [wheelItems, dispatch, history, randomInitialAngleOption, selectedTheme]);
 
   const handleSpinButtonClick = () => {
-    !wheelList?.length && toast.error("Please add atleast one letter for Custom Letter wheel to work!")
-    if (!wheel || !wheelList?.length) return;
+    if (wheelItems.length === 0) {
+      toast.error("Please add at least one item to spin the wheel!");
+      return;
+    }
+    if (!wheel || !wheelItems.length) return;
     if (mounted && !isWheelSpinning) {
       wheel.spinToItem(
         randomizeNumber(wheelItems.length),
@@ -213,10 +207,9 @@ const SpinWheel = () => {
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="p-8 relative flex justify-center items-center h-[320px] w-full sm:h-[380px] md:h-[450px] lg:min-h-[100%] lg:w-[100%]">
-
-        <canvas ref={shadowCanvas} className="absolute"></canvas>
+    <div className="mt-4 md:mt-0 flex flex-col">
+      <div className="relative flex justify-center items-center w-full h-[320px] sm:h-[380px] md:h-[450px] lg:h-[550px] lg:w-full">
+        <canvas ref={shadowCanvas} className="absolute w-full h-full"></canvas>
         <div
           id="wheel"
           ref={container}
@@ -235,30 +228,28 @@ const SpinWheel = () => {
             <img
               src="/assets/icons/indicator.svg"
               alt="indicator"
-              className="w-[60px] lg:w-[70px] xl:w-[85px]"
+              className="w-[60px] lg:w-[70px]"
               style={{ filter: "drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))" }}
             />
-            <span className="absolute inset-0 flex justify-center items-center font-medium text-xs sm:text-sm lg:text-base">
+            <span className="absolute inset-0 flex justify-center items-center font-medium text-xs sm:text-sm md:text-base">
               {isWheelSpinning && manuallyStopOption ? "STOP" : "SPIN"}
             </span>
           </button>
         </div>
       </div>
-      <div className="text-center flex justify-center gap-2 mt-4 relative z-40">
         {spinCountOption && (
-          <>
+      <div className="text-center flex justify-center gap-2 mt-4 relative z-40">
             <strong>{`Spin Count: ${spinCount}`}</strong>
             <button className="" onClick={() => setSpinCount(0)}>
               <img
                 src="/assets/icons/refresh.svg"
                 alt="Reset Spin Count"
-                className="w-4 sm:w-5 lg:w-6 xl:w-7"
+                className="w-4 sm:w-5 lg:w-6"
                 title="Reset Spin Count"
               />
             </button>
-          </>
+          </div>
         )}
-      </div>
     </div>
   );
 };

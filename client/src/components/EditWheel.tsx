@@ -342,6 +342,7 @@ export const NumberWheelControls = () => {
             dispatch(setWheelSnapshot({ lowerNumber: parseInt(e.target.value, 10) }))
           }
           placeholder="1"
+          className="max-w-[200px]"
         />
         <InputField
           label="Highest Number"
@@ -351,6 +352,7 @@ export const NumberWheelControls = () => {
             dispatch(setWheelSnapshot({ highestNumber: parseInt(e.target.value, 10) }))
           }
           placeholder="10"
+          className="max-w-[200px]"
         />
       </div>
 
@@ -363,7 +365,7 @@ export const NumberWheelControls = () => {
           onChange={(e) =>
             dispatch(setWheelSnapshot({ customLetterList: e.target.value }))
           }
-          className="w-1/2"
+          className="max-w-[200px]"
           placeholder="e.g. 1,2,3"
         />
         <InputField
@@ -373,7 +375,7 @@ export const NumberWheelControls = () => {
           onChange={(e) =>
             dispatch(setWheelSnapshot({ interval: parseInt(e.target.value, 10) }))
           }
-          className="w-1/2"
+          className="max-w-[200px]"
           placeholder="1"
         />
       </div>

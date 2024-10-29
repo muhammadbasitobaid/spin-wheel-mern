@@ -41,6 +41,7 @@ export default function App() {
         }
       />
       <Route path="/" element={<HomePage />} />
+      <Route path="/:slug" element={<HomePage />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/terms-and-conditions" element={<TermsAndConditions />} />

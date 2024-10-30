@@ -71,6 +71,7 @@ export interface Wheel {
   name: string;
   label: string;
   options: string[];
+  slug: string;
 }
 
 export interface WheelSnapshot {
@@ -101,25 +102,28 @@ export const YesNoWheel: Wheel = {
     name: "yes-no-wheel",
     label: "YES or NO",
     options: [YES_NO_OPTION, YES_NO_MAYBE_OPTION],
+    slug: "/yes-or-no-wheel"
 };
-
 
 export const CustomOptionsWheel: Wheel = {
     name: "custom-options-wheel",
     label: "Custom Options",
     options: [],
+    slug: "/"
 };
 
 export const NumberWheel: Wheel = {
     name: "number-wheel",
     label: "Number",
-    options: [""]
+    options: [""],
+    slug: "/random-number-wheel"
 };
 
 export const LetterWheel: Wheel = {
     name: "letter-wheel",
     label: "Letter",
     options: [ALPHABETS_OPTION, CONSONANT_OPTION, VOWEL_OPTION, LETTERS_OPTION, CUSTOM_LETTERS_OPTION],
+    slug: "/random-letter-generator"
 };
 
 export const wheels: Wheel[] = [

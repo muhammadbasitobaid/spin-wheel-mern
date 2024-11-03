@@ -27,7 +27,7 @@ import {
 import { getDefaultWheelName } from "src/utils"
 
 
-import { YesNoWheel, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, } from '../../constants'
+import { CustomOptionsWheel, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, } from '../../constants'
 
 import {
   THEMES,
@@ -58,9 +58,9 @@ export interface WheelState {
 export const initialState: WheelState = {
   name: getDefaultWheelName(),
   volume: 50,
-  selectedWheel: YesNoWheel,
+  selectedWheel: CustomOptionsWheel,
   wheelSnapshot: {
-    selectedOption: YesNoWheel?.options[0]!,
+    selectedOption: CustomOptionsWheel?.options[0]!,
     inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL,
     options: [],
     history: [],

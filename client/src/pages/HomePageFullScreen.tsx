@@ -7,39 +7,42 @@ import { setActiveModal, setFullScreenMode } from "src/store/actions/wheel";
 import { RootState, AppDispatch } from "src/store/store";
 import SpinWheel from "src/components/SpinWheel";
 
+import { 
+  YesNoWheel
+} from "src/constants";
+
 export default function HomeFullScreen() {
-  const { fullScreenMode } = useSelector((state: RootState) => state.wheel);
+  const { fullScreenMode, selectedWheel } = useSelector((state: RootState) => state.wheel);
   const dispatch: AppDispatch = useDispatch(); // Use AppDispatch
 
-  const [prevFullScreenMode, setPrevFullScreenMode] = useState(fullScreenMode);
+  const [initiateFadeOut, setInitiateFadeOut] = useState(false);
 
   useEffect(() => {
-    if (prevFullScreenMode !== fullScreenMode) {
-      if (fullScreenMode) {
-        setTimeout(() => {
-        }, 2000);
-      } else {
-        setTimeout(() => {
-        }, 2000);
-      }
-      setPrevFullScreenMode(fullScreenMode);
+
+    if(initiateFadeOut){
+      setTimeout(() => {
+        setInitiateFadeOut(false)
+        dispatch(setFullScreenMode(false))
+      }, 2000)
     }
-  }, [fullScreenMode, prevFullScreenMode]);
+
+  }, [initiateFadeOut])
+  
 
   return (
 
-          <div className="absolute top-0 w-full h-full mt-[80px]">
-        <div className={clsx("min-h-screen opacity-0 max-w-[1360px] mx-auto p-6 pb-0 flex-1 lg:flex lg:flex-row lg:justify-between lg:items-center overflow-hidden ", { "block animate-fadeIn ": fullScreenMode })}>
+      <div className="absolute top-0 w-full h-full flex">
+        <div className={clsx("opacity-0 max-w-[1360px] mx-auto p-6 pb-0 flex-1 lg:flex lg:flex-row lg:justify-between lg:items-center overflow-hidden ", { "block animate-fadeIn ": fullScreenMode })}>
         <div
           className={clsx(
             "mb-8 lg:mb-0 lg:w-1/2 lg:flex gap-6 ",
-            { "flex-1 animate-fadeIn": fullScreenMode }
+            { "flex-1 animate-fadeIn": fullScreenMode },
+            { "flex-1 animate-fadeOut": initiateFadeOut }
           )}
         >
-
-            <div className="max-h-[95%] mt-auto lg:flex-1 lg:flex lg:justify-center lg:items-center">
-              <SpinWheel />
-            </div>
+          <span className="flex-1">
+                <SpinWheel />
+          </span>
           <div
             className={clsx("lg:flex lg:flex-col-reverse lg:justify-center", {
               "flex-1": !fullScreenMode,
@@ -58,7 +61,8 @@ export default function HomeFullScreen() {
                 />
               </button>
             </div>
-
+            {
+              selectedWheel.name === YesNoWheel.name && (
             <div
               className={clsx({
                 "block animate-fadeIn": fullScreenMode,
@@ -66,6 +70,9 @@ export default function HomeFullScreen() {
             >
               <VerticalScoreCard />
             </div>
+
+              )
+            }
 
           </div>
           <div className="hidden lg:block lg:flex lg:flex-col lg:justify-end lg:w-[66px] lg:gap-2">
@@ -83,7 +90,7 @@ export default function HomeFullScreen() {
 
             {fullScreenMode && (
               <button
-                onClick={() => dispatch(setFullScreenMode(false))}
+                onClick={() => setInitiateFadeOut(true)}
                 className="flex justify-center"
               >
                 <img

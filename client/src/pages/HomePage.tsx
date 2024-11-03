@@ -63,15 +63,18 @@ export default function Home() {
     }
   }, [activeModal, location, navigate, dispatch]);
 
-  useEffect(() => {
-  if(fullScreenMode){
-    setInitiateAnimation(true);
+useEffect(() => {
+  if (fullScreenMode) {
+    setInitiateAnimation(true); // Trigger fadeOut for home content when entering fullscreen
     setTimeout(() => {
       setHideSmallScreen(true);
-    }, 1000);
-  }
+    }, 1000); // Duration should match fadeOut
+  }else{
 
-  }, [fullScreenMode]);
+      setHideSmallScreen(false);
+    setInitiateAnimation(false); 
+  }
+}, [fullScreenMode]);
 
 
 useEffect(() => {
@@ -96,7 +99,7 @@ useEffect(() => {
 }, [location.pathname, dispatch]);
 
   return (
-      <div className="flex flex-col min-h-[100vh]">
+      <div className="flex flex-col min-h-[100vh] lg:overflow-hidden">
         {activeModal === "profile" && <Auth />}
         {activeModal === "wheels" && <WheelsListModal />}
         {activeModal === "settings" && <Configurator />}
@@ -107,7 +110,10 @@ useEffect(() => {
       {
         !hideSmallScreen ? (
         <div className="flex-1 w-full h-full flex">
-        <div className={clsx("max-w-[1360px] mx-auto flex-1 lg:flex lg:flex-row lg:justify-between gap-6 lg:overflow-hidden ", { "animate-fadeOut": initiateAnimation })}>
+          <div className={clsx(
+            " max-w-[1360px] mx-auto flex-1 lg:flex lg:flex-row lg:justify-between gap-6 lg:overflow-hidden ",
+             initiateAnimation && !hideSmallScreen ? "animate-fadeOut" : "opacity-0 animate-fadeIn"
+          )}>
           <div className="flex-1 mb-8 lg:mb-0 lg:w-1/2 lg:flex lg:flex-col lg:justify-center">
             <h1 className="p-6 py-0 mt-[30px] lg:mt-0 text-black text-4xl font-medium ">
               {selectedWheel.label || "N/A"} Picker Wheel

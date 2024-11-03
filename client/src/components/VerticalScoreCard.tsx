@@ -43,6 +43,7 @@ const VerticalScoreCard: FC = () => {
 
   const occurrences = countOccurrences(history);
 
+
   return (
     <Card>
       <div className="flex flex-col h-full justify-center items-end p-8">

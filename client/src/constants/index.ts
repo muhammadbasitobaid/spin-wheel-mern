@@ -108,7 +108,7 @@ export const YesNoWheel: Wheel = {
 export const CustomOptionsWheel: Wheel = {
     name: "custom-options-wheel",
     label: "Custom Options",
-    options: [],
+    options: ["Hank", "Walter", "Jesse", "Nacho", "Saul"],
     slug: "/"
 };
 

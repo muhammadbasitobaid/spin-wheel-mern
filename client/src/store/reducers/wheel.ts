@@ -62,7 +62,7 @@ export const initialState: WheelState = {
   wheelSnapshot: {
     selectedOption: CustomOptionsWheel?.options[0]!,
     inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL,
-    options: [],
+    options: CustomOptionsWheel?.options,
     history: [],
   },
   activeModal: null,

@@ -90,7 +90,7 @@ export const CustomOptionsWheelControls = () => {
           placeholder="Add new option"
         />
         <button onClick={addOption} className="ml-2 flex items-center bg-green-500 text-white p-2 rounded-full hover:bg-green-600 aspect-square">
-          <img src="/assets/icons/tick.svg" alt="Tick" className="w-8 h-8 mr-2" />
+          <img src="/assets/icons/tick.svg" alt="Tick" className="w-4 h-4 mr-1 md:w-8 md:h-8 md:mr-2" />
         </button>
       </div>
 

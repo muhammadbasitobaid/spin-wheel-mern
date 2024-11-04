@@ -5,6 +5,7 @@ import { RootState } from "src/store/store";
 import InputField from "./common/InputField";
 import Button from "./common/Button";
 import { attemptSaveWheel } from "src/store/thunks/wheel";
+import useOutsideClick from "src/hooks/useOutsideClick";
 
 const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { wheel, user } = useSelector((state: RootState) => state);
   const { selectedWheel } = wheel;
   const popupRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(popupRef, onClose);
 
   const handleSaveWheelAndGenerateLink = () => {
     if (!selectedWheel?._id) {

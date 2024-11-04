@@ -90,7 +90,7 @@ export const CustomOptionsWheelControls = () => {
           placeholder="Add new option"
         />
         <button onClick={addOption} className="ml-2 flex items-center bg-green-500 text-white p-2 rounded-full hover:bg-green-600 aspect-square">
-          <img src="/assets/icons/tick.svg" alt="Tick" className="w-8 h-8 mr-1" />
+          <img src="/assets/icons/tick.svg" alt="Tick" className="w-8 h-8 mr-2" />
         </button>
       </div>
 
@@ -388,7 +388,7 @@ export const EditWheel = () => {
   const dispatch = useDispatch();
 
   return (
-    <Card>
+    <Card className="my-8 mx-6 lg:my-0 lg:mx-0">
       <div className="gap-3 flex flex-col items-center p-4 text-xl">
         <div className=" px-4 py-7 rounded-custom border border-light-gray w-full bg-gradient-to-b from-gray-alpha to-white">
           <div className="w-full flex justify-between">

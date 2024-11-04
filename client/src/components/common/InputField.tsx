@@ -58,7 +58,7 @@ const InputField: React.FC<InputFieldProps> = ({
         id={id}
         type={type}
         placeholder={placeholder}
-        className={`input input-bordered w-full text-sm md:text-base p-2 md:p-4 ${
+        className={`py-0 px-2 input-sm input-bordered !border-zinc-300 w-full text-sm md:text-base md:p-4 md:input ${
           disabled ? "bg-gray-200 cursor-not-allowed" : ""
         }`}
         value={inputValue}

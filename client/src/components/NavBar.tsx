@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { menuItems, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL } from "src/constants";
 import { ModalNames } from "src/pages/HomePage";
@@ -7,6 +7,7 @@ import SharePopup from "./SharePopup";
 import WheelsPopup from "./WheelsPopup";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/store";
+import useOutsideClick from "src/hooks/useOutsideClick";
 
 interface MenuItemProps {
   label?: string;
@@ -48,6 +49,9 @@ export default function NavBar() {
   const dispatch = useDispatch();
   const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
   const [isWheelsPopupOpen, setIsWheelsPopupOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  useOutsideClick(dropdownRef, () => setIsDropdownOpen(false));
 
   const { selectedWheel } = useSelector(
     (state: RootState) => state.wheel
@@ -91,8 +95,8 @@ export default function NavBar() {
       </div>
       <div className="navbar-center"></div>
       <div className="navbar-end flex-1 md:hidden" >
-        <details className="dropdown  dropdown-bottom dropdown-end">
-          <summary className="btn btn-ghost btn-circle">
+        <div ref={dropdownRef} className="relative dropdown dropdown-left dropdown-bottom">
+          <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -107,8 +111,9 @@ export default function NavBar() {
                 d="M4 6h16M4 12h16M4 18h7"
               />
             </svg>
-          </summary>
-          <ul className="menu menu-xs dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+          </button>
+          {isDropdownOpen && (
+            <ul className="menu menu-xs absolute mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 left-[-180px]">
             {menuItems?.map((item) => (
               <MenuItem
                 key={item.label}
@@ -117,7 +122,7 @@ export default function NavBar() {
                 width={18}
                 height={18}
                 value={item.value}
-                setActiveModal={() => dispatch(setActiveModal(item.value))}
+                setActiveModal={() => { setIsDropdownOpen(false); dispatch(setActiveModal(item.value)); }}
                 disabled={item.disabled || false}
               />
             ))}
@@ -133,8 +138,9 @@ export default function NavBar() {
               setActiveModal={toggleWheelsPopup}
             />
             {isWheelsPopupOpen && <WheelsPopup onClose={closeWheelsPopup} />}
-          </ul>
-        </details>
+            </ul>
+          )}
+        </div>
         <ul>
           <div className="relative">
             <MenuItem

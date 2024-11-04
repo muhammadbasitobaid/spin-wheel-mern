@@ -123,8 +123,8 @@ useEffect(() => {
             </span>
             <SpinWheel/>
           </div>
-          <div className="p-6 py-0 md:p-0 md:min-w-[35%] lg:flex lg:flex-col-reverse lg:justify-center">
-            <div className="flex justify-between h-[60px] lg:hidden">
+          <div className="md:min-w-[35%] lg:flex lg:flex-col-reverse lg:justify-center">
+            <div className="px-6 flex justify-between h-[60px] lg:hidden lg:px-0">
               <VolumeController />
               <button
                 onClick={() => {

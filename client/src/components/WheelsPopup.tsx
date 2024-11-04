@@ -3,11 +3,13 @@ import { wheels, Wheel } from "src/constants"; // Assuming you import wheels fro
 import {useDispatch} from 'react-redux';
 import { setWheelSnapshot } from "../store/actions/wheel";
 import { useNavigate } from 'react-router-dom';
+import useOutsideClick from "src/hooks/useOutsideClick";
 
 const WheelsPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
 const navigate = useNavigate();
   const popupRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(popupRef, onClose);
   const dispatch = useDispatch();
 
   const handleWheelSelection = (wheel: Wheel) => {

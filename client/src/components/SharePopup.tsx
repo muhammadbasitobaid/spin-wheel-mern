@@ -77,7 +77,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           onChange={() => setShareLink("")}
         />
         <button
-          className={`ml-2 ${
+          className={`ml-2 child ${
             shareLink ? "text-dark-gray" : "text-light-gray cursor-not-allowed"
           }`}
           onClick={handleCopyToClipboard}
@@ -92,10 +92,11 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             }
             alt="clipboard"
             width={32}
+            className="child"
           />
         </button>
       </div>
-      <Button small onClick={handleSaveWheelAndGenerateLink} className="w-full">
+      <Button small onClick={handleSaveWheelAndGenerateLink} className="w-full child">
         Generate Link
       </Button>
     </div>

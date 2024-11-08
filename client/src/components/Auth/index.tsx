@@ -3,12 +3,17 @@ import Modal from "../common/Modal";
 import { Tab } from "../common/Tab";
 import Login from "./Login";
 import Signup from "./Signup";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { setActiveModal } from "src/store/actions/wheel";
+import { attemptLogout } from "src/store/thunks/auth";
 import { RootState } from "src/store/store";
+import { useNavigate } from "react-router";
+import Button from "src/components/common/Button";
+import { useAppDispatch } from "src/store/hooks";  // Use typed dispatch
 
 const Auth = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();  // Updated to useAppDispatch
+  const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.user);
 
   const tabs = [
@@ -25,6 +30,10 @@ const Auth = () => {
   ];
 
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
+
+  const handleLogout = () => {
+    dispatch(attemptLogout(navigate));
+  };
 
   return (
     <Modal
@@ -45,6 +54,11 @@ const Auth = () => {
               <span className="font-medium">Email:</span> {user.email}
             </p>
           </div>
+          <Button
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
         </div>
       ) : (
         <div className="flex flex-col items-center space-y-6">

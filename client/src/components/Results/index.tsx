@@ -1,11 +1,14 @@
 import React from "react";
 import Modal from "../common/Modal";
+import { RootState } from "src/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "../Table";
 import { setActiveModal } from "src/store/actions/wheel";
 
 const Results: React.FC = () => {
-  const { history } = useSelector((state: any) => state.wheel);
+  const { wheelSnapshot } =
+    useSelector((state: RootState) => state.wheel);
+  const { history } = wheelSnapshot;
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(setActiveModal(null));
@@ -30,7 +33,7 @@ const Results: React.FC = () => {
             </button>
           </div>
         </div>
-        <div className="flex-1 overflow-auto flex-grow pb-1  mx-5" id="style-2">
+        <div className="flex-1 overflow-auto flex-grow pb-1" id="style-2">
           <Table history={history || []} />
         </div>
         <div className="flex items-center justify-center w-full">

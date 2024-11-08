@@ -9,7 +9,7 @@ export const fetchWheelById =
   (wheelId: string) => async (dispatch: Dispatch) => {
     try {
       const response = await http.get(
-        `${process.env.REACT_APP_API_URL}/api/wheels/${wheelId}`
+        `${process.env.REACT_APP_API_URL}/wheels/${wheelId}`
       );
       dispatch(setSelectedWheel({ ...response.data }));
     } catch (error) {

@@ -145,7 +145,8 @@ const wheelItems: WheelListItem[] = useMemo(() => {
               : wheelItems[stoppedItemIndex].label;
           dispatch(setResult(stoppedItemLabel));
           dispatch(setActiveModal("result"));
-          const updatedHistory = [...(history ?? [])];
+          const updatedHistory = [...history];
+          console.log('updatedHistory: ', updatedHistory)
           updatedHistory.push(stoppedItemLabel);
 
           dispatch(setWheelSnapshot({ history: updatedHistory }));

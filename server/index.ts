@@ -25,6 +25,7 @@ initCORS(app);
 initDB();
 initProd(app);
 // initRateLimit(app);
+console.log(process.env)
 
 // Create session
 app.use(

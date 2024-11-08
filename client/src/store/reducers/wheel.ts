@@ -70,7 +70,7 @@ export const initialState: WheelState = {
   selectedTheme: THEMES[0],
   spinConfig: defaultSpinConfig,
   description: "",
-  popUpMessage: "",
+  popUpMessage: "Congratulations!",
   fullScreenMode: false
 };
 

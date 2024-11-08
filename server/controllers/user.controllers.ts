@@ -72,6 +72,7 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
         await EmailService.sendEmail(verificationEmail);
         res.status(200).send({ message: "A verification mail has been sent." });
       } catch (emailError) {
+        console.log('emailError', emailError);
         await UserService.deleteUserById(newUser._id);
         res.status(503).send({
           message: `Impossible to send an email to ${newUser.email}, try again. Our service may be down.`,

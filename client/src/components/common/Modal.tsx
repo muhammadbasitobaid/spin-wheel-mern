@@ -39,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({
       <div
         className={`bg-white p-4 pt-8 md:p-10  md:pb-4  ${
           showOverlay ? "rounded-custom-sm lg:rounded-custom relative" : "rounded-custom lg:rounded-custom-lg relative"
-        } shadow-3xl w-[90%] md:w-[50%] max-w-[900px] ${className}`}
+        } shadow-3xl w-[90%] md:w-[50%] max-w-[900px] max-h-[80%] ${className}`}
       >
         <button
           className="absolute top-3 right-3 md:top-6 md:right-6 text-black hover:text-gray"

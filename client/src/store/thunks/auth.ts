@@ -52,7 +52,7 @@ export const attemptLogout =
         dispatch(logout());
       })
       .finally(() => {
-        navigate("/login", { replace: true });
+        navigate("/", { replace: true });
       });
 
 export const attemptRegister = (newUser: User) => (dispatch: Dispatch) => {

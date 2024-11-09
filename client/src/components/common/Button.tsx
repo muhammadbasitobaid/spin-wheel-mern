@@ -21,10 +21,10 @@ const Button = ({
   return invertedVariant ? (
     <button
       onClick={onClick}
-      className={`border border-black bg-white text-black rounded-custom-sm ${
+      className={`border border-black bg-white text-black rounded-custom-sm whitespace-nowrap ${
         !small
-          ? "py-2 px-4 text-base leading-none md:py-2.5 md:px-10 md:text-xl"
-          : "py-1 px-2 text-sm md:py-2 md:px-4 md:text-base"
+          ? "py-2 px-4 text-sm leading-none sm:text-base "
+          : "py-1 px-2 text-xs leading-none sm:text-sm"
       } font-medium ${className}`}
       type={type}
       {...props}
@@ -34,10 +34,10 @@ const Button = ({
   ) : (
     <button
       onClick={onClick}
-      className={`rounded-custom-sm text-white bg-blue ${
+      className={`rounded-custom-sm text-white bg-blue whitespace-nowrap ${
         !small
-          ? "py-2 px-4 text-base leading-none md:py-2.5 md:px-10 md:text-xl"
-          : "py-1 px-2 text-sm md:py-2 md:px-4 md:text-base"
+          ? "py-2 px-4 text-sm leading-none sm:text-base "
+          : "py-1 px-2 text-xs leading-none sm:text-sm "
       } font-medium ${className}`}
       type={type}
     >

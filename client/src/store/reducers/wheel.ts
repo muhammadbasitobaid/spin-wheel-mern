@@ -1,12 +1,9 @@
-// src/store/reducers/wheel.ts
 import {
   SET_THEME,
+  SET_STATE,
   SET_VOLUME,
-  // SET_HISTORY,
   SET_SELECTED_WHEEL,
   SET_WHEEL_SNAPSHOT,
-  // SET_SELECTED_OPTION,
-  // SET_INPUT_NUMBERS,
   SET_ACTIVE_MODAL,
   SET_RESULT,
   SET_SPINNING_SPEED_LEVEL,
@@ -19,15 +16,19 @@ import {
   SET_SOUND,
   SET_CONFETTI_TYPE,
   SET_SOUND_TYPE,
-  // RESET_HISTORY,
   SET_WHEEL_DETAILS,
   SET_WHEEL_LIST,
+  SET_WHEEL_FORM_VALUES,
+  SET_FULL_SCREEN_MODE,
+  SET_INPUT_NUMBERS,
+  SET_WHEEL_META_DATA_DEFAULT_ACTION,
   WheelActions,
 } from "../actions/wheel";
 
-import { v4 as uuidv4 } from "uuid";
+import { getDefaultWheelName } from "src/utils"
 
-import { YesNoWheel, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, } from '../../constants'
+
+import { CustomOptionsWheel, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, DEFAULT_WHEEL_METADATA } from '../../constants'
 
 import {
   THEMES,
@@ -39,37 +40,39 @@ import {
 import { ModalNames } from "src/pages/HomePage";
 
 export interface WheelState {
+  _id?: string;
+  __v?: string;
   name: string;
   description: string;
   popUpMessage: string;
-  // history?: string[];
   volume: number;
   selectedWheel: Wheel;
-  // inputNumbers: number;
   wheelList?: string[];
   wheelSnapshot: WheelSnapshot;
-  // maxInputNumbers: number;
   activeModal: ModalNames | null;
   result: string | null;
   selectedTheme: string[];
   spinConfig: SpinConfig;
+  fullScreenMode: boolean;
 }
 
 export const initialState: WheelState = {
-  name: `Wheel ${uuidv4()}`,
+  name: getDefaultWheelName(),
   volume: 50,
-  selectedWheel: YesNoWheel,
+  selectedWheel: CustomOptionsWheel,
   wheelSnapshot: {
-    selectedOption: YesNoWheel?.options[0]!,
+    selectedOption: CustomOptionsWheel?.options[0]!,
     inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL,
+    options: CustomOptionsWheel?.options,
     history: [],
   },
   activeModal: null,
   result: null,
   selectedTheme: THEMES[0],
   spinConfig: defaultSpinConfig,
-  description: "",
-  popUpMessage: "",
+  description: DEFAULT_WHEEL_METADATA.description,
+  popUpMessage: DEFAULT_WHEEL_METADATA.popUpMessage,
+  fullScreenMode: false
 };
 
 type ActionTypes = WheelActions;
@@ -79,6 +82,9 @@ const wheelReducer = (
   action: ActionTypes
 ): WheelState => {
   switch (action.type) {
+
+    case SET_STATE:
+      return { ...action.payload };
     case SET_VOLUME:
       return { ...state, volume: action.payload };
     case SET_WHEEL_SNAPSHOT:
@@ -86,27 +92,28 @@ const wheelReducer = (
         ...state,
         wheelSnapshot: { ...state.wheelSnapshot, ...action.payload },
       };
-    // case SET_HISTORY:
-    //   return {
-    //           ...state,
-    //           wheelSnapshot: { ...state.wheelSnapshot, history: action.payload },
-    //         };
+
+    case SET_INPUT_NUMBERS:
+      return {
+        ...state,
+        wheelSnapshot: { ...state.wheelSnapshot, inputNumbers: action.payload },
+      };
+
+    case SET_WHEEL_META_DATA_DEFAULT_ACTION:
+      return {
+          ...state,
+            _id: DEFAULT_WHEEL_METADATA._id,
+            description: DEFAULT_WHEEL_METADATA.description,
+            popUpMessage: DEFAULT_WHEEL_METADATA.popUpMessage,
+            name: getDefaultWheelName()
+      }
+
     case SET_SELECTED_WHEEL:
       return {
         ...state,
         selectedWheel: action.payload,
       };
 
-    // case SET_SELECTED_OPTION:
-    //   return {
-    //     ...state,
-    //           wheelSnapshot: { ...state.wheelSnapshot, selectedOption: action.payload },
-    //   };
-    // case SET_INPUT_NUMBERS:
-    //   return {
-    //     ...state,
-    //           wheelSnapshot: { ...state.wheelSnapshot, inputNumbers: action.payload },
-    //   };
     case SET_WHEEL_LIST:
       return {
         ...state,
@@ -178,6 +185,18 @@ const wheelReducer = (
         description: action.payload.description,
         popUpMessage: action.payload.popUpMessage,
       };
+    case SET_WHEEL_FORM_VALUES:
+      return {
+        ...state,
+        name: action.payload.name,
+        description: action.payload.description,
+        popUpMessage: action.payload.popUpMessage,
+      };
+    case SET_FULL_SCREEN_MODE:
+      return {
+        ...state,
+        fullScreenMode: action.payload,
+      }
     default:
       return state;
   }

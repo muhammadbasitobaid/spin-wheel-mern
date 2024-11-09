@@ -1,17 +1,23 @@
 import React, { useRef } from "react";
 import { wheels, Wheel } from "src/constants"; // Assuming you import wheels from a constants file
 import {useDispatch} from 'react-redux';
-import { setSelectedWheel, setWheelSnapshot } from "../store/actions/wheel";
+import { setWheelSnapshot, setWheelMetaDataDefaultAction } from "../store/actions/wheel";
+import { useNavigate } from 'react-router-dom';
+import useOutsideClick from "src/hooks/useOutsideClick";
 
 const WheelsPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
+const navigate = useNavigate();
   const popupRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(popupRef, onClose);
   const dispatch = useDispatch();
-  const handleWheelSelection = (wheel: Wheel) =>{
-  dispatch(setSelectedWheel(wheel));
-  dispatch(setWheelSnapshot({history: []}));  // Reset history when wheel mode changes
-  onClose();
-  } 
+
+  const handleWheelSelection = (wheel: Wheel) => {
+    dispatch(setWheelSnapshot({ history: [] })); // Reset history when wheel mode changes
+    dispatch(setWheelMetaDataDefaultAction());
+    navigate(wheel.slug); // Update URL slug based on selected wheel
+    onClose();
+  };
 
   return (
     <div
@@ -26,8 +32,8 @@ const WheelsPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       {/* List of wheels */}
       <ul className="space-y-2">
         {wheels.map((wheel) => (
-          <li key={wheel.name} onClick={() => handleWheelSelection(wheel)}className="p-2 bg-gray-100 rounded-lg">
-            <span className="font-semibold">{wheel.label}</span>
+          <li key={wheel.name} onClick={() => handleWheelSelection(wheel)} className="p-2 bg-gray-100 rounded-lg">
+            <span className="font-semibold  child">{wheel.label} Wheel</span>
           </li>
         ))}
       </ul>

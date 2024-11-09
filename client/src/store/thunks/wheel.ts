@@ -9,7 +9,7 @@ export const fetchWheelById =
   (wheelId: string) => async (dispatch: Dispatch) => {
     try {
       const response = await http.get(
-        `${process.env.REACT_APP_API_URL}/api/wheels/${wheelId}`
+        `${process.env.REACT_APP_API_URL}/wheels/${wheelId}`
       );
       dispatch(setSelectedWheel({ ...response.data }));
     } catch (error) {
@@ -21,7 +21,8 @@ export const fetchWheelById =
 export const attemptSaveWheel = (wheel: WheelState, id: string) => () =>
   postWheel(wheel, id)
     .then((data) => {
-      toast.success("Wheel created successfully");
+      console.log(data)
+      toast.success(data?.message || "Wheel created successfully");
       return data;
     })
     .catch(() => toast.error("Wheel creation failed"));

@@ -7,7 +7,7 @@ interface CardProps {
 
 const Card: FC<CardProps> = ({ children, className }) => {
   return (
-    <div className={`shadow-3xl rounded-custom ${className}`}>{children}</div>
+    <div className={`shadow-3xl rounded-custom ${className ?? ""}`}>{children}</div>
   );
 };
 

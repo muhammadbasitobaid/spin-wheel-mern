@@ -1,31 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "src/components/common/Button";
 import InputField from "src/components/common/InputField";
 import Modal from "src/components/common/Modal";
-import { setActiveModal, setWheelDetails } from "src/store/actions/wheel";
+import { setActiveModal, setWheelDetails, setWheelFormValues } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import { attemptSaveWheel } from "src/store/thunks/wheel";
 
 const ModifyModal: React.FC = () => {
   const dispatch = useDispatch();
   const { wheel, user } = useSelector((state: RootState) => state);
-  // const {_id } = user.user;
 
-  const [formValues, setFormValues] = useState({
-    title: "",
-    description: "",
-    popupMsg: "",
-  });
+  // name: string;
+  // description: string;
+  // popUpMessage: string;
+  const formValues = {
+    name: wheel.name,
+    description: wheel.description,
+    popUpMessage: wheel.popUpMessage,
+  };
 
   const handleSave = () => {
     const payload = {
       ...wheel,
-      name: formValues.title,
+      name: formValues.name,
       description: formValues.description,
-      popupMsg: formValues.popupMsg,
+      popUpMessage: formValues.popUpMessage,
     };
+    console.log('wheel: ', wheel);
     if (!user.user) {
       toast.error("Please login to save changes");
       return;
@@ -34,13 +37,7 @@ const ModifyModal: React.FC = () => {
     // @ts-ignore
     dispatch(attemptSaveWheel(payload, id));
     dispatch(setActiveModal(null));
-    dispatch(
-      setWheelDetails(
-        formValues.title,
-        formValues.description,
-        formValues.popupMsg
-      )
-    );
+    dispatch(setWheelDetails(formValues.name, formValues.description, formValues.popUpMessage));
   };
 
   const handleClose = () => {
@@ -48,16 +45,21 @@ const ModifyModal: React.FC = () => {
   };
 
   const handleReset = () => {
-    setFormValues({ title: "", description: "", popupMsg: "" });
+    dispatch(setWheelFormValues("", "", ""));
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
+const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = event.target;
+
+  // Update form values in Redux store based on the name of the input field
+  if (name === "name") {
+    dispatch(setWheelFormValues(value, formValues.description, formValues.popUpMessage));
+  } else if (name === "description") {
+    dispatch(setWheelFormValues(formValues.name, value, formValues.popUpMessage));
+  } else if (name === "popUpMessage") {
+    dispatch(setWheelFormValues(formValues.name, formValues.description, value));
+  }
+};
 
   return (
     <Modal isOpen onClose={handleClose} showOverlay showDoneButton>
@@ -65,7 +67,7 @@ const ModifyModal: React.FC = () => {
         <div className="flex w-full">
           <div className="flex-1 flex flex-col items-center justify-center ">
             <span className="text-center text-2xl font-semibold mb-4">
-              Modify Title & Description
+              Modify name & Description
             </span>
             <img src="/assets/icons/custom-border.svg" alt="custom-border" />
           </div>
@@ -78,11 +80,12 @@ const ModifyModal: React.FC = () => {
         <div className="py-8 flex flex-col">
           <div className="mb-4">
             <InputField
-              label="Title"
-              name="title"
-              value={formValues.title}
-              placeholder="Enter title"
+              label="name"
+              name="name"
+              value={formValues.name}
+              placeholder="Enter name"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="mb-4">
@@ -92,13 +95,14 @@ const ModifyModal: React.FC = () => {
               value={formValues.description}
               placeholder="Enter description"
               onChange={handleChange}
+              required
             />
           </div>
           <div>
             <InputField
               label="Popup Msg"
-              name="popupMsg"
-              value={formValues.popupMsg}
+              name="popUpMessage"
+              value={formValues.popUpMessage}
               placeholder="Enter popup message"
               onChange={handleChange}
             />

@@ -2,10 +2,11 @@ import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setVolume } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
+import { DEFAULT_VOLUME } from "src/constants"
 import { Howler } from "howler";
 
 const VolumeController: FC = () => {
-  const { volume, spinConfig } = useSelector((state: RootState) => state.wheel);
+  const { volume = DEFAULT_VOLUME, spinConfig } = useSelector((state: RootState) => state.wheel);
   const { sound } = spinConfig;
   const dispatch = useDispatch();
   const [isMuted, setIsMuted] = useState<boolean>(volume === 0);
@@ -29,7 +30,7 @@ const VolumeController: FC = () => {
   };
 
   return (
-    <div className="relative lg:h-[78vh] lg:flex lg:items-end">
+    <div className="relative  lg:flex lg:items-end">
       <div className="w-[64px] absolute group inline-block rounded-full shadow-3xl bg-white p-5 leading-none">
         <button onClick={handleMuteToggle} disabled={!sound}>
           <img

@@ -29,9 +29,9 @@ const Configurator = () => {
       showOverlay
       onClose={() => dispatch(setActiveModal(null))}
     >
-      <div className="mx-6 my-14 mb-8 w-full">
+      <div className="mb-8 w-full">
         <Tab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-        <div className="w-full">
+        <div className="max-h-[95%] w-full overflow-y-scroll ">
           {tabs.find((tab) => tab.id === activeTab)!.content}
         </div>
       </div>

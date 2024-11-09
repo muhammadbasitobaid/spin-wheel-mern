@@ -6,6 +6,10 @@ import { useAppDispatch } from "./store/hooks";
 import { AuthRoute } from "./components/AuthRoute";
 import Test from "./pages/Test";
 import Spinner from "./components/common/Spinner";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import AboutUs from "./pages/AboutUs";
+import TermsAndConditions from "./pages/TermsAndConditions";
+
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -22,13 +26,12 @@ export default function App() {
   }, [dispatch]);
 
   return loading ? (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center h-screen max-h-screen">
       <Spinner />
     </div>
   ) : (
     <Routes>
       <Route path="/healthcheck" element={<HealthPage />} />
-      <Route path="/home" element={<HomePage />} />
       <Route
         path="/account/confirm/:token"
         element={
@@ -37,9 +40,13 @@ export default function App() {
           </AuthRoute>
         }
       />
-      <Route path="/" element={<Navigate to="/home" replace />} />
-      <Route element={<Navigate to="/home" replace />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/:slug" element={<HomePage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
       <Route element={<Test />} path="/test" />
+      <Route element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

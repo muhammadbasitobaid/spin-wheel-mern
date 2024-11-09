@@ -1,13 +1,3 @@
-# :rocket: Wheelspinner(prod/dev).
-
-# :whale: Docker
-
-Boilerplate now is fully usable with docker, it integrate the MongoDB database, the React/Redux frontend and NodeJS/Express backend.
-
-If you do not have docker: <https://docs.docker.com/get-docker/>
-
-Docker allows to deloy the app in docker containers in one line in the CLI.
-
 ## Environment variables
 
 You have to set the following environment variables in `server.dev.env` file (rename server.example.env to server.dev.env):
@@ -47,32 +37,3 @@ in the root directory:
 Frontend app uses an Nginx server to deliver static files.
 
 You may want to use the flag `--remove-orphans`
-
-To deploy on Heroku refer to their documentation:
-<https://devcenter.heroku.com/categories/deploying-with-docker>
-
-## :computer: Boilerplate
-
-MERN Stack with advanced authentication :
-
-- Email verification (Token Based) with resend/reset option, Login with forgot password feature.
-
-- Server side sessions.
-
-- Docker for development and production with hot reloading.
-
-- Mongodb.
-
-- Express.
-
-- React/Redux based on Create React App.
-
-- React Hooks.
-
-- Nodejs.
-
-- Typescript.
-
-- Passport-js local.
-
-- Sendgrid API for emails.

@@ -3,6 +3,12 @@ import { ModalNames } from "src/pages/HomePage";
 export const NUMBER_WHEEL_HIGHEST_PORTION = 1000;
 export const NUMBER_WHEEL_LOWEST_PORTION = 1;
 export const DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL = 3;
+export const DEFAULT_VOLUME = 50;
+export const DEFAULT_WHEEL_METADATA = {
+  _id: "",
+  description: "Test Wheel description",
+  popUpMessage: "Congratulations!",
+}
 
 export const THEMES: string[][] = [
   ["#CFFDE1", "#3D5656", "#FED049", "#68B984"],
@@ -70,12 +76,14 @@ export interface Wheel {
   name: string;
   label: string;
   options: string[];
+  slug: string;
 }
 
 export interface WheelSnapshot {
   selectedOption?: string;
   inputNumbers?: number;
   history: string[];
+  options?: string[];
   lowerNumber?: number;
   highestNumber?: number;
   excludeNumbers?: string
@@ -99,22 +107,33 @@ export const YesNoWheel: Wheel = {
     name: "yes-no-wheel",
     label: "YES or NO",
     options: [YES_NO_OPTION, YES_NO_MAYBE_OPTION],
+    slug: "/yes-or-no-wheel"
+};
+
+export const CustomOptionsWheel: Wheel = {
+    name: "custom-options-wheel",
+    label: "Custom Options",
+    options: ["Hank", "Walter", "Jesse", "Nacho", "Saul"],
+    slug: "/"
 };
 
 export const NumberWheel: Wheel = {
     name: "number-wheel",
-    label: "Number Picker Wheel",
-    options: [""]
+    label: "Number",
+    options: [""],
+    slug: "/random-number-wheel"
 };
 
 export const LetterWheel: Wheel = {
     name: "letter-wheel",
-    label: "Letter Picker Wheel",
+    label: "Letter",
     options: [ALPHABETS_OPTION, CONSONANT_OPTION, VOWEL_OPTION, LETTERS_OPTION, CUSTOM_LETTERS_OPTION],
+    slug: "/random-letter-generator"
 };
 
 export const wheels: Wheel[] = [
   YesNoWheel,
+  CustomOptionsWheel,
   NumberWheel,
   LetterWheel,
 ];
@@ -134,7 +153,7 @@ export const menuItems: MenuItem[] = [
     value: "profile",
   },
   {
-    label: "Switch Wheel",
+    label: "Select Wheel",
     svgSrc: "/assets/icons/wheel_page.svg",
     value: "wheels",
   },

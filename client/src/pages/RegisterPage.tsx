@@ -27,7 +27,9 @@ export default function RegisterPage() {
 
   const { serverError, handleServerError } = useServerError();
   const [email, setEmail] = useState<string | null>(null);
-  const [registerStep, setRegisterStep] = useState<RegisterFormStep>(RegisterFormStep.Register);
+  const [registerStep, setRegisterStep] = useState<RegisterFormStep>(
+    RegisterFormStep.Register
+  );
 
   const initialValues: RegisterFormValues = {
     email: "",
@@ -83,30 +85,40 @@ export default function RegisterPage() {
     switch (registerStep) {
       case RegisterFormStep.Register:
         return (
-          <div className='container'>
-            <form className='form' onSubmit={handleSubmit(onSubmit)}>
-              <div className='field'>
-                <label htmlFor='email'>Email</label>
-                <input {...register("email")} id='email' type='email' placeholder='Email' />
+          <div className="container">
+            <form className="form" onSubmit={handleSubmit(onSubmit)}>
+              <div className="field">
+                <label htmlFor="email">Email</label>
+                <input
+                  {...register("email")}
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                />
                 {errors.email && <Error>{errors.email.message}</Error>}
               </div>
-              <div className='field'>
-                <label htmlFor='username'>Username</label>
-                <input {...register("username")} id='username' type='text' placeholder='Username' />
+              <div className="field">
+                <label htmlFor="username">Username</label>
+                <input
+                  {...register("username")}
+                  id="username"
+                  type="text"
+                  placeholder="Username"
+                />
                 {errors.username && <Error>{errors.username.message}</Error>}
               </div>
-              <div className='field'>
-                <label htmlFor='password'>Password</label>
+              <div className="field">
+                <label htmlFor="password">Password</label>
                 <input
                   {...register("password")}
-                  id='password'
-                  type='password'
-                  placeholder='Password'
+                  id="password"
+                  type="password"
+                  placeholder="Password"
                 />
                 {errors.password && <Error>{errors.password.message}</Error>}
               </div>
 
-              <button type='submit'>Signup</button>
+              <button type="submit">Signup</button>
               {serverError && <Error>{serverError}</Error>}
             </form>
           </div>
@@ -114,12 +126,12 @@ export default function RegisterPage() {
 
       case RegisterFormStep.Resend:
         return (
-          <div className='container'>
+          <div className="container">
             <p>A verification email has been sent.</p>
             <p>Check you mailbox : {email}.</p>
             <p>
-              You have 12 hours to activate your account. It can take up to 15 min to receive our
-              email.
+              You have 12 hours to activate your account. It can take up to 15
+              min to receive our email.
             </p>
 
             <button onClick={handleResendEmail}>
@@ -131,17 +143,22 @@ export default function RegisterPage() {
 
       case RegisterFormStep.Reset:
         return (
-          <div className='container'>
+          <div className="container">
             <p>Still not received an email? </p>
             <p>Try to register again. You may have given the wrong email. </p>
-            <p>If you want to be able to use the same username, reset the registration :</p>
+            <p>
+              If you want to be able to use the same username, reset the
+              registration :
+            </p>
 
-            <button onClick={handleResetRegister}>Click here to reset the registration</button>
+            <button onClick={handleResetRegister}>
+              Click here to reset the registration
+            </button>
             {serverError && <Error>{serverError}</Error>}
           </div>
         );
       default:
-        return <Navigate to='/home' replace />;
+        return <Navigate to="/" replace />;
     }
   }
 

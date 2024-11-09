@@ -37,7 +37,7 @@ router.get("/google", AuthControllers.googleLogin);
 
 //  Handles Google OAuth callback
 router.get("/google/callback", AuthControllers.googleCallback, (req, res) => {
-  res.redirect("http://localhost:3000/");
+  res.redirect(process.env.HOST || "https://thespinnerwheel.com/");
 });
 
 //  Retrieves the authenticated user's profile

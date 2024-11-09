@@ -16,6 +16,8 @@ module.exports = {
       },
       animation: {
         flick: "flick 1s ease-out forwards infinite",
+        fadeOut: "fadeOut 1s ease-in-out forwards", // Custom fade-out animation
+        fadeIn: "fadeIn 1s ease-in-out forwards 1s",  // Custom fade-in animation
       },
       keyframes: {
         flick: {
@@ -24,6 +26,22 @@ module.exports = {
           },
           "100%": {
             transform: "rotate(30deg)",
+          },
+        },
+        fadeOut: {
+          "0%": {
+            opacity: "1", // Starting fully visible
+          },
+          "100%": {
+            opacity: "0", // Ending fully transparent
+          },
+        },
+        fadeIn: {
+          "0%": {
+            opacity: "0", // Starting fully transparent
+          },
+          "100%": {
+            opacity: "1", // Ending fully visible
           },
         },
       },

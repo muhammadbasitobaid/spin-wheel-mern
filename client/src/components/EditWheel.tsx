@@ -7,6 +7,7 @@ import {
   YesNoWheel,
   NumberWheel,
   LetterWheel,
+  CustomOptionsWheel,
   ALPHABETS_OPTION,
   CONSONANT_OPTION,
   VOWEL_OPTION ,
@@ -24,9 +25,106 @@ import {
   setActiveModal,
   // setinputNumbers,
   setWheelList,
-  setWheelSnapshot
+  setWheelSnapshot,
+  setFullScreenMode,
 } from "src/store/actions/wheel";
 import InputField from "./common/InputField";
+// import { getDefaultWheelName } from "src/utils";
+
+export const CustomOptionsWheelControls = () => {
+  const dispatch = useDispatch();
+  const { wheelSnapshot } = useSelector((state: RootState) => state.wheel);
+  const options = wheelSnapshot?.options || [];
+  const [newOption, setNewOption] = useState<string>("");
+
+  // Add new option to the list
+  const addOption = () => {
+    if (newOption.trim()) {
+      dispatch(setWheelSnapshot({ options: [...options, newOption.trim()] }));
+      setNewOption(""); // Clear input after adding
+    }
+  };
+
+  const moveOptionUp = (index: number) => {
+    if (index > 0 && options.length > 1) {
+      const updatedOptions = [...options];
+      [updatedOptions[index - 1], updatedOptions[index]] = [updatedOptions[index], updatedOptions[index - 1]];
+      dispatch(setWheelSnapshot({ options: updatedOptions }));
+    }
+  };
+
+  // Move option down
+  const moveOptionDown = (index: number) => {
+    if (index < options.length - 1) {
+      const updatedOptions = [...options];
+      [updatedOptions[index], updatedOptions[index + 1]] = [updatedOptions[index + 1], updatedOptions[index]];
+      dispatch(setWheelSnapshot({ options: updatedOptions }));
+    }
+  };
+
+  // Duplicate option
+  const duplicateOption = (index: number) => {
+    const updatedOptions = [...options];
+    updatedOptions.splice(index, 0, options[index]);
+    dispatch(setWheelSnapshot({ options: updatedOptions }));
+  };
+
+  // Delete option
+  const deleteOption = (index: number) => {
+    const updatedOptions = options.filter((_, i) => i !== index);
+    dispatch(setWheelSnapshot({ options: updatedOptions }));
+  };
+
+  useEffect(() => {
+    dispatch(setWheelList([]));
+    dispatch(setWheelSnapshot({ inputNumbers: 1 }));
+  }, []);
+
+  return (
+    <div className="custom-options-wheel-controls">
+      {/* Input to add new options */}
+      <div className="flex items-center mb-4">
+        <InputField
+          value={newOption}
+          onChange={(e) => setNewOption(e.target.value)}
+          placeholder="Add new option"
+        />
+        <button onClick={addOption} className="ml-2 flex items-center bg-green-500 text-white p-2 rounded-full hover:bg-green-600 aspect-square">
+          <img src="/assets/icons/tick.svg" alt="Tick" className="w-4 h-4 mr-1 md:w-8 md:h-8 md:mr-2" />
+        </button>
+      </div>
+
+      {/* List of current options with actions */}
+      <div className="option-list space-y-2">
+        {options.map((option, index) => (
+          <div key={index} className="flex items-center space-x-2">
+            <span className="flex-1">{option}</span>
+
+            {/* Move up button */}
+            <button onClick={() => moveOptionUp(index)} className="text-blue-500 hover:text-blue-700">
+              ↑
+            </button>
+
+            {/* Move down button */}
+            <button onClick={() => moveOptionDown(index)} className="text-blue-500 hover:text-blue-700">
+              ↓
+            </button>
+
+            {/* Duplicate button */}
+            <button onClick={() => duplicateOption(index)} className="text-green-500 hover:text-green-700">
+              ⧉
+            </button>
+
+            {/* Delete button */}
+            <button onClick={() => deleteOption(index)} className="text-red-500 hover:text-red-700">
+              ✕
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 
 
@@ -49,6 +147,7 @@ export const YesNoWheelControls = () => {
 
   useEffect(() => {
     dispatch(setWheelSnapshot({inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL}))
+    // dispatch(setWheelFormValues(getDefaultWheelName(), "", ""));
 
 
   }, []);
@@ -143,7 +242,8 @@ export const LetterWheelControls = () => {
 
 
   useEffect(() => {
-    dispatch(setWheelSnapshot({inputNumbers: 1}))
+    dispatch(setWheelSnapshot({inputNumbers: 1}));
+    // dispatch(setWheelFormValues(getDefaultWheelName(), "", ""));
   }, []);
 
   return (
@@ -227,7 +327,8 @@ export const NumberWheelControls = () => {
   }, [lowerNumber, highestNumber, interval, excludeNumbers, dispatch, generateNumberList]);
 
   useEffect(() => {
-    dispatch(setWheelSnapshot({inputNumbers: 1}))
+    dispatch(setWheelSnapshot({inputNumbers: 1}));
+    // dispatch(setWheelFormValues(getDefaultWheelName(), "", ""));
   }, []);
 
   return (
@@ -241,6 +342,7 @@ export const NumberWheelControls = () => {
             dispatch(setWheelSnapshot({ lowerNumber: parseInt(e.target.value, 10) }))
           }
           placeholder="1"
+          className="max-w-[200px]"
         />
         <InputField
           label="Highest Number"
@@ -250,6 +352,7 @@ export const NumberWheelControls = () => {
             dispatch(setWheelSnapshot({ highestNumber: parseInt(e.target.value, 10) }))
           }
           placeholder="10"
+          className="max-w-[200px]"
         />
       </div>
 
@@ -262,7 +365,7 @@ export const NumberWheelControls = () => {
           onChange={(e) =>
             dispatch(setWheelSnapshot({ customLetterList: e.target.value }))
           }
-          className="w-1/2"
+          className="max-w-[200px]"
           placeholder="e.g. 1,2,3"
         />
         <InputField
@@ -272,7 +375,7 @@ export const NumberWheelControls = () => {
           onChange={(e) =>
             dispatch(setWheelSnapshot({ interval: parseInt(e.target.value, 10) }))
           }
-          className="w-1/2"
+          className="max-w-[200px]"
           placeholder="1"
         />
       </div>
@@ -284,17 +387,16 @@ export const EditWheel = () => {
   const { selectedWheel } = useSelector((state: RootState) => state.wheel);
   const dispatch = useDispatch();
 
-
   return (
-    <Card>
-      <div className="gap-3 flex flex-col items-center p-4 my-6 text-xl">
+    <Card className="my-8 mx-6 lg:my-0 lg:mx-0">
+      <div className="gap-3 flex flex-col items-center p-4 text-xl">
         <div className=" px-4 py-7 rounded-custom border border-light-gray w-full bg-gradient-to-b from-gray-alpha to-white">
           <div className="w-full flex justify-between">
             <div className="flex-1 text-xl font-semibold leading-normal mb-1.5 lg:text-3xl">
               Edit Wheel
             </div>
             <div className="flex gap-2 items-center">
-              <button className="opacity-50 cursor-not-allowed" disabled>
+              <button className="hidden lg:block" onClick={()=> dispatch(setFullScreenMode(true))}>
                 <img
                   src="/assets/icons/show.svg"
                   alt="Show"
@@ -326,6 +428,13 @@ export const EditWheel = () => {
           {
             selectedWheel.name === YesNoWheel.name && (
               <YesNoWheelControls/>
+            )
+          }
+
+          {
+
+            selectedWheel.name === CustomOptionsWheel.name && (
+              <CustomOptionsWheelControls/>
             )
           }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store/store";
-import { setActiveModal, setSelectedWheel } from "src/store/actions/wheel";
+import { setActiveModal, setWheelState } from "src/store/actions/wheel";
 import Modal from "src/components/common/Modal";
 import { fetchUserWheels } from "src/store/thunks/user";
 import { v4 as uuidv4 } from "uuid";
@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 const WheelsListModal: React.FC = () => {
   const dispatch = useDispatch();
   const { user, isAuth } = useSelector((state: RootState) => state.user);
+
 
   const [loading, setLoading] = useState(false);
 
@@ -23,6 +24,12 @@ const WheelsListModal: React.FC = () => {
   const handleClose = () => {
     dispatch(setActiveModal(null));
   };
+
+  useEffect(() => {
+    user?.wheels && console.log('wheels: ', user?.wheels)
+
+  }, [user?.wheels])
+  
 
   return (
     <Modal
@@ -50,7 +57,7 @@ const WheelsListModal: React.FC = () => {
                     <button
                       onClick={() => {
                         handleClose();
-                        dispatch(setSelectedWheel(wheel));
+                        dispatch(setWheelState(wheel));
                       }}
                       className="w-full text-left"
                     >

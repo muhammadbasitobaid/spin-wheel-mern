@@ -5,6 +5,7 @@ import { RootState } from "src/store/store";
 import InputField from "./common/InputField";
 import Button from "./common/Button";
 import { attemptSaveWheel } from "src/store/thunks/wheel";
+import useOutsideClick from "src/hooks/useOutsideClick";
 
 const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { wheel, user } = useSelector((state: RootState) => state);
   const { selectedWheel } = wheel;
   const popupRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(popupRef, onClose);
 
   const handleSaveWheelAndGenerateLink = () => {
     if (!selectedWheel?._id) {
@@ -40,9 +42,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   const generateShareLink = (id: string) => {
     setShareLink(
-      `${
-        process.env.REACT_APP_BASE_URL ?? "http://localhost:3000"
-      }/home?id=${id}`
+      `${process.env.REACT_APP_BASE_URL ?? "http://localhost:3000"}/?id=${id}`
     );
   };
 
@@ -77,7 +77,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           onChange={() => setShareLink("")}
         />
         <button
-          className={`ml-2 ${
+          className={`ml-2 child ${
             shareLink ? "text-dark-gray" : "text-light-gray cursor-not-allowed"
           }`}
           onClick={handleCopyToClipboard}
@@ -92,10 +92,11 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             }
             alt="clipboard"
             width={32}
+            className="child"
           />
         </button>
       </div>
-      <Button small onClick={handleSaveWheelAndGenerateLink} className="w-full">
+      <Button small onClick={handleSaveWheelAndGenerateLink} className="w-full child">
         Generate Link
       </Button>
     </div>

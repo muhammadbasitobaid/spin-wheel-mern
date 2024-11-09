@@ -14,6 +14,7 @@ interface InputFieldProps {
   note?: string; // New optional prop for notes
   min?: string; // Optional min for number input
   max?: string; // Optional max for number input
+  required?: boolean;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -30,6 +31,7 @@ const InputField: React.FC<InputFieldProps> = ({
   note, // Optional note
   min, // Optional min value for number input
   max, // Optional max value for number input
+  required = false,
 }) => {
   const [inputValue, setInputValue] = useState(value || "");
 
@@ -58,7 +60,7 @@ const InputField: React.FC<InputFieldProps> = ({
         id={id}
         type={type}
         placeholder={placeholder}
-        className={`input input-bordered w-full text-sm md:text-base p-2 md:p-4 ${
+        className={`py-0 px-2 input-sm input-bordered !border-zinc-300 w-full text-sm md:text-base md:p-4 md:input ${
           disabled ? "bg-gray-200 cursor-not-allowed" : ""
         }`}
         value={inputValue}
@@ -68,6 +70,8 @@ const InputField: React.FC<InputFieldProps> = ({
         disabled={disabled} // Apply the disabled prop
         min={min} // Pass the min prop
         max={max} // Pass the max prop
+        aria-required={required ? "true" : "false"} 
+        required={required}
       />
       {/* Display the note if it exists */}
       {note && (

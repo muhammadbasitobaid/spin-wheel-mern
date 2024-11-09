@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "build",
+    "outDir": "./build",
+    "rootDir": "./",
     "module": "commonjs",
     "sourceMap": true,
     "moduleResolution": "node",
@@ -30,3 +31,4 @@
   },
   "exclude": ["node_modules", "build"]
 }
+

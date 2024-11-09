@@ -13,7 +13,7 @@ const Login: React.FC = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      window.location.href = "http://localhost:8081/api/auth/google";
+      window.location.href = `${process.env.REACT_APP_API_URL || "http://localhost:8081/api"}/auth/google`;
     } catch (error) {
       console.error("Error during Google login:", error);
     }
@@ -42,7 +42,7 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-2 md:space-y-4" onSubmit={handleSubmit}>
         <InputField
           id="username"
           name="username"
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
         </Button>
       </form>
 
-      <div className="divider text-gray my-8 px-8">or</div>
+      <div className="divider text-gray my-4 md:my-8 px-8">or</div>
 
       <div className="space-y-2 px-8 flex flex-col">
         <Button
@@ -97,9 +97,8 @@ const Login: React.FC = () => {
       </div>
       <div className="mt-8 text-justify text-xs">
         By clicking Log In, you are indicating that you accept our
-        <span className="text-blue font-bold"> Terms</span>,
-        <span className="text-blue font-bold"> Conditions </span> and
-        <span className="text-blue font-bold"> Privacy Policy</span>.
+        <span className="text-blue font-bold"> <a href="/terms-and-conditions"> Terms & Conditions</a> </span>and
+        <span className="text-blue font-bold"><a href="/privacy-policy"> Privacy Policy</a></span>.
       </div>
     </>
   );

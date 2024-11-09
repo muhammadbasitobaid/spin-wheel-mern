@@ -31,18 +31,18 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className={`min-h-screen fixed inset-0 z-50 flex flex-col items-center justify-center ${
+      className={`min-h-screen fixed inset-0 z-50 top-[40px] flex flex-col items-center justify-center ${
         showOverlay && "bg-black bg-opacity-50 backdrop-blur-sm"
       }`}
       onClick={handleOverlayClick}
     >
       <div
-        className={`bg-white p-4 md:p-6 ${
-          showOverlay ? "rounded-custom relative" : "rounded-custom-lg relative"
-        } shadow-3xl w-[90%] md:w-[50%] max-w-[900px] ${className}`}
+        className={`bg-white p-4 pt-8 md:p-10  md:pb-4  ${
+          showOverlay ? "rounded-custom-sm lg:rounded-custom relative" : "rounded-custom lg:rounded-custom-lg relative"
+        } shadow-3xl w-[90%] md:w-[50%] max-w-[900px] max-h-[80%] ${className}`}
       >
         <button
-          className="absolute top-4 right-4 md:top-6 md:right-6 text-black hover:text-gray"
+          className="absolute top-3 right-3 md:top-6 md:right-6 text-black hover:text-gray"
           onClick={() => onClose(null)}
         >
           {useDefaultCloseIcon && (

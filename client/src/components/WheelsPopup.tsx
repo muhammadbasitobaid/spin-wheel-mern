@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { wheels, Wheel } from "src/constants"; // Assuming you import wheels from a constants file
 import {useDispatch} from 'react-redux';
-import { setWheelSnapshot } from "../store/actions/wheel";
+import { setWheelSnapshot, setWheelMetaDataDefaultAction } from "../store/actions/wheel";
 import { useNavigate } from 'react-router-dom';
 import useOutsideClick from "src/hooks/useOutsideClick";
 
@@ -14,6 +14,7 @@ const navigate = useNavigate();
 
   const handleWheelSelection = (wheel: Wheel) => {
     dispatch(setWheelSnapshot({ history: [] })); // Reset history when wheel mode changes
+    dispatch(setWheelMetaDataDefaultAction());
     navigate(wheel.slug); // Update URL slug based on selected wheel
     onClose();
   };
@@ -31,8 +32,8 @@ const navigate = useNavigate();
       {/* List of wheels */}
       <ul className="space-y-2">
         {wheels.map((wheel) => (
-          <li key={wheel.name} onClick={() => handleWheelSelection(wheel)}className="p-2 bg-gray-100 rounded-lg">
-            <span className="font-semibold">{wheel.label} Wheel</span>
+          <li key={wheel.name} onClick={() => handleWheelSelection(wheel)} className="p-2 bg-gray-100 rounded-lg">
+            <span className="font-semibold  child">{wheel.label} Wheel</span>
           </li>
         ))}
       </ul>

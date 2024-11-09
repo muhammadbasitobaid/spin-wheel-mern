@@ -28,6 +28,7 @@ const ModifyModal: React.FC = () => {
       description: formValues.description,
       popUpMessage: formValues.popUpMessage,
     };
+    console.log('wheel: ', wheel);
     if (!user.user) {
       toast.error("Please login to save changes");
       return;
@@ -84,6 +85,7 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               value={formValues.name}
               placeholder="Enter name"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="mb-4">
@@ -93,6 +95,7 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               value={formValues.description}
               placeholder="Enter description"
               onChange={handleChange}
+              required
             />
           </div>
           <div>

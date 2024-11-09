@@ -31,7 +31,7 @@ const Configurator = () => {
     >
       <div className="mb-8 w-full">
         <Tab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-        <div className="w-full">
+        <div className="max-h-[95%] w-full overflow-y-scroll ">
           {tabs.find((tab) => tab.id === activeTab)!.content}
         </div>
       </div>

@@ -8,6 +8,7 @@ export const SET_HISTORY = "SET_HISTORY";
 export const SET_SELECTED_WHEEL = "SET_SELECTED_WHEEL";
 export const SET_SELECTED_OPTION = "SET_SELECTED_OPTION"
 export const SET_WHEEL_SNAPSHOT = "SET_WHEEL_SNAPSHOT";
+export const SET_WHEEL_META_DATA_DEFAULT_ACTION = "SET_WHEEL_META_DATA_DEFAULT_ACTION";
 export const SET_INPUT_NUMBERS = "SET_INPUT_NUMBERS";
 export const SET_WHEEL_LIST = 'SET_WHEEL_LIST';
 export const SET_ACTIVE_MODAL = "SET_ACTIVE_MODAL";
@@ -170,6 +171,10 @@ interface SetWheelSnapshotAction {
   payload:  Partial<WheelSnapshot>;
 }
 
+interface SetWheelMetaDataDefaultAction {
+  type: typeof SET_WHEEL_META_DATA_DEFAULT_ACTION;
+}
+
 export type WheelActions =
   | SetVolumeAction
   | SetStateAction 
@@ -194,7 +199,8 @@ export type WheelActions =
   | SetWheelSnapshotAction 
   | SetWheelDetailsAction
   | SetFullScreenMode
-  | SetWheelFormValuesAction;
+  | SetWheelFormValuesAction
+  | SetWheelMetaDataDefaultAction;
 
 export const resetHistory = (): ResetHistoryAction => ({
   type: RESET_HISTORY,
@@ -335,3 +341,8 @@ export const setWheelFormValues = (name: string, description: string, popUpMessa
   type: SET_WHEEL_FORM_VALUES,
   payload: { name, description, popUpMessage },
 });
+
+
+export const setWheelMetaDataDefaultAction = () => ({
+  type: SET_WHEEL_META_DATA_DEFAULT_ACTION
+})

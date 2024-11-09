@@ -21,13 +21,14 @@ import {
   SET_WHEEL_FORM_VALUES,
   SET_FULL_SCREEN_MODE,
   SET_INPUT_NUMBERS,
+  SET_WHEEL_META_DATA_DEFAULT_ACTION,
   WheelActions,
 } from "../actions/wheel";
 
 import { getDefaultWheelName } from "src/utils"
 
 
-import { CustomOptionsWheel, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, } from '../../constants'
+import { CustomOptionsWheel, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, DEFAULT_WHEEL_METADATA } from '../../constants'
 
 import {
   THEMES,
@@ -69,8 +70,8 @@ export const initialState: WheelState = {
   result: null,
   selectedTheme: THEMES[0],
   spinConfig: defaultSpinConfig,
-  description: "",
-  popUpMessage: "Congratulations!",
+  description: DEFAULT_WHEEL_METADATA.description,
+  popUpMessage: DEFAULT_WHEEL_METADATA.popUpMessage,
   fullScreenMode: false
 };
 
@@ -98,11 +99,21 @@ const wheelReducer = (
         wheelSnapshot: { ...state.wheelSnapshot, inputNumbers: action.payload },
       };
 
+    case SET_WHEEL_META_DATA_DEFAULT_ACTION:
+      return {
+          ...state,
+            _id: DEFAULT_WHEEL_METADATA._id,
+            description: DEFAULT_WHEEL_METADATA.description,
+            popUpMessage: DEFAULT_WHEEL_METADATA.popUpMessage,
+            name: getDefaultWheelName()
+      }
+
     case SET_SELECTED_WHEEL:
       return {
         ...state,
         selectedWheel: action.payload,
       };
+
     case SET_WHEEL_LIST:
       return {
         ...state,

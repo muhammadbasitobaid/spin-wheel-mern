@@ -23,6 +23,7 @@ export interface WheelSnapshot {
   selectedOption?: string;
   inputNumbers?: number;
   history: string[];
+  options?: string[];
   lowerNumber?: number;
   highestNumber?: number;
   excludeNumbers?: string;
@@ -86,6 +87,7 @@ const wheelSnapshotSchema = new Schema<WheelSnapshot>({
   interval: { type: Number, required: false },
   customLetterList: { type: String, required: false },
   casing: { type: String, required: false },
+  options: { type: [String], required: false },
 });
 
 const wheelDocumentSchema = new Schema<WheelDocument>({

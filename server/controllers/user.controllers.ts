@@ -136,23 +136,42 @@ export const saveUserWheel = async (
   try {
     const userId = req.params.userId;
     const wheelData = req.body;
+
+    // Find user by ID
     const user = await User.findById(userId);
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
     }
-    const newWheel = new Wheel(wheelData);
-    user.wheels.push(newWheel._id); // Push only the wheel ID to the user's wheels array
-    await newWheel.save();
-    await user.save();
-    res
-      .status(200)
-      .json({ message: "Wheel saved successfully", wheel: newWheel });
+
+    // Check if the wheel ID already exists in the request body
+    if (wheelData._id) {
+      // If wheel with the given ID exists, update it
+      const existingWheel = await Wheel.findByIdAndUpdate(
+        wheelData._id,
+        wheelData,
+        { new: true } // Return the updated wheel
+      );
+
+      if (!existingWheel) {
+        res.status(404).json({ message: "Wheel not found" });
+        return;
+      }
+
+      res.status(200).json({ message: "Wheel updated successfully", wheel: existingWheel });
+    } else {
+      // If no wheel ID exists, create a new wheel
+      const newWheel = new Wheel(wheelData);
+      user.wheels.push(newWheel._id); // Push only the wheel ID to the user's wheels array
+
+      await newWheel.save();
+      await user.save();
+
+      res.status(200).json({ message: "Wheel created and saved successfully", wheel: newWheel });
+    }
   } catch (error: any) {
     LoggerService.log.error(error);
-    res
-      .status(500)
-      .json({ message: "Error saving wheel", error: error.message });
+    res.status(500).json({ message: "Error saving wheel", error: error.message });
   }
 };
 

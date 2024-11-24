@@ -24,7 +24,7 @@ const Tab: React.FC<TabProps> = ({
   };
 
   return (
-    <div role="tablist" className={`tabs tabs-boxed p-0 mb-2 md:mb-6 ${className}`}>
+    <div role="tablist" className={`tabs tabs-boxed p-0 mb-6 ${className}`}>
       {tabs.map((tab, index) => (
         <button
           key={tab.id}

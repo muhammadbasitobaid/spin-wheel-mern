@@ -3,6 +3,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  darkMode: false,
   theme: {
     extend: {
       colors: {
@@ -81,6 +82,9 @@ module.exports = {
     animation: {
       spin: "spin 0.7s linear infinite both",
     },
+  },
+  daisyui: {
+    themes: ["light"],
   },
   plugins: [require("daisyui")],
 };

@@ -79,7 +79,7 @@ export default function NavBar() {
 
 
   return (
-    <nav className="bg-base-100 px-6 lg:px-10 sticky top-0 shadow-lg z-[999]">
+    <nav className="bg-white px-6 lg:px-10 sticky top-0 shadow-lg z-[999]">
     <div className="navbar max-w-[1360px] mx-auto">
       <div className="navbar-start w-auto">
         <div className="btn btn-ghost text-xl flex p-0 gap-0 !h-auto">

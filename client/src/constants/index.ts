@@ -105,7 +105,7 @@ export const YES_NO_MAYBE_OPTION = "Yes, No or Maybe";
 
 export const YesNoWheel: Wheel = {
     name: "yes-no-wheel",
-    label: "YES or NO",
+    label: "Yes or No",
     options: [YES_NO_OPTION, YES_NO_MAYBE_OPTION],
     slug: "/yes-or-no-wheel"
 };

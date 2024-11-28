@@ -7,6 +7,7 @@
   "author": "muhammadbasitobaid",
   "license": "MIT",
   "dependencies": {
+    "@fireworks-js/react": "^2.10.8",
     "@hookform/resolvers": "^2.9.7",
     "@react-oauth/google": "^0.12.1",
     "axios": "^0.27.2",

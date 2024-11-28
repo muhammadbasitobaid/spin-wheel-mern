@@ -5,7 +5,6 @@ import {
   ConfettiTypes,
   setConfetti,
   setConfettiType,
-  setSound,
   setSoundType,
   SoundTypes,
 } from "src/store/actions/wheel";
@@ -15,15 +14,11 @@ import Checkbox from "../common/Checkbox";
 const ConfettiAndSound: React.FC = () => {
   const dispatch = useDispatch();
 
-  const { confetti, sound, confettiType, soundType } = useSelector(
+  const { confetti, confettiType, soundType } = useSelector(
     (state: RootState) => state.wheel.spinConfig
   );
   const handleConfettiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setConfetti(e.target.checked));
-  };
-
-  const handleSoundOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSound(e.target.checked));
   };
 
   const handleConfettiTypeChange = (value: ConfettiTypes) => {
@@ -52,16 +47,10 @@ const ConfettiAndSound: React.FC = () => {
       </div>
       <div className="grid grid-cols-2 gap-4 mt-4">
         <Checkbox
-          label="Confetti On"
+          label="Animation On"
           name="confetti"
           checked={confetti}
           onChange={handleConfettiChange}
-        />
-        <Checkbox
-          label="Sound On"
-          name="sound"
-          checked={sound}
-          onChange={handleSoundOnChange}
         />
       </div>
     </div>

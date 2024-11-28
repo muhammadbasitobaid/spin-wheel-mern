@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Modal from "./common/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveModal } from "src/store/actions/wheel";
@@ -6,42 +6,52 @@ import { RootState } from "src/store/store";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
 import { Howl } from "howler";
+import { Fireworks } from "@fireworks-js/react";
+import type { FireworksHandlers } from "@fireworks-js/react";
 
 const ResultModal: React.FC = () => {
   const dispatch = useDispatch();
-  const { result, spinConfig, popUpMessage } = useSelector(
+  const { result,  popUpMessage } = useSelector(
     (state: RootState) => state.wheel
   );
-  const { confetti } = spinConfig;
+
+  const { confetti, confettiType } = useSelector(
+    (state: RootState) => state.wheel.spinConfig
+  );
   const { width, height } = useWindowSize();
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
+  const fireworksRef = useRef<FireworksHandlers>(null);
 
   useEffect(() => {
     if (confetti) {
-      setShowConfetti(true);
+      setShowAnimation(true);
+
       const sound = new Howl({
         src: ["/assets/sounds/confetti.mp3"],
       });
+
+      console.log('confettiType', confettiType)
+
+      if (confettiType === "Fireworks") {
+        fireworksRef.current?.start();
+      }else{
       sound.play();
+      }
 
       const timer = setTimeout(() => {
-        setShowConfetti(false);
-        // dispatch(setConfetti(false));
+        setShowAnimation(false);
         sound.stop();
-      }, 4000); // Confetti will be shown for 5 seconds
+        fireworksRef.current?.stop();
+      }, 4000); // Animation will last for 4 seconds
 
       return () => {
         clearTimeout(timer);
         sound.stop();
+        fireworksRef.current?.stop();
       };
     }
     return () => {};
-  }, [confetti, dispatch]);
-
-  // Debugging useEffect to log state changes
-  useEffect(() => {
-    console.log("Global state: ", { result, spinConfig });
-  }, [result, spinConfig]);
+  }, [confetti, confettiType]);
 
   return (
     <Modal
@@ -51,17 +61,41 @@ const ResultModal: React.FC = () => {
       showDoneButton
       useDefaultCloseIcon
     >
-      {showConfetti && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <Confetti
-            width={width}
-            height={height}
-            tweenDuration={1000}
-            gravity={0.7}
-            friction={1}
-            initialVelocityY={20}
-          />
-        </div>
+      {showAnimation && (
+        <>
+          {confettiType === "Confetti" && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+              <Confetti
+                width={width}
+                height={height}
+                tweenDuration={1000}
+                gravity={0.7}
+                friction={1}
+                initialVelocityY={20}
+              />
+            </div>
+          )}
+          {confettiType === "Fireworks" && (
+            <Fireworks
+              ref={fireworksRef}
+              options={{
+                rocketsPoint: { min: 100, max: 100 },
+                opacity: 1,
+                particles: 200,
+                sound: {enabled: true, files: ["/assets/sounds/explosion0.mp3","/assets/sounds/explosion1.mp3","/assets/sounds/explosion2.mp3",]}
+              }}
+              style={{
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                position: "fixed",
+                background: "transparent",
+                zIndex: 50,
+              }}
+            />
+          )}
+        </>
       )}
       <div className="mb-7 flex flex-col items-center justify-center space-y-4 mx-auto">
         {popUpMessage && (

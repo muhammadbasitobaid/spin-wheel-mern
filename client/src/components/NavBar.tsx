@@ -8,6 +8,7 @@ import WheelsPopup from "./WheelsPopup";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/store";
 import useOutsideClick from "src/hooks/useOutsideClick";
+import { useNavigate } from "react-router-dom";
 
 interface MenuItemProps {
   label?: string;
@@ -52,6 +53,7 @@ export default function NavBar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   useOutsideClick(dropdownRef, () => setIsDropdownOpen(false));
+  const navigate = useNavigate();
 
   const { selectedWheel } = useSelector(
     (state: RootState) => state.wheel
@@ -82,7 +84,9 @@ export default function NavBar() {
     <nav className="bg-white px-6 lg:px-10 sticky top-0 shadow-lg z-[999]">
     <div className="navbar max-w-[1360px] mx-auto">
       <div className="navbar-start w-auto">
-        <div className="btn btn-ghost text-xl flex p-0 gap-0 !h-auto">
+        <div className="btn btn-ghost text-xl flex p-0 gap-0 !h-auto"
+onClick={() => navigate("/")}
+        >
           <img
             src="/assets/icons/logo.svg"
             alt="SVG"

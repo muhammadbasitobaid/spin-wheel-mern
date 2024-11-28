@@ -221,8 +221,7 @@ export const LetterWheelControls = () => {
       case CUSTOM_LETTERS_OPTION:
         return customLetters
           .split(",")
-          .map(letter => letter.trim())
-          .filter(letter => letter.length > 0);
+          .map(letter => letter.trim()[0]);
       default:
         return [];
     }

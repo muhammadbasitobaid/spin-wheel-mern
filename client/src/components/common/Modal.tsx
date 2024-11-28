@@ -1,6 +1,7 @@
 import React, { Dispatch, ReactNode, SetStateAction, MouseEvent } from "react";
 import Button from "./Button";
 import { ModalNames } from "src/pages/HomePage";
+import clsx from "clsx";
 
 interface ModalProps {
   isOpen: boolean;
@@ -21,7 +22,6 @@ const Modal: React.FC<ModalProps> = ({
   children,
   className = "",
 }) => {
-  if (!isOpen) return null;
 
   const handleOverlayClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -29,11 +29,22 @@ const Modal: React.FC<ModalProps> = ({
     }
   };
 
+  // const delayedOnClose = () => setTimeout(() => {
+  //   
+  //     onClose(null);
+  // }, 500);
+
+
   return (
     <div
-      className={`min-h-screen fixed inset-0 z-50 top-[40px] flex flex-col items-center justify-center ${
-        showOverlay && "bg-black bg-opacity-50 backdrop-blur-sm"
-      }`}
+      className={clsx(
+        "opacity-0 min-h-screen fixed inset-0 z-50 top-[40px] flex flex-col items-center justify-center transition-opacity",
+        {
+          "animate-fadeInFast": isOpen,
+          "animate-fadeOutFast": !isOpen,
+          "bg-black bg-opacity-50 backdrop-blur-sm": showOverlay,
+        }
+      )}
       onClick={handleOverlayClick}
     >
       <div

@@ -17,8 +17,10 @@ module.exports = {
       },
       animation: {
         flick: "flick 1s ease-out forwards infinite",
-        fadeOut: "fadeOut 1s ease-in-out forwards", // Custom fade-out animation
-        fadeIn: "fadeIn 1s ease-in-out forwards 1s",  // Custom fade-in animation
+        fadeOut: "fadeOut 1s ease-in-out forwards",
+        fadeIn: "fadeIn 1s ease-in-out forwards 1s",
+        fadeOutFast: "fadeOut 0.5s ease-in-out forwards", 
+        fadeInFast: "fadeIn 0.5s ease-in-out forwards",
       },
       keyframes: {
         flick: {

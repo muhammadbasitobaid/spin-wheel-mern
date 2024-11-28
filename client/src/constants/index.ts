@@ -94,11 +94,11 @@ export interface WheelSnapshot {
 
 export const MAX_INPUT_NUMBER = 5;
 
-export const ALPHABETS_OPTION = "A-Z / a-z;eg: A,B,C,D"
-export const CONSONANT_OPTION = "Consonant;eg: B,C,D,F"
-export const VOWEL_OPTION = "Vowel;eg:A,E,I,O"
-export const LETTERS_OPTION = "A-Z + a-z;eg:A,B,a,b"
-export const CUSTOM_LETTERS_OPTION = "Custom Letters;eg: Picker"
+export const ALPHABETS_OPTION = "A-Z / a-z"
+export const CONSONANT_OPTION = "Consonant"
+export const VOWEL_OPTION = "Vowel"
+export const LETTERS_OPTION = "A-Z + a-z"
+export const CUSTOM_LETTERS_OPTION = "Custom Letters"
 
 export const YES_NO_OPTION = "Yes or No";
 export const YES_NO_MAYBE_OPTION = "Yes, No or Maybe";
@@ -110,10 +110,12 @@ export const YesNoWheel: Wheel = {
     slug: "/yes-or-no-wheel"
 };
 
+export const initCustomWheelOptions = ["Hank", "Walter", "Jesse", "Nacho", "Saul"];
+
 export const CustomOptionsWheel: Wheel = {
     name: "custom-options-wheel",
     label: "Custom Options",
-    options: ["Hank", "Walter", "Jesse", "Nacho", "Saul"],
+    options: initCustomWheelOptions,
     slug: "/"
 };
 

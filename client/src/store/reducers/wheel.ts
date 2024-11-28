@@ -22,6 +22,7 @@ import {
   SET_FULL_SCREEN_MODE,
   SET_INPUT_NUMBERS,
   SET_WHEEL_META_DATA_DEFAULT_ACTION,
+  WHEEL_RESET,
   WheelActions,
 } from "../actions/wheel";
 
@@ -98,6 +99,13 @@ const wheelReducer = (
         ...state,
         wheelSnapshot: { ...state.wheelSnapshot, inputNumbers: action.payload },
       };
+
+
+    case WHEEL_RESET:
+      return {
+        ...state,
+        wheelSnapshot: { ...state.wheelSnapshot, options: state.selectedWheel.options, history: [] },
+      }
 
     case SET_WHEEL_META_DATA_DEFAULT_ACTION:
       return {

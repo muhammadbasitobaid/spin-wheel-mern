@@ -14,22 +14,18 @@ import {
   CUSTOM_LETTERS_OPTION ,
 YES_NO_OPTION,
 DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL,
-// NUMBER_WHEEL_LOWEST_PORTION,
-// NUMBER_WHEEL_HIGHEST_PORTION,
-// MAX_INPUT_NUMBER
 } from "src/constants";
 import { RootState } from "src/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  resetHistory,
   setActiveModal,
   // setinputNumbers,
   setWheelList,
   setWheelSnapshot,
   setFullScreenMode,
+  resetWheel
 } from "src/store/actions/wheel";
 import InputField from "./common/InputField";
-// import { getDefaultWheelName } from "src/utils";
 
 export const CustomOptionsWheelControls = () => {
   const dispatch = useDispatch();
@@ -404,7 +400,7 @@ export const EditWheel = () => {
                   title={`Fullscreen (feature currently unavailable!)`}
                 />
               </button>
-              <button className="" onClick={() => dispatch(resetHistory())}>
+              <button className="" onClick={() => dispatch(resetWheel())}>
                 <img
                   src="/assets/icons/refresh.svg"
                   alt="Show"

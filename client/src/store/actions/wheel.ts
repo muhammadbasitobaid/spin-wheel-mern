@@ -7,6 +7,7 @@ export const SET_STATE = "SET_STATE";
 export const SET_HISTORY = "SET_HISTORY";
 export const SET_SELECTED_WHEEL = "SET_SELECTED_WHEEL";
 export const SET_SELECTED_OPTION = "SET_SELECTED_OPTION"
+export const WHEEL_RESET = "WHEEL_RESET";
 export const SET_WHEEL_SNAPSHOT = "SET_WHEEL_SNAPSHOT";
 export const SET_WHEEL_META_DATA_DEFAULT_ACTION = "SET_WHEEL_META_DATA_DEFAULT_ACTION";
 export const SET_INPUT_NUMBERS = "SET_INPUT_NUMBERS";
@@ -55,6 +56,11 @@ export interface SetSelectedWheelAction {
 export interface SetSelectedOptionAction {
   type: typeof SET_SELECTED_OPTION;
   payload: string;
+}
+
+
+export interface ResetWheelAction {
+  type: typeof WHEEL_RESET;
 }
 
 export interface SetInputNumbersAction {
@@ -200,10 +206,16 @@ export type WheelActions =
   | SetWheelDetailsAction
   | SetFullScreenMode
   | SetWheelFormValuesAction
-  | SetWheelMetaDataDefaultAction;
+  | SetWheelMetaDataDefaultAction
+  | ResetWheelAction;
 
 export const resetHistory = (): ResetHistoryAction => ({
   type: RESET_HISTORY,
+});
+
+
+export const resetWheel = (): ResetWheelAction => ({
+  type: WHEEL_RESET,
 });
 
 export const setVolume = (volume: number): SetVolumeAction => ({

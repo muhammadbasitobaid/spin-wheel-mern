@@ -22,7 +22,7 @@ const navigate = useNavigate();
   return (
     <div
       ref={popupRef}
-      className="absolute right-0 mt-2 p-6 w-72 bg-white rounded-custom-sm shadow-lg z-10"
+      className="absolute right-0 mt-2 p-6 w-52 top-16 md:w-72 bg-white rounded-custom-sm shadow-lg z-10"
     >
       <button className="absolute top-2 right-2 mt-2 mr-2" onClick={onClose}>
         <img src="/assets/icons/close.svg" alt="close" width={16} />

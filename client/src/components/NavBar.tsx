@@ -18,6 +18,7 @@ interface MenuItemProps {
   value: ModalNames;
   setActiveModal: (modal: string) => void;
   disabled?: boolean;
+  className?: string;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
@@ -28,9 +29,10 @@ const MenuItem: React.FC<MenuItemProps> = ({
   value,
   setActiveModal,
   disabled = false,
+  className = "child"
 }) => (
-  <li>
-    <div onClick={() => !disabled && value && setActiveModal(value)}>
+  <li className={className}>
+    <div onClick={() => !disabled && value && setActiveModal(value)} className={className}>
       <img
         src={svgSrc}
         alt={label || "label wasn't provided"}
@@ -41,7 +43,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         }`}
         title={disabled ? `${label} (feature currently unavailable!)` : label}
       />
-      <span className="block md:hidden lg:block">{label}</span>
+      <span className="block md:hidden lg:block child">{label}</span>
     </div>
   </li>
 );
@@ -70,6 +72,8 @@ export default function NavBar() {
 
 
   const toggleWheelsPopup = () => {
+
+    setIsDropdownOpen(false);
     setIsWheelsPopupOpen(!isWheelsPopupOpen);
     if(isSharePopupOpen) setIsSharePopupOpen(false);
   };
@@ -141,9 +145,10 @@ onClick={() => navigate("/")}
               disabled={false}
               setActiveModal={toggleWheelsPopup}
             />
-            {isWheelsPopupOpen && <WheelsPopup onClose={closeWheelsPopup} />}
             </ul>
           )}
+
+            {isWheelsPopupOpen && <WheelsPopup onClose={closeWheelsPopup} />}
         </div>
         <ul>
           <div className="relative">

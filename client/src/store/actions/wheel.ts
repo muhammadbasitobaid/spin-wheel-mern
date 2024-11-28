@@ -7,6 +7,7 @@ export const SET_STATE = "SET_STATE";
 export const SET_HISTORY = "SET_HISTORY";
 export const SET_SELECTED_WHEEL = "SET_SELECTED_WHEEL";
 export const SET_SELECTED_OPTION = "SET_SELECTED_OPTION"
+export const SET_SHARE_LINK = "SET_SHARE_LINK"
 export const WHEEL_RESET = "WHEEL_RESET";
 export const SET_WHEEL_SNAPSHOT = "SET_WHEEL_SNAPSHOT";
 export const SET_WHEEL_META_DATA_DEFAULT_ACTION = "SET_WHEEL_META_DATA_DEFAULT_ACTION";
@@ -61,6 +62,12 @@ export interface SetSelectedOptionAction {
 
 export interface ResetWheelAction {
   type: typeof WHEEL_RESET;
+}
+
+
+export interface SetShareLinkAction {
+  type: typeof SET_SHARE_LINK;
+  payload: string;
 }
 
 export interface SetInputNumbersAction {
@@ -207,6 +214,7 @@ export type WheelActions =
   | SetFullScreenMode
   | SetWheelFormValuesAction
   | SetWheelMetaDataDefaultAction
+  | SetShareLinkAction
   | ResetWheelAction;
 
 export const resetHistory = (): ResetHistoryAction => ({
@@ -216,6 +224,12 @@ export const resetHistory = (): ResetHistoryAction => ({
 
 export const resetWheel = (): ResetWheelAction => ({
   type: WHEEL_RESET,
+});
+
+
+export const setShareLink = (shareLink: string): SetShareLinkAction=> ({
+  type: SET_SHARE_LINK,
+  payload: shareLink
 });
 
 export const setVolume = (volume: number): SetVolumeAction => ({

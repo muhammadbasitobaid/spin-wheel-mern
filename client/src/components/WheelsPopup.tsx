@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { wheels, Wheel, YesNoWheel } from "src/constants"; // Assuming you import wheels from a constants file
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from "src/store/store";
+import { useDispatch } from 'react-redux';
 import { setWheelSnapshot, setWheelMetaDataDefaultAction, setFullScreenMode } from "../store/actions/wheel";
 import { useNavigate } from 'react-router-dom';
 import useOutsideClick from "src/hooks/useOutsideClick";
@@ -12,11 +11,10 @@ const navigate = useNavigate();
   const popupRef = useRef<HTMLDivElement>(null);
   useOutsideClick(popupRef, onClose);
   const dispatch = useDispatch();
-    const { selectedWheel } = useSelector((state: RootState) => state.wheel);
 
   const handleWheelSelection = (wheel: Wheel) => {
     dispatch(setWheelSnapshot({ history: [] })); // Reset history when wheel mode changes
-    if(selectedWheel.name === "yes-no-wheel"){
+    if(wheel.name === "yes-no-wheel"){
 
     dispatch(setWheelSnapshot({selectedOption: YesNoWheel.options[0]} ))
     }

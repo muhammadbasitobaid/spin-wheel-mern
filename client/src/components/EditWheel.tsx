@@ -30,6 +30,7 @@ import InputField from "./common/InputField";
 export const CustomOptionsWheelControls = () => {
   const dispatch = useDispatch();
   const { wheelSnapshot } = useSelector((state: RootState) => state.wheel);
+
   const options = wheelSnapshot?.options || [];
   const [newOption, setNewOption] = useState<string>("");
 

@@ -71,7 +71,7 @@ useEffect(() => {
     }, 1000); // Duration should match fadeOut
   }else{
 
-      setHideSmallScreen(false);
+    setHideSmallScreen(false);
     setInitiateAnimation(false); 
   }
 }, [fullScreenMode]);

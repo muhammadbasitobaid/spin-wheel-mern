@@ -30,7 +30,7 @@ import {
 import { getDefaultWheelName } from "src/utils"
 
 
-import { CustomOptionsWheel, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, DEFAULT_WHEEL_METADATA } from '../../constants'
+import { CustomOptionsWheel, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, DEFAULT_WHEEL_METADATA, UPPERCASE } from '../../constants'
 
 import {
   THEMES,
@@ -68,6 +68,7 @@ export const initialState: WheelState = {
     inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL,
     options: CustomOptionsWheel?.options,
     history: [],
+    casing: UPPERCASE
   },
   activeModal: null,
   result: null,
@@ -112,7 +113,7 @@ const wheelReducer = (
     case WHEEL_RESET:
       return {
         ...state,
-        wheelSnapshot: { ...state.wheelSnapshot, options: state.selectedWheel.options, history: [] },
+        wheelSnapshot: { ...state.wheelSnapshot, options: state.selectedWheel.options, selectedOption: state.selectedWheel?.defaultOption || state.selectedWheel.options[0] , history: [] },
       }
 
     case SET_WHEEL_META_DATA_DEFAULT_ACTION:

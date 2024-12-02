@@ -52,4 +52,10 @@ function getDefaultWheelName() {
  return `Wheel ${uuidv4()}`;
 }
 
-export { getLabelColor, getBgColorForLabel, getRandomYesOrNo, getDefaultWheelName };
+
+const generateAlphabetArray = (isUpperCase: boolean) => {
+  const alphabet = Array.from(Array(26)).map((_, i) => String.fromCharCode(i + 65)); // A to Z
+  return isUpperCase ? alphabet : alphabet.map(letter => letter.toLowerCase());
+};
+
+export { getLabelColor, getBgColorForLabel, getRandomYesOrNo, getDefaultWheelName, generateAlphabetArray };

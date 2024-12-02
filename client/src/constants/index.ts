@@ -1,6 +1,8 @@
 import { ModalNames } from "src/pages/HomePage";
 
 export const NUMBER_WHEEL_HIGHEST_PORTION = 1000;
+export const  UPPERCASE = "UPPERCASE";
+export const DEFAULT_LETTER_WHEEL_CASING = UPPERCASE;
 export const NUMBER_WHEEL_LOWEST_PORTION = 1;
 export const DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL = 3;
 export const DEFAULT_VOLUME = 50;
@@ -76,6 +78,7 @@ export interface Wheel {
   name: string;
   label: string;
   options: string[];
+  defaultOption?: string;
   slug: string;
 }
 
@@ -126,10 +129,13 @@ export const NumberWheel: Wheel = {
     slug: "/random-number-wheel"
 };
 
+export const letterWheelDefaultOption = ALPHABETS_OPTION;
+
 export const LetterWheel: Wheel = {
     name: "letter-wheel",
     label: "Letter",
-    options: [ALPHABETS_OPTION, CONSONANT_OPTION, VOWEL_OPTION, LETTERS_OPTION, CUSTOM_LETTERS_OPTION],
+    options: [letterWheelDefaultOption, CONSONANT_OPTION, VOWEL_OPTION, LETTERS_OPTION, CUSTOM_LETTERS_OPTION],
+    defaultOption: letterWheelDefaultOption,
     slug: "/random-letter-generator"
 };
 

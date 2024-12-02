@@ -22,23 +22,16 @@ const Modal: React.FC<ModalProps> = ({
   children,
   className = "",
 }) => {
-
   const handleOverlayClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose(null);
     }
   };
 
-  // const delayedOnClose = () => setTimeout(() => {
-  //   
-  //     onClose(null);
-  // }, 500);
-
-
   return (
     <div
       className={clsx(
-        "opacity-0 min-h-screen fixed inset-0 z-50 top-[40px] flex flex-col items-center justify-center transition-opacity",
+        "opacity-0 min-h-screen fixed inset-0 z-50 top-[40px] flex items-center justify-center transition-opacity",
         {
           "animate-fadeInFast": isOpen,
           "animate-fadeOutFast": !isOpen,
@@ -48,8 +41,10 @@ const Modal: React.FC<ModalProps> = ({
       onClick={handleOverlayClick}
     >
       <div
-        className={`bg-white p-4 pt-8 md:p-10  md:pb-4  ${
-          showOverlay ? "rounded-custom-sm lg:rounded-custom relative" : "rounded-custom lg:rounded-custom-lg relative"
+        className={`bg-white p-4 pt-8 md:p-10 md:pb-4 ${
+          showOverlay
+            ? "rounded-custom-sm lg:rounded-custom relative"
+            : "rounded-custom lg:rounded-custom-lg relative"
         } shadow-3xl w-[90%] md:w-[50%] max-w-[900px] max-h-[80%] ${className}`}
       >
         <button
@@ -65,7 +60,12 @@ const Modal: React.FC<ModalProps> = ({
             />
           )}
         </button>
-        <div className="text-center h-full flex">{children}</div>
+        <div className="text-center h-full flex flex-col">
+          {/* Scrollable Content Container */}
+          <div className="overflow-y-auto max-h-[calc(100vh-220px)] px-2">
+            {children}
+          </div>
+        </div>
       </div>
 
       {showDoneButton && (

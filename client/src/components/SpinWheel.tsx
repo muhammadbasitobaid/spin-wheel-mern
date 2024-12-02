@@ -119,7 +119,7 @@ const wheelItems: WheelListItem[] = useMemo(() => {
           0,
           2 * Math.PI
         );
-        shadowCtx.fillStyle = "rgba(0, 0, 0, 0.1)";
+        shadowCtx.fillStyle = "rgba(0, 0, 0, 0.3)";
         shadowCtx.filter = "blur(15px)";
         shadowCtx.fill();
       }
@@ -207,7 +207,7 @@ const wheelItems: WheelListItem[] = useMemo(() => {
   return (
     <div className="mt-4 md:mt-0 flex flex-col">
       <div className="relative flex justify-center items-center w-full h-[320px] sm:h-[380px] md:h-[450px] lg:h-[550px] lg:w-full">
-        <canvas ref={shadowCanvas} className="absolute w-[120%] h-[120%]"></canvas>
+        <canvas ref={shadowCanvas} className="absolute h-full w-full lg:w-[120%] lg:h-[120%]"></canvas>
         <div
           id="wheel"
           ref={container}

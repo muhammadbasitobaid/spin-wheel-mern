@@ -43,7 +43,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         }`}
         title={disabled ? `${label} (feature currently unavailable!)` : label}
       />
-      <span className="block md:hidden lg:block child">{label}</span>
+      <span className="block lg:hidden lg:block child">{label}</span>
     </div>
   </li>
 );

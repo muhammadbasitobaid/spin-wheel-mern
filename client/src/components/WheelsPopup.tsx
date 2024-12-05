@@ -18,9 +18,10 @@ const navigate = useNavigate();
 
     dispatch(setWheelSnapshot({selectedOption: YesNoWheel.options[0]} ))
     }
+    dispatch(setWheelSnapshot({customLetterList: ""} ))
     dispatch(setWheelMetaDataDefaultAction());
     dispatch(setFullScreenMode(false));
-    navigate(wheel.slug); // Update URL slug based on selected wheel
+    navigate(wheel.slug); 
     onClose();
   };
 

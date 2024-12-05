@@ -31,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <div
       className={clsx(
-        "opacity-0 min-h-screen fixed inset-0 z-50 top-[40px] flex items-center justify-center transition-opacity",
+        "opacity-0 min-h-screen fixed inset-0 z-50 top-[40px] flex flex-col items-center justify-center transition-opacity",
         {
           "animate-fadeInFast": isOpen,
           "animate-fadeOutFast": !isOpen,

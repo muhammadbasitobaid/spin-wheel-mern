@@ -42,7 +42,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   const generateShareLink = (id: string) => {
-    const link = `${process.env.REACT_APP_BASE_URL ?? "http://localhost:3000"}/?id=${id}`;
+    const link = `${process.env.PUBLIC_URL ?? "http://localhost:3000"}/?id=${id}`;
     dispatch(setShareLink(link)); // Update the Redux store with the new link
   };
 

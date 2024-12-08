@@ -402,7 +402,7 @@ export const EditWheel = () => {
         <div className=" px-4 py-7 rounded-custom border border-light-gray w-full bg-gradient-to-b from-gray-alpha to-white">
           <div className="w-full flex justify-between">
             <div className="flex-1 text-xl font-semibold leading-normal mb-1.5 lg:text-3xl">
-              Edit Wheel
+              Customize Wheel
             </div>
             <div className="flex gap-2 items-center">
               <button className="hidden lg:block" onClick={()=> dispatch(setFullScreenMode(true))}>

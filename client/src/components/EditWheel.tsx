@@ -94,7 +94,7 @@ export const CustomOptionsWheelControls = () => {
       </div>
 
       {/* List of current options with actions */}
-      <div className="option-list space-y-2">
+      <div className="option-list space-y-2 max-h-64 overflow-y-auto">
         {options.map((option, index) => (
           <div key={index} className="flex items-center space-x-2">
             <span className="flex-1">{option}</span>

@@ -61,7 +61,7 @@ const InputField: React.FC<InputFieldProps> = ({
         type={type}
         placeholder={placeholder}
         className={`py-0 px-2 input-sm input-bordered !border-zinc-300 w-full text-sm md:text-base md:p-4 md:input ${
-          disabled ? "bg-gray-200 cursor-not-allowed" : ""
+          disabled ? "bg-gray-200 cursor-not-allowed" : " !bg-white"
         }`}
         value={inputValue}
         onChange={handleInputChange}

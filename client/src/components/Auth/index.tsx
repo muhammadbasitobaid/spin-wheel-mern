@@ -4,7 +4,7 @@ import { Tab } from "../common/Tab";
 import Login from "./Login";
 import Signup from "./Signup";
 import { useSelector } from "react-redux";
-import { setActiveModal } from "src/store/actions/wheel";
+import { setActiveModal, setShareLink } from "src/store/actions/wheel";
 import { attemptLogout } from "src/store/thunks/auth";
 import { RootState } from "src/store/store";
 import { useNavigate } from "react-router";
@@ -32,6 +32,7 @@ const Auth = () => {
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
 
   const handleLogout = () => {
+    dispatch(setShareLink(""))
     dispatch(attemptLogout(navigate));
   };
 

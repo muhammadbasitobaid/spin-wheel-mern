@@ -3,6 +3,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  darkMode: false,
   theme: {
     extend: {
       colors: {
@@ -16,8 +17,10 @@ module.exports = {
       },
       animation: {
         flick: "flick 1s ease-out forwards infinite",
-        fadeOut: "fadeOut 1s ease-in-out forwards", // Custom fade-out animation
-        fadeIn: "fadeIn 1s ease-in-out forwards 1s",  // Custom fade-in animation
+        fadeOut: "fadeOut 1s ease-in-out forwards",
+        fadeIn: "fadeIn 1s ease-in-out forwards 1s",
+        fadeOutFast: "fadeOut 0.5s ease-in-out forwards", 
+        fadeInFast: "fadeIn 0.5s ease-in-out forwards",
       },
       keyframes: {
         flick: {
@@ -81,6 +84,9 @@ module.exports = {
     animation: {
       spin: "spin 0.7s linear infinite both",
     },
+  },
+  daisyui: {
+    themes: ["light"],
   },
   plugins: [require("daisyui")],
 };

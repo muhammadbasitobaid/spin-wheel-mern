@@ -8,6 +8,7 @@ import WheelsPopup from "./WheelsPopup";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/store";
 import useOutsideClick from "src/hooks/useOutsideClick";
+import { useNavigate } from "react-router-dom";
 
 interface MenuItemProps {
   label?: string;
@@ -17,6 +18,7 @@ interface MenuItemProps {
   value: ModalNames;
   setActiveModal: (modal: string) => void;
   disabled?: boolean;
+  className?: string;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
@@ -27,9 +29,10 @@ const MenuItem: React.FC<MenuItemProps> = ({
   value,
   setActiveModal,
   disabled = false,
+  className = "child"
 }) => (
-  <li>
-    <div onClick={() => !disabled && value && setActiveModal(value)}>
+  <li className={className}>
+    <div onClick={() => !disabled && value && setActiveModal(value)} className={className}>
       <img
         src={svgSrc}
         alt={label || "label wasn't provided"}
@@ -40,7 +43,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         }`}
         title={disabled ? `${label} (feature currently unavailable!)` : label}
       />
-      <span className="block md:hidden lg:block">{label}</span>
+      <span className="block lg:hidden xl:block child">{label}</span>
     </div>
   </li>
 );
@@ -52,6 +55,7 @@ export default function NavBar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   useOutsideClick(dropdownRef, () => setIsDropdownOpen(false));
+  const navigate = useNavigate();
 
   const { selectedWheel } = useSelector(
     (state: RootState) => state.wheel
@@ -68,6 +72,8 @@ export default function NavBar() {
 
 
   const toggleWheelsPopup = () => {
+
+    setIsDropdownOpen(false);
     setIsWheelsPopupOpen(!isWheelsPopupOpen);
     if(isSharePopupOpen) setIsSharePopupOpen(false);
   };
@@ -79,10 +85,12 @@ export default function NavBar() {
 
 
   return (
-    <nav className="bg-base-100 px-6 lg:px-10 sticky top-0 shadow-lg z-[999]">
+    <nav className="bg-white px-6 lg:px-10 sticky top-0 shadow-lg z-[999]">
     <div className="navbar max-w-[1360px] mx-auto">
       <div className="navbar-start w-auto">
-        <div className="btn btn-ghost text-xl flex p-0 gap-0 !h-auto">
+        <div className="btn btn-ghost text-xl flex p-0 gap-0 !h-auto"
+onClick={() => navigate("/")}
+        >
           <img
             src="/assets/icons/logo.svg"
             alt="SVG"
@@ -137,9 +145,10 @@ export default function NavBar() {
               disabled={false}
               setActiveModal={toggleWheelsPopup}
             />
-            {isWheelsPopupOpen && <WheelsPopup onClose={closeWheelsPopup} />}
             </ul>
           )}
+
+            {isWheelsPopupOpen && <WheelsPopup onClose={closeWheelsPopup} />}
         </div>
         <ul>
           <div className="relative">

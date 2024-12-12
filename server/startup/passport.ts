@@ -44,7 +44,7 @@ export function initPassportJS() {
       {
         clientID: process.env.GOOGLE_CLIENT_ID!,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        callbackURL: "/api/auth/google/callback",
+        callbackURL: "https://api.thespinnerwheel.com/api/auth/google/callback",
       },
       async (
         accessToken: string,

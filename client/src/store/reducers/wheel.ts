@@ -22,13 +22,15 @@ import {
   SET_FULL_SCREEN_MODE,
   SET_INPUT_NUMBERS,
   SET_WHEEL_META_DATA_DEFAULT_ACTION,
+  WHEEL_RESET,
+  SET_SHARE_LINK,
   WheelActions,
 } from "../actions/wheel";
 
 import { getDefaultWheelName } from "src/utils"
 
 
-import { CustomOptionsWheel, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, DEFAULT_WHEEL_METADATA } from '../../constants'
+import { CustomOptionsWheel, DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, DEFAULT_WHEEL_METADATA, UPPERCASE } from '../../constants'
 
 import {
   THEMES,
@@ -54,6 +56,7 @@ export interface WheelState {
   selectedTheme: string[];
   spinConfig: SpinConfig;
   fullScreenMode: boolean;
+  shareLink: string;
 }
 
 export const initialState: WheelState = {
@@ -65,6 +68,7 @@ export const initialState: WheelState = {
     inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL,
     options: CustomOptionsWheel?.options,
     history: [],
+    casing: UPPERCASE
   },
   activeModal: null,
   result: null,
@@ -72,7 +76,8 @@ export const initialState: WheelState = {
   spinConfig: defaultSpinConfig,
   description: DEFAULT_WHEEL_METADATA.description,
   popUpMessage: DEFAULT_WHEEL_METADATA.popUpMessage,
-  fullScreenMode: false
+  fullScreenMode: false,
+  shareLink: "",
 };
 
 type ActionTypes = WheelActions;
@@ -98,6 +103,18 @@ const wheelReducer = (
         ...state,
         wheelSnapshot: { ...state.wheelSnapshot, inputNumbers: action.payload },
       };
+
+    case SET_SHARE_LINK:
+      return {
+        ...state,
+        shareLink: action.payload
+      };
+
+    case WHEEL_RESET:
+      return {
+        ...state,
+        wheelSnapshot: { ...state.wheelSnapshot, options: state.selectedWheel.options, selectedOption: state.selectedWheel?.defaultOption || state.selectedWheel.options[0] , history: [] },
+      }
 
     case SET_WHEEL_META_DATA_DEFAULT_ACTION:
       return {

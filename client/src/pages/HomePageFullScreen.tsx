@@ -27,7 +27,6 @@ export default function HomeFullScreen() {
     }
 
   }, [initiateFadeOut])
-  
 
   return (
 
@@ -75,7 +74,7 @@ export default function HomeFullScreen() {
             }
 
           </div>
-          <div className="hidden lg:block lg:flex lg:flex-col lg:justify-end lg:w-[66px] lg:gap-2">
+          <div className="hidden relative z-50 lg:block lg:flex lg:flex-col lg:justify-end lg:w-[66px] lg:gap-2">
             <VolumeController />
             <button
               className="flex justify-center items-center"

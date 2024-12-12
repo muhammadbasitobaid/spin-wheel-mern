@@ -29,7 +29,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
         )}
       </div>
       <select
-        className="select select-bordered w-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl p-2 md:p-3 lg:p-4 h-10 md:h-12 lg:h-14"
+        className="select select-bordered w-full text-xs bg-white sm:text-sm md:text-base lg:text-lg xl:text-xl p-2 md:p-3 lg:p-4 h-10 md:h-12 lg:h-14"
         value={value}
         onChange={(e) => onChange && onChange(e.target.value)}
       >

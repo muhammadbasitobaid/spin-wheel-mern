@@ -46,12 +46,12 @@ const VerticalScoreCard: FC = () => {
 
   return (
     <Card>
-      <div className="flex flex-col h-full justify-center items-end p-8">
+      <div className="flex flex-col gap-2 h-full justify-center items-center p-8">
         {Object.entries(occurrences).map(([label, score], index) => (
-          <div key={uuidv4()} className="w-auto h-full">
+          <div key={uuidv4()} className="w-full h-full">
             <ScoreCell score={score} label={label} />
             {Object.entries(occurrences).length - 1 !== index && (
-              <div className="divider divider-vertical h-px m-0"></div>
+              <div className="divider divider-vertical h-px my-2"></div>
             )}
           </div>
         ))}

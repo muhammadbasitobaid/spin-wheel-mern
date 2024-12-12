@@ -1,18 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store/store";
 import InputField from "./common/InputField";
 import Button from "./common/Button";
 import { attemptSaveWheel } from "src/store/thunks/wheel";
+import { setShareLink } from "src/store/actions/wheel";
 import useOutsideClick from "src/hooks/useOutsideClick";
 
 const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const dispatch = useDispatch();
-  const [shareLink, setShareLink] = useState("");
-  const { wheel, user } = useSelector((state: RootState) => state);
-  const { selectedWheel } = wheel;
+  const { wheel, user} = useSelector((state: RootState) => state);
+  const { selectedWheel, shareLink } = wheel;
   const popupRef = useRef<HTMLDivElement>(null);
+
   useOutsideClick(popupRef, onClose);
 
   const handleSaveWheelAndGenerateLink = () => {
@@ -41,9 +42,8 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   const generateShareLink = (id: string) => {
-    setShareLink(
-      `${process.env.REACT_APP_BASE_URL ?? "http://localhost:3000"}/?id=${id}`
-    );
+    const link = `${process.env.PUBLIC_URL ?? "http://localhost:3000"}/?id=${id}`;
+    dispatch(setShareLink(link)); // Update the Redux store with the new link
   };
 
   const handleCopyToClipboard = () => {
@@ -53,7 +53,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         .then(() => {
           toast.success("Link copied to clipboard!");
         })
-        .catch((err) => {
+        .catch(() => {
           toast.error("Failed to copy link");
         });
     }
@@ -70,11 +70,10 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       <h2 className="text-lg font-medium mb-4">Generate Share Link</h2>
       <div className="flex items-center mb-4">
         <InputField
-          value={shareLink}
+          value={shareLink || ""}
           placeholder="Share link"
           className="w-full"
           disabled
-          onChange={() => setShareLink("")}
         />
         <button
           className={`ml-2 child ${

@@ -12,28 +12,27 @@ import {
   CONSONANT_OPTION,
   VOWEL_OPTION ,
   CUSTOM_LETTERS_OPTION ,
-YES_NO_OPTION,
-DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL,
-// NUMBER_WHEEL_LOWEST_PORTION,
-// NUMBER_WHEEL_HIGHEST_PORTION,
-// MAX_INPUT_NUMBER
+  YES_NO_OPTION,
+  DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL,
+  UPPERCASE
 } from "src/constants";
+
+import { generateAlphabetArray } from "../utils"
 import { RootState } from "src/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  resetHistory,
   setActiveModal,
-  // setinputNumbers,
   setWheelList,
   setWheelSnapshot,
   setFullScreenMode,
+  resetWheel
 } from "src/store/actions/wheel";
 import InputField from "./common/InputField";
-// import { getDefaultWheelName } from "src/utils";
 
 export const CustomOptionsWheelControls = () => {
   const dispatch = useDispatch();
   const { wheelSnapshot } = useSelector((state: RootState) => state.wheel);
+
   const options = wheelSnapshot?.options || [];
   const [newOption, setNewOption] = useState<string>("");
 
@@ -95,7 +94,7 @@ export const CustomOptionsWheelControls = () => {
       </div>
 
       {/* List of current options with actions */}
-      <div className="option-list space-y-2">
+      <div className="option-list space-y-2 max-h-64 overflow-y-auto">
         {options.map((option, index) => (
           <div key={index} className="flex items-center space-x-2">
             <span className="flex-1">{option}</span>
@@ -189,10 +188,6 @@ export const YesNoWheelControls = () => {
   );
 };
 
-const generateAlphabetArray = (isUpperCase: boolean) => {
-  const alphabet = Array.from(Array(26)).map((_, i) => String.fromCharCode(i + 65)); // A to Z
-  return isUpperCase ? alphabet : alphabet.map(letter => letter.toLowerCase());
-};
 
 const generateVowelArray = (isUpperCase: boolean) => {
   const vowels = ['A', 'E', 'I', 'O', 'U'];
@@ -206,16 +201,14 @@ const generateConsonantArray = (isUpperCase: boolean) => {
 
 
 export const LetterWheelControls = () => {
-  const [styleOption, setStyleOption] = useState<string>("UPPERCASE");
-  const [letterOption, setLetterOption] = useState<string>(ALPHABETS_OPTION);
-  const [customLetters, setCustomLetters] = useState<string>("");
+  const { wheelSnapshot } = useSelector((state: RootState) => state.wheel);
   const dispatch = useDispatch();
 
-  // Function to return array based on letter option and style
   const getLetterArray = () => {
-    const isUpperCase = styleOption === "UPPERCASE";
+    const isUpperCase = wheelSnapshot.casing === UPPERCASE;
 
-    switch (letterOption) {
+    console.log(wheelSnapshot.casing === UPPERCASE);
+    switch (wheelSnapshot.selectedOption) {
       case ALPHABETS_OPTION:
         return generateAlphabetArray(isUpperCase);
       case VOWEL_OPTION:
@@ -223,10 +216,11 @@ export const LetterWheelControls = () => {
       case CONSONANT_OPTION:
         return generateConsonantArray(isUpperCase);
       case CUSTOM_LETTERS_OPTION:
-        return customLetters
+        return (wheelSnapshot.customLetterList || "")
           .split(",")
-          .map(letter => letter.trim())
-          .filter(letter => letter.length > 0);
+          .map(letter => letter.trim()) // Trim spaces before filtering
+          .filter(letter => letter.length > 0) // Filter out empty strings
+          .map(letter => letter[0]); // Take the first character
       default:
         return [];
     }
@@ -234,51 +228,66 @@ export const LetterWheelControls = () => {
 
   useEffect(() => {
     const selectedLetters = getLetterArray();
+    console.log(selectedLetters);
     dispatch(setWheelList(selectedLetters));
-    dispatch(setWheelSnapshot({ selectedOption: letterOption,  casing: styleOption}));
-
-    if(letterOption === CUSTOM_LETTERS_OPTION ) dispatch(setWheelSnapshot({ customLetterList: customLetters}));
-  }, [styleOption, letterOption, customLetters, dispatch]);
-
+    dispatch(
+      setWheelSnapshot({
+        selectedOption: wheelSnapshot.selectedOption,
+        casing: wheelSnapshot.casing,
+      })
+    );
+    if (wheelSnapshot.selectedOption === CUSTOM_LETTERS_OPTION) {
+      dispatch(setWheelSnapshot({ customLetterList: wheelSnapshot.customLetterList }));
+    }
+  }, [wheelSnapshot.selectedOption, wheelSnapshot.casing, wheelSnapshot.customLetterList, dispatch]);
 
   useEffect(() => {
-    dispatch(setWheelSnapshot({inputNumbers: 1}));
-    // dispatch(setWheelFormValues(getDefaultWheelName(), "", ""));
-  }, []);
+    dispatch(setWheelSnapshot({ inputNumbers: 1 }));
+  }, [dispatch]);
 
   return (
     <>
       <SelectInput
         label="Letter Options:"
         options={[ALPHABETS_OPTION, CONSONANT_OPTION, VOWEL_OPTION, CUSTOM_LETTERS_OPTION]}
-        value={letterOption}
-        onChange={(value: string) => setLetterOption(value)}
+        value={wheelSnapshot.selectedOption}
+        onChange={(value: string) =>
+          dispatch(setWheelSnapshot({ selectedOption: value }))
+        }
       />
 
-      {letterOption === CUSTOM_LETTERS_OPTION && (
+      {wheelSnapshot.selectedOption === CUSTOM_LETTERS_OPTION ? (
         <InputField
           label="Enter Custom Letters (comma-separated):"
-          value={customLetters}
-          onChange={(e) => setCustomLetters(e.target.value)}
+          value={wheelSnapshot.customLetterList || ""}
+          onChange={(e) =>
+            dispatch(
+              setWheelSnapshot({ customLetterList: e.target.value })
+            )
+          }
           placeholder="e.g., A, B, C"
         />
-      )}
-
-      <div className="mb-6">
-        <label className="block text-lg font-medium mb-2">Style Options:</label>
-        <div className="flex space-x-2">
-          <ToggleButton
-            label="UPPERCASE"
-            isActive={styleOption === "UPPERCASE"}
-            onClick={() => setStyleOption("UPPERCASE")}
-          />
-          <ToggleButton
-            label="lowercase"
-            isActive={styleOption === "lowercase"}
-            onClick={() => setStyleOption("lowercase")}
-          />
+      ) : (
+        <div className="mb-6">
+          <label className="block text-lg font-medium mb-2">Style Options:</label>
+          <div className="flex space-x-2">
+            <ToggleButton
+              label="UPPERCASE"
+              isActive={wheelSnapshot.casing === UPPERCASE}
+              onClick={() =>
+                dispatch(setWheelSnapshot({ casing: UPPERCASE }))
+              }
+            />
+            <ToggleButton
+              label="lowercase"
+              isActive={wheelSnapshot.casing === "lowercase"}
+              onClick={() =>
+                dispatch(setWheelSnapshot({ casing: "lowercase" }))
+              }
+            />
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
@@ -393,7 +402,7 @@ export const EditWheel = () => {
         <div className=" px-4 py-7 rounded-custom border border-light-gray w-full bg-gradient-to-b from-gray-alpha to-white">
           <div className="w-full flex justify-between">
             <div className="flex-1 text-xl font-semibold leading-normal mb-1.5 lg:text-3xl">
-              Edit Wheel
+              Customize Wheel
             </div>
             <div className="flex gap-2 items-center">
               <button className="hidden lg:block" onClick={()=> dispatch(setFullScreenMode(true))}>
@@ -404,7 +413,7 @@ export const EditWheel = () => {
                   title={`Fullscreen (feature currently unavailable!)`}
                 />
               </button>
-              <button className="" onClick={() => dispatch(resetHistory())}>
+              <button className="" onClick={() => dispatch(resetWheel())}>
                 <img
                   src="/assets/icons/refresh.svg"
                   alt="Show"

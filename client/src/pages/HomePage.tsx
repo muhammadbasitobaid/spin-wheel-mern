@@ -12,7 +12,7 @@ import Results from "src/components/Results";
 import ScoreCard from "src/components/ScoreCard";
 import SpinWheel from "src/components/SpinWheel";
 import VolumeController from "src/components/VolumeController";
-import { setActiveModal, setSelectedWheel } from "src/store/actions/wheel";
+import { setActiveModal, setSelectedWheel, setWheelSnapshot } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import ModifyModal from "./ModifyModal";
 import WheelsListModal from "src/components/WheelsListModal";
@@ -22,7 +22,11 @@ import {
   CustomOptionsWheel,
   NumberWheel,
   LetterWheel,
+  DEFAULT_LETTER_WHEEL_CASING,
+  UPPERCASE,
+  letterWheelDefaultOption
 } from '../constants';
+import { generateAlphabetArray } from "../utils"
 import HomePageFullScreen from "src/pages/HomePageFullScreen"
 
 export type ModalNames =
@@ -71,7 +75,7 @@ useEffect(() => {
     }, 1000); // Duration should match fadeOut
   }else{
 
-      setHideSmallScreen(false);
+    setHideSmallScreen(false);
     setInitiateAnimation(false); 
   }
 }, [fullScreenMode]);
@@ -89,6 +93,7 @@ useEffect(() => {
       break;
     case "/random-letter-generator":
       dispatch(setSelectedWheel(LetterWheel));
+      dispatch(setWheelSnapshot({options: generateAlphabetArray(DEFAULT_LETTER_WHEEL_CASING === UPPERCASE), selectedOption: letterWheelDefaultOption}))
       break;
     case "/":
       dispatch(setSelectedWheel(CustomOptionsWheel));

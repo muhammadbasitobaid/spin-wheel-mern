@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
-import { wheels, Wheel } from "src/constants"; // Assuming you import wheels from a constants file
-import {useDispatch} from 'react-redux';
-import { setWheelSnapshot, setWheelMetaDataDefaultAction } from "../store/actions/wheel";
+import { wheels, Wheel, YesNoWheel } from "src/constants"; // Assuming you import wheels from a constants file
+import { useDispatch } from 'react-redux';
+import { setWheelSnapshot, setWheelMetaDataDefaultAction, setFullScreenMode } from "../store/actions/wheel";
 import { useNavigate } from 'react-router-dom';
 import useOutsideClick from "src/hooks/useOutsideClick";
 
@@ -14,15 +14,21 @@ const navigate = useNavigate();
 
   const handleWheelSelection = (wheel: Wheel) => {
     dispatch(setWheelSnapshot({ history: [] })); // Reset history when wheel mode changes
+    if(wheel.name === "yes-no-wheel"){
+
+    dispatch(setWheelSnapshot({selectedOption: YesNoWheel.options[0]} ))
+    }
+    dispatch(setWheelSnapshot({customLetterList: ""} ))
     dispatch(setWheelMetaDataDefaultAction());
-    navigate(wheel.slug); // Update URL slug based on selected wheel
+    dispatch(setFullScreenMode(false));
+    navigate(wheel.slug); 
     onClose();
   };
 
   return (
     <div
       ref={popupRef}
-      className="absolute right-0 mt-2 p-6 w-72 bg-white rounded-custom-sm shadow-lg z-10"
+      className="absolute right-0 mt-2 p-6 w-52 top-16 md:w-72 bg-white rounded-custom-sm shadow-lg z-10"
     >
       <button className="absolute top-2 right-2 mt-2 mr-2" onClick={onClose}>
         <img src="/assets/icons/close.svg" alt="close" width={16} />

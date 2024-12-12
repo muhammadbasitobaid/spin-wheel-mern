@@ -1,6 +1,7 @@
 import React, { Dispatch, ReactNode, SetStateAction, MouseEvent } from "react";
 import Button from "./Button";
 import { ModalNames } from "src/pages/HomePage";
+import clsx from "clsx";
 
 interface ModalProps {
   isOpen: boolean;
@@ -21,8 +22,6 @@ const Modal: React.FC<ModalProps> = ({
   children,
   className = "",
 }) => {
-  if (!isOpen) return null;
-
   const handleOverlayClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose(null);
@@ -31,14 +30,21 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className={`min-h-screen fixed inset-0 z-50 top-[40px] flex flex-col items-center justify-center ${
-        showOverlay && "bg-black bg-opacity-50 backdrop-blur-sm"
-      }`}
+      className={clsx(
+        "opacity-0 min-h-screen fixed inset-0 z-50 top-[40px] flex flex-col items-center justify-center transition-opacity",
+        {
+          "animate-fadeInFast": isOpen,
+          "animate-fadeOutFast": !isOpen,
+          "bg-black bg-opacity-50 backdrop-blur-sm": showOverlay,
+        }
+      )}
       onClick={handleOverlayClick}
     >
       <div
-        className={`bg-white p-4 pt-8 md:p-10  md:pb-4  ${
-          showOverlay ? "rounded-custom-sm lg:rounded-custom relative" : "rounded-custom lg:rounded-custom-lg relative"
+        className={`bg-white p-4 pt-8 md:p-10 md:pb-4 ${
+          showOverlay
+            ? "rounded-custom-sm lg:rounded-custom relative"
+            : "rounded-custom lg:rounded-custom-lg relative"
         } shadow-3xl w-[90%] md:w-[50%] max-w-[900px] max-h-[80%] ${className}`}
       >
         <button
@@ -54,7 +60,12 @@ const Modal: React.FC<ModalProps> = ({
             />
           )}
         </button>
-        <div className="text-center h-full flex">{children}</div>
+        <div className="text-center h-full flex flex-col">
+          {/* Scrollable Content Container */}
+          <div className="overflow-y-auto max-h-[calc(100vh-220px)] px-2">
+            {children}
+          </div>
+        </div>
       </div>
 
       {showDoneButton && (

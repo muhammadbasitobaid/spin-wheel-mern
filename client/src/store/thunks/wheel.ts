@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import http from "src/services/httpService";
-import { setSelectedWheel } from "../actions/wheel";
+import { setWheelState } from "../actions/wheel";
 import { WheelState } from "../reducers/wheel";
 import { postWheel } from "../../api";
 import toast from "react-hot-toast";
@@ -11,7 +11,7 @@ export const fetchWheelById =
       const response = await http.get(
         `${process.env.REACT_APP_API_URL}/wheels/${wheelId}`
       );
-      dispatch(setSelectedWheel({ ...response.data }));
+                        dispatch(setWheelState(response.data));
     } catch (error) {
       console.error("Failed to fetch wheel details", error);
       toast.error("Failed to fetch wheel details");

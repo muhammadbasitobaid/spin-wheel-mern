@@ -86,6 +86,11 @@ export const CustomOptionsWheelControls = () => {
         <InputField
           value={newOption}
           onChange={(e) => setNewOption(e.target.value)}
+          onKeyDown={(e) => {
+              if (e.key === "Enter" && newOption.trim()) {
+                addOption();
+              }
+            }}
           placeholder="Add new option"
         />
         <button onClick={addOption} className="ml-2 flex items-center bg-green-500 text-white p-2 rounded-full hover:bg-green-600 aspect-square">

@@ -15,9 +15,10 @@ const WheelsListModal: React.FC = () => {
 
   useEffect(() => {
     if (isAuth && user) {
+      console.log(user)
       setLoading(true);
       //   @ts-ignore
-      dispatch(fetchUserWheels(user._id)).finally(() => setLoading(false));
+      dispatch(fetchUserWheels(user._id ?? user.id)).finally(() => setLoading(false));
     }
   }, []);
 
@@ -46,7 +47,7 @@ const WheelsListModal: React.FC = () => {
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <div className="max-h-[70vh] overflow-y-auto">
+          <div className="">
             {user?.wheels && user?.wheels.length > 0 ? (
               <ul className="flex flex-col space-y-2 max-w-[95%]">
                 {user?.wheels.map((wheel) => (

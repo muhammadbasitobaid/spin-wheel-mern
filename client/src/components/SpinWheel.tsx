@@ -62,6 +62,7 @@ const SpinWheel = () => {
 const wheelItems: WheelListItem[] = useMemo(() => {
   let items: WheelListItem[] = [];
   const optionsToUse = wheelList && wheelList.length > 0 ? wheelList : options?.length ? options : ["Yes", "No"]; 
+  console.log('wheelList: ', wheelList)
 
   if (!optionsToUse || optionsToUse.length === 0) return items;
 

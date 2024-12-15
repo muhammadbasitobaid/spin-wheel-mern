@@ -39,7 +39,7 @@ const Results: React.FC = () => {
 
   return (
     <Modal isOpen onClose={handleClose}>
-      <div className="flex flex-col w-full m-8 mt-6 mb-0">
+      <div className="flex flex-col w-full">
         <div className="flex w-full">
           <div className="flex items-center w-1/4">
             <span>

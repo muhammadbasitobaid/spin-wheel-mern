@@ -121,10 +121,10 @@ useEffect(() => {
           )}>
           <div className="flex-1 mb-8 lg:mb-0 lg:w-1/2 lg:flex lg:flex-col lg:justify-center">
             <h1 className="p-6 py-0 mt-[30px] lg:mt-0 text-black text-4xl font-medium ">
-              {selectedWheel.label || "N/A"} Picker Wheel
+              {selectedWheel.name || selectedWheel.label || "N/A"} Picker Wheel
             </h1>
             <span className="text-light-gray text-base font-normal p-6 py-0 ">
-              Decide {selectedWheel.label || "N/A"} by wheel
+              Decide {selectedWheel.name || selectedWheel.label || "N/A"} by wheel
             </span>
             <SpinWheel/>
           </div>

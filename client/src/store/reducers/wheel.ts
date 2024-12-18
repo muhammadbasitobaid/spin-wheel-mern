@@ -15,7 +15,6 @@ import {
   SET_CONFETTI,
   SET_SOUND,
   SET_CONFETTI_TYPE,
-  SET_SOUND_TYPE,
   SET_WHEEL_DETAILS,
   SET_WHEEL_LIST,
   SET_WHEEL_FORM_VALUES,
@@ -99,7 +98,7 @@ const wheelReducer = (
           ...state.wheelSnapshot,
           options: state.selectedWheel?.options || [],  // Fallback to empty array if undefined
           selectedOption: state.selectedWheel?.defaultOption || state.selectedWheel?.options[0] || "", // Use an empty string as fallback instead of {}
-          history: [],
+          ...action.payload
         }
       };
 
@@ -198,11 +197,6 @@ const wheelReducer = (
       return {
         ...state,
         spinConfig: { ...state.spinConfig, confettiType: action.payload },
-      };
-    case SET_SOUND_TYPE:
-      return {
-        ...state,
-        spinConfig: { ...state.spinConfig, soundType: action.payload },
       };
     case SET_WHEEL_DETAILS:
       return {

@@ -5,9 +5,13 @@ import { setActiveModal } from "src/store/actions/wheel";
 import Modal from "src/components/common/Modal";
 import { fetchUserWheels } from "src/store/thunks/user";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
+
+import { wheels } from "src/constants"; 
 
 const WheelsListModal: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user, isAuth } = useSelector((state: RootState) => state.user);
 
 
@@ -55,23 +59,28 @@ const WheelsListModal: React.FC = () => {
                     key={wheel?._id || uuidv4()}
                     className="border rounded-lg p-4 hover:bg-gray-100 transition-colors duration-200"
                   >
-                    <button
-                      onClick={() => {
-                        handleClose();
-                        // dispatch(setWheelState(wheel));
-                      }}
-                      className="w-full text-left"
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium text-lg">
-                          {wheel.customWheelName}
-                        </span>
-                        <span className="text-gray-500 text-sm">
-                          {/* @ts-ignore */}
-                          {wheel?.wheelType}
-                        </span>
-                      </div>
-                    </button>
+<button
+      onClick={() => {
+        handleClose();
+        const slug = wheels.find(wheelConfig => wheelConfig.name === wheel.wheelType)?.slug;
+        const link = `${slug === "/" ? "" : slug}?id=${wheel?._id}`;
+        
+        // Navigate to the constructed URL
+        navigate(link);
+        
+      }}
+      className="w-full text-left"
+    >
+      <div className="flex justify-between items-center">
+        <span className="font-medium text-lg">
+          {wheel.customWheelName}
+        </span>
+        <span className="text-gray-500 text-sm">
+          {/* @ts-ignore */}
+          {wheel?.wheelType}
+        </span>
+      </div>
+    </button>
                   </li>
                 ))}
               </ul>

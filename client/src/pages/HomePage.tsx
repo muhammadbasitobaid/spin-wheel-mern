@@ -17,6 +17,7 @@ import { RootState } from "src/store/store";
 import ModifyModal from "./ModifyModal";
 import WheelsListModal from "src/components/WheelsListModal";
 import { fetchWheelById } from "src/store/thunks/wheel";
+import Spinner from "src/components/common/Spinner";
 import { 
   YesNoWheel,
   CustomOptionsWheel,
@@ -46,12 +47,12 @@ export default function Home() {
   const location = useLocation();
   const navigate = useNavigate();
   const [ initiateAnimation, setInitiateAnimation ]  = useState(false);
+  const [ isLoadingWheel, setIsLoadingWheel ]  = useState(false);
   const [ hideSmallScreen, setHideSmallScreen ]  = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const error = params.get("error");
-    const wheelId = params.get("id");
 
     if (error === "google") {
       toast.error("Google login failed");
@@ -61,11 +62,19 @@ export default function Home() {
       }, 1000);
     }
 
+  }, [activeModal, location.search, navigate, dispatch]);
+
+  useEffect(() => {
+
+    const params = new URLSearchParams(location.search);
+    const wheelId = params.get("id");
+
     if (wheelId) {
+      setIsLoadingWheel(true);
       // @ts-ignore
-      dispatch(fetchWheelById(wheelId));
+      dispatch(fetchWheelById(wheelId, () => {setIsLoadingWheel(false)}));
     }
-  }, [activeModal, location, navigate, dispatch]);
+  }, [location.search, dispatch])
 
 useEffect(() => {
   if (fullScreenMode) {
@@ -103,82 +112,86 @@ useEffect(() => {
   }
 }, [location.pathname, dispatch]);
 
-  return (
-      <div className="flex flex-col min-h-[100vh] lg:overflow-hidden">
-        {activeModal === "profile" && <Auth />}
-        {activeModal === "wheels" && <WheelsListModal />}
-        {activeModal === "settings" && <Configurator />}
-        {activeModal === "result" && <ResultModal />}
-        {activeModal === "history" && <Results />}
-        {activeModal === "modify" && <ModifyModal />}
-        <NavBar />
+return (
+  isLoadingWheel ? (
+    <div className="flex items-center justify-center h-screen max-h-screen">
+      <Spinner />
+    </div>
+  ) : (
+    <div className="flex flex-col min-h-[100vh] lg:overflow-hidden">
+      {activeModal === "profile" && <Auth />}
+      {activeModal === "wheels" && <WheelsListModal />}
+      {activeModal === "settings" && <Configurator />}
+      {activeModal === "result" && <ResultModal />}
+      {activeModal === "history" && <Results />}
+      {activeModal === "modify" && <ModifyModal />}
+      <NavBar />
       {
         !hideSmallScreen ? (
-        <div className="flex-1 w-full h-full flex">
-          <div className={clsx(
-            " max-w-[1360px] mx-auto flex-1 lg:flex lg:flex-row lg:justify-between gap-6 lg:overflow-hidden ",
-             initiateAnimation && !hideSmallScreen ? "animate-fadeOut" : "opacity-0 animate-fadeIn"
-          )}>
-          {
-            selectedWheel && (selectedWheel.name || selectedWheel.label) && (
-              <div className="flex-1 mb-8 lg:mb-0 lg:w-1/2 lg:flex lg:flex-col lg:justify-center">
-                <h1 className="p-6 py-0 mt-[30px] lg:mt-0 text-black text-4xl font-medium ">
-                  {selectedWheel.label || selectedWheel.name || "N/A"} Picker Wheel
-                </h1>
-                <span className="text-light-gray text-base font-normal p-6 py-0 ">
-                  Decide {selectedWheel.label || selectedWheel.name || "N/A"} by wheel
-                </span>
-                <SpinWheel/>
-              </div>
-            )
-          }
-          <div className="md:min-w-[35%] lg:flex lg:flex-col-reverse lg:justify-center">
-            <div className="px-6 flex justify-between h-[60px] lg:hidden lg:px-0">
-              <VolumeController />
-              <button
-                onClick={() => {
-                  console.log("history modal should open");
-                  dispatch(setActiveModal("history"));
-                }}
-                className="flex justify-center items-center"
-              >
-                <img
-                  src="/assets/icons/history.svg"
-                  alt="history"
-                  className="h-[43px]"
-                />
-              </button>
-            </div>
+          <div className="flex-1 w-full h-full flex">
+            <div className={clsx(
+              "max-w-[1360px] mx-auto flex-1 lg:flex lg:flex-row lg:justify-between gap-6 lg:overflow-hidden",
+              initiateAnimation && !hideSmallScreen ? "animate-fadeOut" : "opacity-0 animate-fadeIn"
+            )}>
+              {selectedWheel && (selectedWheel.name || selectedWheel.label) && (
+                <div className="flex-1 mb-8 lg:mb-0 lg:w-1/2 lg:flex lg:flex-col lg:justify-center">
+                  <h1 className="p-6 py-0 mt-[30px] lg:mt-0 text-black text-4xl font-medium">
+                    {selectedWheel.label || selectedWheel.name || "N/A"} Picker Wheel
+                  </h1>
+                  <span className="text-light-gray text-base font-normal p-6 py-0">
+                    Decide {selectedWheel.label || selectedWheel.name || "N/A"} by wheel
+                  </span>
+                  <SpinWheel />
+                </div>
+              )}
+              <div className="md:min-w-[35%] lg:flex lg:flex-col-reverse lg:justify-center">
+                <div className="px-6 flex justify-between h-[60px] lg:hidden lg:px-0">
+                  <VolumeController />
+                  <button
+                    onClick={() => {
+                      console.log("history modal should open");
+                      dispatch(setActiveModal("history"));
+                    }}
+                    className="flex justify-center items-center"
+                  >
+                    <img
+                      src="/assets/icons/history.svg"
+                      alt="history"
+                      className="h-[43px]"
+                    />
+                  </button>
+                </div>
 
-            {/* Don't apply fade-out to ScoreCard */}
-            {selectedWheel && selectedWheel.name === YesNoWheel.name && (
-              <div>
-                <ScoreCard />
+                {/* Don't apply fade-out to ScoreCard */}
+                {selectedWheel && selectedWheel.name === YesNoWheel.name && (
+                  <div>
+                    <ScoreCard />
+                  </div>
+                )}
+                <div>
+                  <EditWheel />
+                </div>
               </div>
-            )}
-            <div>
-              <EditWheel />
+              <div className="hidden lg:flex lg:flex-col lg:justify-end lg:w-[66px] lg:gap-2 pb-8">
+                <VolumeController />
+                <button
+                  className="flex justify-center items-center"
+                  onClick={() => dispatch(setActiveModal("history"))}
+                >
+                  <img
+                    src="/assets/icons/history.svg"
+                    alt="history"
+                    className="h-[43px]"
+                  />
+                </button>
+              </div>
             </div>
           </div>
-          <div className="hidden lg:flex lg:flex-col lg:justify-end lg:w-[66px] lg:gap-2 pb-8">
-            <VolumeController />
-            <button
-              className="flex justify-center items-center"
-              onClick={() => dispatch(setActiveModal("history"))}
-            >
-              <img
-                src="/assets/icons/history.svg"
-                alt="history"
-                className="h-[43px]"
-              />
-            </button>
-          </div>
-        </div>
-          </div>
-        ): (
-        <HomePageFullScreen />
+        ) : (
+          <HomePageFullScreen />
         )
       }
-      </div>
-  );
+    </div>
+  )
+);
 }

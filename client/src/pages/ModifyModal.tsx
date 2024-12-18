@@ -51,7 +51,7 @@ const ModifyModal: React.FC = () => {
     customLetterList: wheel.wheelSnapshot.customLetterList,  // Get customLetterList from wheel.wheelSnapshot
     casing: wheel.wheelSnapshot.casing,  // Get casing from wheel.wheelSnapshot
     wheelList: wheel.wheelList || [],  // Default to an empty array if wheelList is undefined
-    _id: "",  // Assuming this is for a new wheel, so it's empty
+    _id: wheel?._id,  // Assuming this is for a new wheel, so it's empty
   };
     console.log('payload ', JSON.stringify(payload));
     if (!user.user) {

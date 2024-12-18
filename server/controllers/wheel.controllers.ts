@@ -27,8 +27,7 @@ export const generateShareLink = async (req: Request, res: Response) => {
     const { wheelId } = req.params;
     const shareLink = WheelService.generateShareLink(
       wheelId,
-      req.protocol,
-      req.get("host") as string
+      process.env.HOST || "http://localhost:3000"
     );
 
     res

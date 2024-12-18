@@ -1,11 +1,6 @@
 import { model, Schema, Document } from "mongoose";
 
-export interface Wheel {
-  name: string;
-  label: string;
-  options: string[];
-}
-
+// SpinConfig interface
 export interface SpinConfig {
   spinningSpeedLevel: number;
   spinningDuration: number;
@@ -16,50 +11,28 @@ export interface SpinConfig {
   confetti: boolean;
   sound: boolean;
   confettiType: "Confetti" | "Fireworks";
-  soundType: "Sound" | "No Sound";
+  selectedTheme: string[];
 }
 
-export interface WheelSnapshot {
+// WheelDocument interface
+export interface WheelDocument extends Document {
   selectedOption?: string;
+  wheelType: string;
+  customWheelName: string;
   inputNumbers?: number;
   history: string[];
-  options?: string[];
   lowerNumber?: number;
   highestNumber?: number;
-  excludeNumbers?: string;
   interval?: number;
   customLetterList?: string;
   casing?: string;
-}
-
-export interface WheelDocument extends Document {
-  name: string;
+  description: string;
+  popUpMessage: string;
   createdAt: Date;
-  selectedWheel: Wheel;
-  description: string;           // New field for description
-  popUpMessage: string;          // New field for popUpMessage
-  wheelSnapshot: WheelSnapshot;
-  selectedTheme: string[];
   spinConfig: SpinConfig;
 }
 
-const wheelSchema = new Schema<Wheel>({
-  name: {
-    type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 50,
-  },
-  label: {
-    type: String,
-    required: true,
-  },
-  options: {
-    type: [String],
-    required: true,
-  },
-});
-
+// SpinConfig schema
 const spinConfigSchema = new Schema<SpinConfig>({
   spinningSpeedLevel: { type: Number, required: true },
   spinningDuration: { type: Number, required: true },
@@ -74,59 +47,27 @@ const spinConfigSchema = new Schema<SpinConfig>({
     enum: ["Confetti", "Fireworks"],
     required: true,
   },
-  soundType: { type: String, enum: ["Sound", "No Sound"], required: true },
+  selectedTheme: { type: [String], required: true },
 });
 
-const wheelSnapshotSchema = new Schema<WheelSnapshot>({
-  selectedOption: { type: String, required: false },
-  inputNumbers: { type: Number, required: false },
-  history: { type: [String], required: true },
-  lowerNumber: { type: Number, required: false },
-  highestNumber: { type: Number, required: false },
-  excludeNumbers: { type: String, required: false },
-  interval: { type: Number, required: false },
-  customLetterList: { type: String, required: false },
-  casing: { type: String, required: false },
-  options: { type: [String], required: false },
-});
-
+// WheelDocument schema
 const wheelDocumentSchema = new Schema<WheelDocument>({
-  name: {
-    type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 50,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  selectedWheel: {
-    type: wheelSchema,
-    required: true,
-  },
-  description: {
-    type: String,  
-    required: true,
-  },
-  popUpMessage: {
-    type: String,  
-    required: true,
-  },
-  wheelSnapshot: {
-    type: wheelSnapshotSchema,
-    required: true,
-  },
-  selectedTheme: {
-    type: [String],
-    required: true,
-  },
-  spinConfig: {
-    type: spinConfigSchema,
-    required: true,
-  },
+  selectedOption: { type: String },
+  wheelType: { type: String, required: true },
+  customWheelName: { type: String, required: true },
+  inputNumbers: { type: Number },
+  history: { type: [String], default: [] },
+  lowerNumber: { type: Number },
+  highestNumber: { type: Number },
+  interval: { type: Number },
+  customLetterList: { type: String },
+  casing: { type: String },
+  description: { type: String, required: true },
+  popUpMessage: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  spinConfig: { type: spinConfigSchema, required: true },
 });
 
+// Export the Wheel model
 export const Wheel = model<WheelDocument>("Wheel", wheelDocumentSchema);
 
-export default Wheel;

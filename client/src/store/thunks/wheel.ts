@@ -11,7 +11,8 @@ export const fetchWheelById =
       const response = await http.get(
         `${process.env.REACT_APP_API_URL}/wheels/${wheelId}`
       );
-                        dispatch(setWheelState(response.data));
+      console.log('response', response.data);
+      dispatch(setWheelState(response.data));
     } catch (error) {
       console.error("Failed to fetch wheel details", error);
       toast.error("Failed to fetch wheel details");

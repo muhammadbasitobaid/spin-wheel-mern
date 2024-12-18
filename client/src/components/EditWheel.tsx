@@ -212,7 +212,6 @@ export const LetterWheelControls = () => {
   const getLetterArray = () => {
     const isUpperCase = wheelSnapshot.casing === UPPERCASE;
 
-    console.log(wheelSnapshot.casing === UPPERCASE);
     switch (wheelSnapshot.selectedOption) {
       case ALPHABETS_OPTION:
         return generateAlphabetArray(isUpperCase);
@@ -233,7 +232,6 @@ export const LetterWheelControls = () => {
 
   useEffect(() => {
     const selectedLetters = getLetterArray();
-    console.log(selectedLetters);
     dispatch(setWheelList(selectedLetters));
     dispatch(
       setWheelSnapshot({
@@ -335,6 +333,8 @@ export const NumberWheelControls = () => {
 
   useEffect(() => {
     const numberList = generateNumberList();
+
+    console.log("TEMP LOG: Setting numberList/wheelList", numberList)
     dispatch(setWheelList(numberList.map(String)));
     // Update the lower and highest numbers in the snapshot
     dispatch(setWheelSnapshot({ lowerNumber: lowerNumber, highestNumber: highestNumber }));
@@ -437,32 +437,16 @@ export const EditWheel = () => {
               </button>
             </div>
           </div>
-
-
-          {
-            selectedWheel.name === YesNoWheel.name && (
-              <YesNoWheelControls/>
-            )
-          }
-
-          {
-
-            selectedWheel.name === CustomOptionsWheel.name && (
-              <CustomOptionsWheelControls/>
-            )
-          }
-
-          {
-            selectedWheel.name === LetterWheel.name && (
-              <LetterWheelControls/>
-            )
-          }
-
-          {
-            selectedWheel.name === NumberWheel.name && (
-              <NumberWheelControls/>
-            )
-          }
+{
+ selectedWheel &&  selectedWheel.name && (
+    <>
+      {selectedWheel.name === YesNoWheel.name && <YesNoWheelControls />}
+      {selectedWheel.name === CustomOptionsWheel.name && <CustomOptionsWheelControls />}
+      {selectedWheel.name === LetterWheel.name && <LetterWheelControls />}
+      {selectedWheel.name === NumberWheel.name && <NumberWheelControls />}
+    </>
+  )
+}
         </div>
       </div>
     </Card>

@@ -47,16 +47,16 @@ export interface WheelState {
   name: string;
   description: string;
   popUpMessage: string;
-  volume: number;
-  selectedWheel: Wheel;
+  volume?: number;
+  selectedWheel?: Wheel;
   wheelList?: string[];
   wheelSnapshot: WheelSnapshot;
-  activeModal: ModalNames | null;
-  result: string | null;
+  activeModal?: ModalNames | null;
+  result?: string | null;
   selectedTheme: string[];
   spinConfig: SpinConfig;
-  fullScreenMode: boolean;
-  shareLink: string;
+  fullScreenMode?: boolean;
+  shareLink?: string;
 }
 
 export const initialState: WheelState = {
@@ -95,7 +95,12 @@ const wheelReducer = (
     case SET_WHEEL_SNAPSHOT:
       return {
         ...state,
-        wheelSnapshot: { ...state.wheelSnapshot, ...action.payload },
+        wheelSnapshot: {
+          ...state.wheelSnapshot,
+          options: state.selectedWheel?.options || [],  // Fallback to empty array if undefined
+          selectedOption: state.selectedWheel?.defaultOption || state.selectedWheel?.options[0] || "", // Use an empty string as fallback instead of {}
+          history: [],
+        }
       };
 
     case SET_INPUT_NUMBERS:
@@ -113,7 +118,11 @@ const wheelReducer = (
     case WHEEL_RESET:
       return {
         ...state,
-        wheelSnapshot: { ...state.wheelSnapshot, options: state.selectedWheel.options, selectedOption: state.selectedWheel?.defaultOption || state.selectedWheel.options[0] , history: [] },
+        wheelSnapshot: { ...state.wheelSnapshot, 
+          options: state.selectedWheel?.options || [], // Fallback to empty array if undefined
+          selectedOption: state.selectedWheel?.defaultOption || state.selectedWheel?.options[0] || "", // Fallback to empty string
+          history: []
+        },
       }
 
     case SET_WHEEL_META_DATA_DEFAULT_ACTION:

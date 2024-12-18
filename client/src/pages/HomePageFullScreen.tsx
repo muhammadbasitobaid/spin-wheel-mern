@@ -61,7 +61,7 @@ export default function HomeFullScreen() {
               </button>
             </div>
             {
-              selectedWheel.name === YesNoWheel.name && (
+              selectedWheel && selectedWheel.name === YesNoWheel.name && (
             <div
               className={clsx({
                 "block animate-fadeIn": fullScreenMode,

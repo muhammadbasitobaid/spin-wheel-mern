@@ -22,9 +22,14 @@ export const fetchUserWheels = (userId: any) => (dispatch: Dispatch) => {
   // @ts-ignore
   return getWheels(userId)
     .then((response: any) => {
-      dispatch(setUserWheels(response.data));
+      console.log(response)
+      // Transform API response into the expected WheelState structure
+
+      // Dispatch the transformed wheels to the state
+      dispatch(setUserWheels(response.data.wheels));
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log('error: ', error)
       toast.error("Failed to get user wheels");
     });
 };

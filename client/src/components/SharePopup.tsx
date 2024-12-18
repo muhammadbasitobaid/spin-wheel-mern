@@ -31,7 +31,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         // @ts-ignore
         dispatch(attemptSaveWheel(payload, user.user.id)).then((data) => {
           console.log(selectedWheel)
-          generateShareLink(wheel._id!, selectedWheel.slug);
+ selectedWheel && selectedWheel.slug &&         generateShareLink(data.data.wheel._id || wheel._id!, selectedWheel.slug);
         });
         toast.success("Wheel saved successfully");
       } catch (error) {

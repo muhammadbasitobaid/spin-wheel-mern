@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store/store";
-import { setActiveModal, setWheelState } from "src/store/actions/wheel";
+import { setActiveModal } from "src/store/actions/wheel";
 import Modal from "src/components/common/Modal";
 import { fetchUserWheels } from "src/store/thunks/user";
 import { v4 as uuidv4 } from "uuid";
@@ -58,17 +58,17 @@ const WheelsListModal: React.FC = () => {
                     <button
                       onClick={() => {
                         handleClose();
-                        dispatch(setWheelState(wheel));
+                        // dispatch(setWheelState(wheel));
                       }}
                       className="w-full text-left"
                     >
                       <div className="flex justify-between items-center">
                         <span className="font-medium text-lg">
-                          {wheel.name}
+                          {wheel.customWheelName}
                         </span>
                         <span className="text-gray-500 text-sm">
                           {/* @ts-ignore */}
-                          {wheel?.selectedWheel?.name}
+                          {wheel?.wheelType}
                         </span>
                       </div>
                     </button>

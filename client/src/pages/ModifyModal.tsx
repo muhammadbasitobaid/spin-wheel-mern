@@ -53,7 +53,6 @@ const ModifyModal: React.FC = () => {
     wheelList: wheel.wheelList || [],  // Default to an empty array if wheelList is undefined
     _id: wheel?._id,  // Assuming this is for a new wheel, so it's empty
   };
-    console.log('payload ', JSON.stringify(payload));
     if (!user.user) {
       toast.error("Please login to save changes");
       return;

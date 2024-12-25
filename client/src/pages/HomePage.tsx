@@ -149,7 +149,6 @@ return (
                   <VolumeController />
                   <button
                     onClick={() => {
-                      console.log("history modal should open");
                       dispatch(setActiveModal("history"));
                     }}
                     className="flex justify-center items-center"

@@ -19,7 +19,6 @@ const WheelsListModal: React.FC = () => {
 
   useEffect(() => {
     if (isAuth && user) {
-      console.log(user)
       setLoading(true);
       //   @ts-ignore
       dispatch(fetchUserWheels(user._id ?? user.id)).finally(() => setLoading(false));

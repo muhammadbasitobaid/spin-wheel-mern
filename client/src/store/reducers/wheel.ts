@@ -96,8 +96,6 @@ const wheelReducer = (
         ...state,
         wheelSnapshot: {
           ...state.wheelSnapshot,
-          options: state.selectedWheel?.options || [],  // Fallback to empty array if undefined
-          selectedOption: state.selectedWheel?.defaultOption || state.selectedWheel?.options[0] || "", // Use an empty string as fallback instead of {}
           ...action.payload
         }
       };

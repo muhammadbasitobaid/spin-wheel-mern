@@ -20,7 +20,6 @@ const getUser = (req: Request, res: Response): void => {
 
 const postUser = async (req: Request, res: Response): Promise<void> => {
   // Validate Register input
-  console.log(req.body);
   const { error } = validateRegisterInput(req.body);
   if (error) {
     res.status(400).send({ message: error.details[0].message });

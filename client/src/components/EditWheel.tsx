@@ -168,9 +168,7 @@ export const YesNoWheelControls = () => {
               label={option}
               isActive={selectedOption === option}
               onClick={() => {
-                dispatch(setWheelSnapshot({ selectedOption: option }));
-                // Reset history when wheel mode changes
-                dispatch(setWheelSnapshot({ history: [] })); 
+                dispatch(setWheelSnapshot({ selectedOption: option, history: []  }));
               }}
               className="!text-xs lg:!text-xl flex-1"
             />
@@ -334,7 +332,6 @@ export const NumberWheelControls = () => {
   useEffect(() => {
     const numberList = generateNumberList();
 
-    console.log("TEMP LOG: Setting numberList/wheelList", numberList)
     dispatch(setWheelList(numberList.map(String)));
     // Update the lower and highest numbers in the snapshot
     dispatch(setWheelSnapshot({ lowerNumber: lowerNumber, highestNumber: highestNumber }));

@@ -63,7 +63,6 @@ export const fetchWheelById =
 export const attemptSaveWheel = (wheel: WheelState, id: string) => () =>
   postWheel(wheel, id)
     .then((data) => {
-      console.log(data)
       toast.success(data?.data?.message || "Wheel created successfully");
       return data;
     })

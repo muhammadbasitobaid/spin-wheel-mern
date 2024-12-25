@@ -22,7 +22,6 @@ export const fetchUserWheels = (userId: any) => (dispatch: Dispatch) => {
   // @ts-ignore
   return getWheels(userId)
     .then((response: any) => {
-      console.log(response)
       // Transform API response into the expected WheelState structure
 
       // Dispatch the transformed wheels to the state

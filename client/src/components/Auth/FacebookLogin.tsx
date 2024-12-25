@@ -37,7 +37,6 @@ const FacebookLogin: React.FC = () => {
 
   // Handle status change callback
   const statusChangeCallback = (response: any) => {
-    console.log(response);
     if (response.status === "connected") {
       testAPI();
     } else {

@@ -38,6 +38,7 @@ app.use(
     // Store session in DB
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URI || "mongodb://localhost:27017/test",
+      ttl: 60 * 60 * 24 * 30, // Sessions will last 30 days
     }),
   })
 );

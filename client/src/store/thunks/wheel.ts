@@ -41,6 +41,7 @@ export const fetchWheelById =
           inputNumbers: data.inputNumbers,
           options: data.wheelType === CustomOptionsWheel.name ? data.customLetterList.split(", ").filter((item: string) => item.length): matchingWheel.options,
           customLetterList: data.wheelType !== CustomOptionsWheel.name ? data.customLetterList : "",
+          interval: data?.interval,
           history: data.history,
           lowerNumber: data.lowerNumber,
           highestNumber: data.highestNumber,

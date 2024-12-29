@@ -30,8 +30,6 @@ const ResultModal: React.FC = () => {
         src: ["/assets/sounds/confetti.mp3"],
       });
 
-      console.log('confettiType', confettiType)
-
       if (confettiType === "Fireworks") {
         fireworksRef.current?.start();
       }else{

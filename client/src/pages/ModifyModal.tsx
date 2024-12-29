@@ -4,9 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "src/components/common/Button";
 import InputField from "src/components/common/InputField";
 import Modal from "src/components/common/Modal";
-import { setActiveModal, setWheelDetails, setWheelFormValues } from "src/store/actions/wheel";
+import { setActiveModal, 
+  setWheelDetails, 
+  setWheelFormValues } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import { attemptSaveWheel } from "src/store/thunks/wheel";
+import { CustomOptionsWheel } from "src/constants";
 
 const ModifyModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,13 +25,37 @@ const ModifyModal: React.FC = () => {
   };
 
   const handleSave = () => {
-    const payload = {
-      ...wheel,
-      name: formValues.name,
-      description: formValues.description,
-      popUpMessage: formValues.popUpMessage,
-    };
-    console.log('wheel: ', wheel);
+// Create the payload that matches the backend schema
+  const payload = {
+    customWheelName: formValues.name,  // Map "name" to "customWheelName"
+    wheelType: wheel?.selectedWheel?.name || "",  // Assuming wheelType is "custom", modify as per your needs
+    description: formValues.description,
+    popUpMessage: formValues.popUpMessage,
+    spinConfig: {
+      spinningSpeedLevel: wheel.spinConfig.spinningSpeedLevel,  // Get from wheel.spinConfig
+      spinningDuration: wheel.spinConfig.spinningDuration,  // Get from wheel.spinConfig
+      manuallyStopOption: wheel.spinConfig.manuallyStopOption,  // Get from wheel.spinConfig
+      randomInitialAngleOption: wheel.spinConfig.randomInitialAngleOption,  // Get from wheel.spinConfig
+      mysterySpinOption: wheel.spinConfig.mysterySpinOption,  // Get from wheel.spinConfig
+      spinCountOption: wheel.spinConfig.spinCountOption,  // Get from wheel.spinConfig
+      confetti: wheel.spinConfig.confetti,  // Get from wheel.spinConfig
+      sound: wheel.spinConfig.sound,  // Get from wheel.spinConfig
+      confettiType: wheel.spinConfig.confettiType,  // Get from wheel.spinConfig
+      selectedTheme: wheel.selectedTheme,  // Get from wheel.spinConfig
+    },
+    selectedOption: wheel.wheelSnapshot.selectedOption,  // Get selectedOption from wheel.wheelSnapshot
+    inputNumbers: wheel.wheelSnapshot.inputNumbers,  // Get inputNumbers from wheel.wheelSnapshot
+    history: wheel.wheelSnapshot.history || [],  // Default to empty array if history is undefined
+    lowerNumber: wheel.wheelSnapshot.lowerNumber,  // Get lowerNumber from wheel.wheelSnapshot
+    highestNumber: wheel.wheelSnapshot.highestNumber,  // Get highestNumber from wheel.wheelSnapshot
+    interval: wheel.wheelSnapshot.interval,  // Get interval from wheel.wheelSnapshot
+    customLetterList: wheel?.selectedWheel?.name === CustomOptionsWheel.name ?
+      wheel.wheelSnapshot.options!.reduce((accumulator, currentValue) => accumulator + (currentValue + ", " ), "")
+      : wheel.wheelSnapshot.customLetterList,  // Get customLetterList from wheel.wheelSnapshot
+    casing: wheel.wheelSnapshot.casing,  // Get casing from wheel.wheelSnapshot
+    wheelList: wheel.wheelList || [],  // Default to an empty array if wheelList is undefined
+    _id: wheel?._id,  // Assuming this is for a new wheel, so it's empty
+  };
     if (!user.user) {
       toast.error("Please login to save changes");
       return;

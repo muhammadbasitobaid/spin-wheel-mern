@@ -3,6 +3,8 @@ import Card from "./common/Card";
 import SelectInput from './common/SelectInput';
 import { ToggleButton } from "./Configurator/Settings/MenuRow";
 import ChoiceCounter from "./common/ChoiceCounter";
+
+import { useLocation } from "react-router-dom";
 import { 
   YesNoWheel,
   NumberWheel,
@@ -86,6 +88,11 @@ export const CustomOptionsWheelControls = () => {
         <InputField
           value={newOption}
           onChange={(e) => setNewOption(e.target.value)}
+          onKeyDown={(e) => {
+              if (e.key === "Enter" && newOption.trim()) {
+                addOption();
+              }
+            }}
           placeholder="Add new option"
         />
         <button onClick={addOption} className="ml-2 flex items-center bg-green-500 text-white p-2 rounded-full hover:bg-green-600 aspect-square">
@@ -129,6 +136,7 @@ export const CustomOptionsWheelControls = () => {
 
 export const YesNoWheelControls = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { wheelSnapshot, selectedWheel } = useSelector(
     (state: RootState) => state.wheel
   );
@@ -145,11 +153,14 @@ export const YesNoWheelControls = () => {
   }, [selectedOption, selectedWheel, dispatch]);
 
   useEffect(() => {
-    dispatch(setWheelSnapshot({inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL}))
-    // dispatch(setWheelFormValues(getDefaultWheelName(), "", ""));
+    const params = new URLSearchParams(location.search);
+    const wheelId = params.get("id");
+    
+    if(!wheelId)
+      dispatch(setWheelSnapshot({inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, selectedOption: YesNoWheel.options[0]}))
 
 
-  }, []);
+  }, [location.search, dispatch]);
 
   return (
     <>
@@ -163,9 +174,7 @@ export const YesNoWheelControls = () => {
               label={option}
               isActive={selectedOption === option}
               onClick={() => {
-                dispatch(setWheelSnapshot({ selectedOption: option }));
-                // Reset history when wheel mode changes
-                dispatch(setWheelSnapshot({ history: [] })); 
+                dispatch(setWheelSnapshot({ selectedOption: option, history: []  }));
               }}
               className="!text-xs lg:!text-xl flex-1"
             />
@@ -207,7 +216,6 @@ export const LetterWheelControls = () => {
   const getLetterArray = () => {
     const isUpperCase = wheelSnapshot.casing === UPPERCASE;
 
-    console.log(wheelSnapshot.casing === UPPERCASE);
     switch (wheelSnapshot.selectedOption) {
       case ALPHABETS_OPTION:
         return generateAlphabetArray(isUpperCase);
@@ -228,7 +236,6 @@ export const LetterWheelControls = () => {
 
   useEffect(() => {
     const selectedLetters = getLetterArray();
-    console.log(selectedLetters);
     dispatch(setWheelList(selectedLetters));
     dispatch(
       setWheelSnapshot({
@@ -330,6 +337,7 @@ export const NumberWheelControls = () => {
 
   useEffect(() => {
     const numberList = generateNumberList();
+
     dispatch(setWheelList(numberList.map(String)));
     // Update the lower and highest numbers in the snapshot
     dispatch(setWheelSnapshot({ lowerNumber: lowerNumber, highestNumber: highestNumber }));
@@ -432,32 +440,16 @@ export const EditWheel = () => {
               </button>
             </div>
           </div>
-
-
-          {
-            selectedWheel.name === YesNoWheel.name && (
-              <YesNoWheelControls/>
-            )
-          }
-
-          {
-
-            selectedWheel.name === CustomOptionsWheel.name && (
-              <CustomOptionsWheelControls/>
-            )
-          }
-
-          {
-            selectedWheel.name === LetterWheel.name && (
-              <LetterWheelControls/>
-            )
-          }
-
-          {
-            selectedWheel.name === NumberWheel.name && (
-              <NumberWheelControls/>
-            )
-          }
+{
+ selectedWheel &&  selectedWheel.name && (
+    <>
+      {selectedWheel.name === YesNoWheel.name && <YesNoWheelControls />}
+      {selectedWheel.name === CustomOptionsWheel.name && <CustomOptionsWheelControls />}
+      {selectedWheel.name === LetterWheel.name && <LetterWheelControls />}
+      {selectedWheel.name === NumberWheel.name && <NumberWheelControls />}
+    </>
+  )
+}
         </div>
       </div>
     </Card>

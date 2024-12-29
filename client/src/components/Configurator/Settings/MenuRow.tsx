@@ -23,7 +23,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
     </Button>
   ) : (
     <button
-      className={`px-4 text-base font-medium rounded ${className}`}
+      className={`text-base font-medium rounded ${className}`}
       onClick={onClick}
     >
       {label}
@@ -43,7 +43,7 @@ const MenuRow: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex justify-center  mb-3">
+      <div className="flex justify-center mb-3 gap-2">
         {buttons.map((button, index) => (
           <ToggleButton
             key={uuidv4()}

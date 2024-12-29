@@ -80,7 +80,7 @@ export default function NavBar() {
 
   const closeWheelsPopup = () => {
     setIsWheelsPopupOpen(false);
-    dispatch(setWheelSnapshot({inputNumbers: selectedWheel.name === "yes-no-wheel" ? DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL: 1} ))
+    selectedWheel && selectedWheel.name && dispatch(setWheelSnapshot({inputNumbers: selectedWheel.name === "yes-no-wheel" ? DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL: 1} ))
   };
 
 

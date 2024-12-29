@@ -182,8 +182,6 @@ export interface SpinConfig {
   confetti: boolean;
   sound: boolean;
   confettiType: "Confetti" | "Fireworks";
-  soundType: "Sound" | "No Sound";
-  inputNumbers: number;
 }
 
 export const defaultSpinConfig: SpinConfig = {
@@ -196,6 +194,4 @@ export const defaultSpinConfig: SpinConfig = {
   confetti: true,
   sound: true,
   confettiType: "Confetti",
-  soundType: "Sound",
-  inputNumbers: 1,
 };

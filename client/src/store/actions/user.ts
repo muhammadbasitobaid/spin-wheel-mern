@@ -6,13 +6,19 @@ export const SET_USER = "SET_USER";
 export const SET_USER_WHEELS = "SET_USER_WHEELS";
 export const RESET_USER = "RESET_USER";
 
+export type UserWheel = {
+  _id: string;
+  wheelType: string;
+  customWheelName: string;
+}
+
 export type User = {
   id?: string;
   _id?: string;
   username: string;
   email: string;
   password: string;
-  wheels?: WheelState[];
+  wheels?: UserWheel[];
 };
 
 export type Credentials = {

@@ -10,16 +10,16 @@ import TokenService from "@services/token.service";
 import LoggerService from "@services/logger.service";
 import EmailService from "@services/email.service";
 import User, { UserDocument } from "@models/user.model"; // Assuming User model is defined
-import Wheel from "@models/wheel.model"; // Assuming Wheel model is defined
+import { Wheel } from "@models/wheel.model"; // Assuming Wheel model is defined
+import mongoose from "mongoose";
 
-export const getUser = (req: Request, res: Response): void => {
+const getUser = (req: Request, res: Response): void => {
   const user = req.user as UserDocument;
   res.status(200).send({ message: "User info successfully retrieved", user });
 };
 
-export const postUser = async (req: Request, res: Response): Promise<void> => {
+const postUser = async (req: Request, res: Response): Promise<void> => {
   // Validate Register input
-  console.log(req.body);
   const { error } = validateRegisterInput(req.body);
   if (error) {
     res.status(400).send({ message: error.details[0].message });
@@ -88,7 +88,7 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const postUserCancel = async (
+const postUserCancel = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -108,69 +108,82 @@ export const postUserCancel = async (
   }
 };
 
-export const getUserWheels = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+
+const getUserWheels = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.params.userId;
-    const user = await User.findById(userId).populate("wheels").exec();
+
+    // Validate user ID
+    if (!mongoose.isValidObjectId(userId)) {
+      res.status(400).json({ message: "Invalid user ID" });
+      return;
+    }
+
+    // Populate user wheels and select specific fields (_id, wheelType, customWheelName)
+    const user = await User.findById(userId)
+      .populate({
+        path: "wheels",
+        select: "_id wheelType customWheelName",  // Select only these fields
+      })
+      .exec();
+
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
     }
 
-    res.status(200).json(user.wheels);
+    res.status(200).json({ message: "Wheels retrieved successfully", wheels: user.wheels });
   } catch (error: any) {
-    LoggerService.log.error(error);
-    res
-      .status(500)
-      .json({ message: "Error fetching wheels", error: error.message });
+    LoggerService.log.error(`Error fetching wheels for user ${req.params.userId}: ${error.message}`);
+    res.status(500).json({ message: "Error fetching wheels", error: error.message });
   }
 };
 
-export const saveUserWheel = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+const saveUserWheel = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.params.userId;
-    const wheelData = req.body;
+    const wheelData = sanitize(req.body);
 
-    // Find user by ID
+    // Validate user ID
+    if (!mongoose.isValidObjectId(userId)) {
+      res.status(400).json({ message: "Invalid user ID" });
+      return;
+    }
+
+    // Find user
     const user = await User.findById(userId);
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
     }
 
-    // Check if the wheel ID already exists in the request body
+    // Update existing wheel
     if (wheelData._id) {
-      // If wheel with the given ID exists, update it
-      const existingWheel = await Wheel.findByIdAndUpdate(
-        wheelData._id,
-        wheelData,
-        { new: true } // Return the updated wheel
-      );
+      if (!mongoose.isValidObjectId(wheelData._id)) {
+        res.status(400).json({ message: "Invalid wheel ID" });
+        return;
+      }
 
+      const existingWheel = await Wheel.findByIdAndUpdate(wheelData._id, wheelData, { new: true });
       if (!existingWheel) {
         res.status(404).json({ message: "Wheel not found" });
         return;
       }
 
       res.status(200).json({ message: "Wheel updated successfully", wheel: existingWheel });
-    } else {
-      // If no wheel ID exists, create a new wheel
-      const newWheel = new Wheel(wheelData);
-      user.wheels.push(newWheel._id); // Push only the wheel ID to the user's wheels array
-
-      await newWheel.save();
-      await user.save();
-
-      res.status(200).json({ message: "Wheel created and saved successfully", wheel: newWheel });
+      return;
     }
+
+    // Create new wheel
+    delete wheelData._id;
+    const newWheel = new Wheel(wheelData);
+    user.wheels.push(newWheel._id); // Add wheel reference to user
+    await newWheel.save();
+    await user.save();
+
+    res.status(200).json({ message: "Wheel created and saved successfully", wheel: newWheel });
   } catch (error: any) {
-    LoggerService.log.error(error);
+    LoggerService.log.error(`Error saving wheel for user ${req.params.userId}: ${error.message}`);
     res.status(500).json({ message: "Error saving wheel", error: error.message });
   }
 };

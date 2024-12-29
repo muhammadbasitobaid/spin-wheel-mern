@@ -17,6 +17,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   useOutsideClick(popupRef, onClose);
 
   const handleSaveWheelAndGenerateLink = () => {
+    if(shareLink) return;
     if (!selectedWheel?._id) {
       if (!user.user) {
         toast.error("Please login to save changes");
@@ -29,7 +30,7 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       try {
         // @ts-ignore
         dispatch(attemptSaveWheel(payload, user.user.id)).then((data) => {
-          generateShareLink(data.data.wheel._id);
+          selectedWheel && selectedWheel.slug &&         generateShareLink(data.data.wheel._id || wheel._id!, selectedWheel.slug);
         });
         toast.success("Wheel saved successfully");
       } catch (error) {
@@ -37,13 +38,14 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         return;
       }
     } else {
-      generateShareLink(selectedWheel._id);
+      generateShareLink(wheel._id!, selectedWheel.slug);
     }
   };
 
-  const generateShareLink = (id: string) => {
-    const link = `${process.env.PUBLIC_URL ?? "http://localhost:3000"}/?id=${id}`;
+  const generateShareLink = (id: string, slug: string) => {
+    const link = `${process.env.REACT_APP_BASE_URL ?? "http://localhost:3000"}${slug === "/" ? "": slug}?id=${id}`;
     dispatch(setShareLink(link)); // Update the Redux store with the new link
+    return link;
   };
 
   const handleCopyToClipboard = () => {
@@ -95,9 +97,13 @@ const SharePopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           />
         </button>
       </div>
-      <Button small onClick={handleSaveWheelAndGenerateLink} className="w-full child">
-        Generate Link
-      </Button>
+      {
+        !shareLink && (
+          <Button small onClick={handleSaveWheelAndGenerateLink} className="w-full child">
+            Generate Link
+          </Button>
+        ) 
+      }
     </div>
   );
 };

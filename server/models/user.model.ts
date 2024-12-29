@@ -14,7 +14,6 @@ export interface UserDocument extends Document {
   passwordResetExpires: Date;
   isVerified: boolean;
   isAdmin: boolean;
-  expires?: Date;
   wheels: Schema.Types.ObjectId[];
 
   comparePassword(password: string): boolean;
@@ -61,7 +60,6 @@ const userSchema = new Schema<UserDocument>({
     default: false,
     required: true,
   },
-  expires: { type: Date, default: dayjs().toDate(), expires: 43200 },
   wheels: [{ type: Schema.Types.ObjectId, ref: "Wheel" }],
 });
 

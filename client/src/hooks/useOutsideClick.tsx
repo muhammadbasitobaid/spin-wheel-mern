@@ -5,8 +5,6 @@ const useOutsideClick = (ref: React.RefObject<HTMLElement>, onOutsideClick: () =
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
     // @ts-ignore
-    console.log('event: ', !event?.srcElement?.classList?.contains("child")!);
-    // @ts-ignore
     if (ref.current && !event?.srcElement?.classList?.contains("child")!) {
       onOutsideClick();
     }

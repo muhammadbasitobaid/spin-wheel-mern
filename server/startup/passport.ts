@@ -39,43 +39,58 @@ export function initPassportJS() {
   );
 
   // Google Strategy
-  passport.use(
-    new GoogleStrategy(
-      {
-        clientID: process.env.GOOGLE_CLIENT_ID!,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        callbackURL: "https://api.thespinnerwheel.com/api/auth/google/callback",
-      },
-      async (
-        accessToken: string,
-        refreshToken: string,
-        profile: Profile,
-        done: (error: any, user?: any, options?: { message: string }) => void
-      ) => {
-        try {
-          const existingUser = await User.findOne({ googleId: profile.id });
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      callbackURL: `${process.env.PUBLIC_API_URL}/api/auth/google/callback`,
+    },
+    async (
+      accessToken: string,
+      refreshToken: string,
+      profile: Profile,
+      done: (error: any, user?: any, options?: { message: string }) => void
+    ) => {
+      try {
+        // Check if a user exists with the given Google ID
+        let existingUser = await User.findOne({ googleId: profile.id });
 
-          if (existingUser) {
-            return done(null, existingUser);
-          }
-
-          const newUser = new User({
-            googleId: profile.id,
-            username: profile.displayName,
-            email: profile?.emails?.[0].value || "",
-            thumbnail: "",
-            isVerified: true, // Google verified the email
-          });
-
-          await newUser.save();
-          done(null, newUser);
-        } catch (err) {
-          console.log("error is getting catch here");
-          done(undefined, false, { message: "Google login failed" });
+        if (existingUser) {
+          return done(null, existingUser);
         }
+
+        // Check if a user exists with the given email
+        const email = profile?.emails?.[0]?.value || "";
+        existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+          // Update the existing user with the Google ID if it doesn't already have one
+          if (!existingUser.googleId) {
+            existingUser.googleId = profile.id;
+            await existingUser.save();
+          }
+          return done(null, existingUser);
+        }
+
+        // Create a new user if none exists
+        const newUser = new User({
+          googleId: profile.id,
+          username: profile.displayName,
+          email,
+          thumbnail: "",
+          isVerified: true, // Google verified the email
+        });
+
+        await newUser.save();
+        done(null, newUser);
+      } catch (err) {
+        console.log("Error during Google authentication:", err);
+        done(undefined, false, { message: "Google login failed" });
       }
-    )
-  );
+    }
+  )
+);
 
   // Serialize user to session
   passport.serializeUser<SerializedUser>(

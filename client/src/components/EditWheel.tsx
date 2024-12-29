@@ -3,6 +3,8 @@ import Card from "./common/Card";
 import SelectInput from './common/SelectInput';
 import { ToggleButton } from "./Configurator/Settings/MenuRow";
 import ChoiceCounter from "./common/ChoiceCounter";
+
+import { useLocation } from "react-router-dom";
 import { 
   YesNoWheel,
   NumberWheel,
@@ -134,6 +136,7 @@ export const CustomOptionsWheelControls = () => {
 
 export const YesNoWheelControls = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { wheelSnapshot, selectedWheel } = useSelector(
     (state: RootState) => state.wheel
   );
@@ -150,11 +153,14 @@ export const YesNoWheelControls = () => {
   }, [selectedOption, selectedWheel, dispatch]);
 
   useEffect(() => {
-    dispatch(setWheelSnapshot({inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL}))
-    // dispatch(setWheelFormValues(getDefaultWheelName(), "", ""));
+    const params = new URLSearchParams(location.search);
+    const wheelId = params.get("id");
+    
+    if(!wheelId)
+      dispatch(setWheelSnapshot({inputNumbers: DEFAULT_INPUT_NUMBER_FOR_Y_N_WHEEL, selectedOption: YesNoWheel.options[0]}))
 
 
-  }, []);
+  }, [location.search, dispatch]);
 
   return (
     <>

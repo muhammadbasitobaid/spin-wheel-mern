@@ -4,8 +4,7 @@ import { setWheelState } from "../actions/wheel";
 import { WheelState } from "../reducers/wheel";
 import { postWheel } from "../../api";
 import toast from "react-hot-toast";
-
-import { wheels } from "src/constants"; // Assuming you import wheels from a constants file
+import { wheels, CustomOptionsWheel } from "src/constants"; // Assuming you import wheels from a constants file
 
 export const fetchWheelById =
   (wheelId: string, onSuccess: () => void = () => {}) => async (dispatch: Dispatch) => {
@@ -40,7 +39,8 @@ export const fetchWheelById =
         wheelSnapshot: {
           selectedOption: data.selectedOption,
           inputNumbers: data.inputNumbers,
-          options: matchingWheel.options,
+          options: data.wheelType === CustomOptionsWheel.name ? data.customLetterList.split(", ").filter((item: string) => item.length): matchingWheel.options,
+          customLetterList: data.wheelType !== CustomOptionsWheel.name ? data.customLetterList : "",
           history: data.history,
           lowerNumber: data.lowerNumber,
           highestNumber: data.highestNumber,

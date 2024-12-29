@@ -17,6 +17,7 @@ export interface SpinConfig {
 // WheelDocument interface
 export interface WheelDocument extends Document {
   selectedOption?: string;
+  customOptions?: string[];
   wheelType: string;
   customWheelName: string;
   inputNumbers?: number;
@@ -53,6 +54,7 @@ const spinConfigSchema = new Schema<SpinConfig>({
 // WheelDocument schema
 const wheelDocumentSchema = new Schema<WheelDocument>({
   selectedOption: { type: String },
+  customOptions: { type: [String] },
   wheelType: { type: String, required: true },
   customWheelName: { type: String, required: true },
   inputNumbers: { type: Number },

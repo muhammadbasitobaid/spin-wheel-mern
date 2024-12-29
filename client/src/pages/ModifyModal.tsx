@@ -9,6 +9,7 @@ import { setActiveModal,
   setWheelFormValues } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import { attemptSaveWheel } from "src/store/thunks/wheel";
+import { CustomOptionsWheel } from "src/constants";
 
 const ModifyModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,9 @@ const ModifyModal: React.FC = () => {
     lowerNumber: wheel.wheelSnapshot.lowerNumber,  // Get lowerNumber from wheel.wheelSnapshot
     highestNumber: wheel.wheelSnapshot.highestNumber,  // Get highestNumber from wheel.wheelSnapshot
     interval: wheel.wheelSnapshot.interval,  // Get interval from wheel.wheelSnapshot
-    customLetterList: wheel.wheelSnapshot.customLetterList,  // Get customLetterList from wheel.wheelSnapshot
+    customLetterList: wheel?.selectedWheel?.name === CustomOptionsWheel.name ?
+      wheel.wheelSnapshot.options!.reduce((accumulator, currentValue) => accumulator + (currentValue + ", " ), "")
+      : wheel.wheelSnapshot.customLetterList,  // Get customLetterList from wheel.wheelSnapshot
     casing: wheel.wheelSnapshot.casing,  // Get casing from wheel.wheelSnapshot
     wheelList: wheel.wheelList || [],  // Default to an empty array if wheelList is undefined
     _id: wheel?._id,  // Assuming this is for a new wheel, so it's empty

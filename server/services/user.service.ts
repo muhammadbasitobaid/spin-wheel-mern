@@ -39,7 +39,6 @@ export const setUserPassword = async (user: UserDocument, password: string) => {
 
 export const setUserVerified = async (user: UserDocument) => {
   user.isVerified = true;
-  user.expires = undefined;
 };
 
 export const deleteUserById = async (user: UserDocument) =>

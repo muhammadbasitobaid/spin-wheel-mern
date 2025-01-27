@@ -26,7 +26,7 @@ export default function App() {
   }, [dispatch]);
 
   return loading ? (
-    <div className="flex items-center justify-center h-screen max-h-screen">
+    <div className="flex items-center justify-center h-screen ">
       <Spinner />
     </div>
   ) : (

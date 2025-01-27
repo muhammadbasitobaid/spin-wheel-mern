@@ -27,8 +27,9 @@ import {
   UPPERCASE,
   letterWheelDefaultOption
 } from '../constants';
-import { generateAlphabetArray } from "../utils"
-import HomePageFullScreen from "src/pages/HomePageFullScreen"
+import { generateAlphabetArray } from "../utils";
+import HomePageFullScreen from "src/pages/HomePageFullScreen";
+import parse from 'html-react-parser';
 
 export type ModalNames =
   | "result"
@@ -118,6 +119,7 @@ return (
       <Spinner />
     </div>
   ) : (
+  <div>
     <div className="flex flex-col min-h-[100vh] lg:overflow-hidden">
       {activeModal === "profile" && <Auth />}
       {activeModal === "wheels" && <WheelsListModal />}
@@ -139,7 +141,7 @@ return (
                     {selectedWheel.label || selectedWheel.name || "N/A"} Picker Wheel
                   </h1>
                   <span className="text-light-gray text-base font-normal p-6 py-0">
-                    Decide {selectedWheel.label || selectedWheel.name || "N/A"} by wheel
+                    Decide {selectedWheel.label || selectedWheel.name || "N/A"} by Wheel
                   </span>
                   <SpinWheel />
                 </div>
@@ -191,6 +193,12 @@ return (
         )
       }
     </div>
+    <div className="max-w-[1360px] mx-auto flex flex-col gap-6 px-6" >
+    {
+      selectedWheel && parse(selectedWheel.htmlStr)
+    }
+    </div>
+  </div>
   )
 );
 }

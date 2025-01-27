@@ -47,17 +47,17 @@ const SpinWheel = () => {
   const [isWheelSpinning, setWheelSpinning] = useState(false);
   const [spinCount, setSpinCount] = useState(0);
 
-  const itemLabelRadiusMax = useMemo(() => {
-    if (!wheelList || wheelList.length === 0) return 0.5;
-    const numItems = wheelList.length;
-    if (numItems > 10) {
-      return 0.8;
-    } else if (numItems > 5) {
-      return 0.6;
-    } else {
-      return 0.4;
-    }
-  }, [wheelList]);
+  // const itemLabelRadiusMax = useMemo(() => {
+  //   if (!wheelList || wheelList.length === 0) return 0.5;
+  //   const numItems = wheelList.length;
+  //   if (numItems > 10) {
+  //     return 0.8;
+  //   } else if (numItems > 5) {
+  //     return 0.6;
+  //   } else {
+  //     return 0.4;
+  //   }
+  // }, [wheelList]);
 
 const wheelItems: WheelListItem[] = useMemo(() => {
   let items: WheelListItem[] = [];
@@ -129,7 +129,7 @@ const wheelItems: WheelListItem[] = useMemo(() => {
         borderWidth: 5,
         borderColor: "#ffff",
         itemLabelFontSizeMax: 28,
-        itemLabelRadiusMax,
+        itemLabelRadiusMax: 0.2,
         lineColor: "#ffff",
         lineWidth: 5,
         itemBackgroundColors: selectedTheme,

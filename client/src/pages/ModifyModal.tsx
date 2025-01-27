@@ -107,7 +107,7 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         <div className="py-8 flex flex-col">
           <div className="mb-4">
             <InputField
-              label="name"
+              label="Name"
               name="name"
               value={formValues.name}
               placeholder="Enter name"

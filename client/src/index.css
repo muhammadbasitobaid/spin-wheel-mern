@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -13,27 +13,26 @@ body {
   box-sizing: border-box;
 }
 
-input[type="range"]{
-    accent-color: #0089D6;
-    outline: none;
-    width: 20px;
+input[type="range"] {
+  accent-color: #0089d6;
+  outline: none;
+  width: 20px;
 }
 
-#range-vertical{
-
-    -webkit-appearance: slider-vertical!important;
+#range-vertical {
+  -webkit-appearance: slider-vertical !important;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   border-radius: 50%;
-  background: #0089D6;
+  background: #0089d6;
   cursor: ew-resize;
   box-shadow: 0 0 2px 0 #555;
-  transition: background .3s ease-in-out;
+  transition: background 0.3s ease-in-out;
   margin-right: -5.4px;
 }
-input[type=range]::-webkit-slider-runnable-track  {
+input[type="range"]::-webkit-slider-runnable-track {
   -webkit-appearance: none;
   width: 5px;
   height: 5px;
@@ -42,10 +41,10 @@ input[type=range]::-webkit-slider-runnable-track  {
 
 /* Styles for horizontal range input */
 .horizontal-range {
-  width: 100%!important;
+  width: 100% !important;
   margin-right: 0 !important;
-  height: auto!important;
-    -webkit-appearance: horizontal-range !important;
+  height: auto !important;
+  -webkit-appearance: horizontal-range !important;
 }
 
 .horizontal-range::-webkit-slider-runnable-track {
@@ -59,60 +58,53 @@ input[type=range]::-webkit-slider-runnable-track  {
 
 /* Custom Table */
 
-table { 
-    border: 1px solid black;
-border-collapse: separate !important;
-    border-radius: 20px;
-    border-spacing: 0px;
-    width: 100%;
-table-layout: auto;
+table {
+  border: 1px solid black;
+  border-collapse: separate !important;
+  border-radius: 20px;
+  border-spacing: 0px;
+  width: 100%;
+  table-layout: auto;
 }
 .expanding-column {
   width: 100%; /* Set the expanding column to take all available space */
 }
 
 td {
-    padding: 10px; 
-    border-left: 1px solid black;    
-    border-top: 1px solid black;    
+  padding: 10px;
+  border-left: 1px solid black;
+  border-top: 1px solid black;
 }
 
 tr:first-child td {
-    border-top: none;
+  border-top: none;
 }
 
 td:first-child {
-    border-left: none;
+  border-left: none;
 }
-
 
 /* custom scrollbar */
 /* Ref: https://codepen.io/GhostRider/pen/oNvoNv */
 
-
-#style-2::-webkit-scrollbar-track
-{
-	border-radius: 10px;
-	background-color: #F4F5F5;
+#style-2::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #f4f5f5;
 }
 
-#style-2::-webkit-scrollbar
-{
-	width: 8px;
-	background-color: #F4F5F5;
+#style-2::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f4f5f5;
 }
 
-#style-2::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	background-color: #0089D6;
+#style-2::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #0089d6;
 }
-
-
 
 .fb_iframe_widget iframe {
-    height: 40px!important;
-    opacity: 0;
+  height: 40px !important;
+  opacity: 0;
 }
 
 /* Custom scrollbar styles for Webkit browsers */
@@ -152,6 +144,8 @@ body::-webkit-scrollbar {
   display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
 }
 
-.html-image {
-  margin: 0 auto;
+.ql-align-center {
+  img {
+    margin: 0 auto !important;
+  }
 }

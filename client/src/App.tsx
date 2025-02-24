@@ -9,7 +9,7 @@ import Spinner from "./components/common/Spinner";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AboutUs from "./pages/AboutUs";
 import TermsAndConditions from "./pages/TermsAndConditions";
-
+import ContactUs from "./pages/ContactUs";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -44,6 +44,7 @@ export default function App() {
       <Route path="/:slug" element={<HomePage />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/contact-us" element={<ContactUs />} />
       <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
       <Route element={<Test />} path="/test" />
       <Route element={<Navigate to="/" replace />} />

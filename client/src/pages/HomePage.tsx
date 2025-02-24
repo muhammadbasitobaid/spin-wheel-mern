@@ -209,7 +209,7 @@ export default function Home() {
           <HomePageFullScreen />
         )}
       </div>
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-[90%] lg:max-w-4xl mx-auto">
         {selectedWheel && parse(selectedWheel.htmlStr)}
       </div>
       <footer className="bg-gray-100 text-center text-gray-700 py-6 mt-8 border-t border-gray-300">
@@ -219,18 +219,15 @@ export default function Home() {
               &copy; 2025 The Spinner Wheel
             </span>
           </div>
-          <div className="mb-4 md:mb-0">
-            <a
-              href="mailto:support@thespinnerwheel.com"
-              className="text-blue-600 hover:underline"
-            >
-              support@thespinnerwheel.com
-            </a>
-          </div>
           <ul className="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
             <li>
               <a href="/about-us" className="hover:text-blue-600 transition">
                 About Us
+              </a>
+            </li>
+            <li>
+              <a href="/contact-us" className="hover:text-blue-600 transition">
+                Contact Us
               </a>
             </li>
             <li>

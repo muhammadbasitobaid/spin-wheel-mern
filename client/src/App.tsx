@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Route, Navigate, Routes } from "react-router-dom";
 import { attemptGetUser } from "./store/thunks/user";
-import { ConfirmPage, HealthPage, HomePage } from "./pages";
+import { ConfirmPage, 
+  // HealthPage, 
+  HomePage } from "./pages";
 import { useAppDispatch } from "./store/hooks";
 import { AuthRoute } from "./components/AuthRoute";
-import Test from "./pages/Test";
+// import Test from "./pages/Test";
 import Spinner from "./components/common/Spinner";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AboutUs from "./pages/AboutUs";
@@ -31,7 +33,6 @@ export default function App() {
     </div>
   ) : (
     <Routes>
-      <Route path="/healthcheck" element={<HealthPage />} />
       <Route
         path="/account/confirm/:token"
         element={
@@ -46,7 +47,6 @@ export default function App() {
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/contact-us" element={<ContactUs />} />
       <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-      <Route element={<Test />} path="/test" />
       <Route element={<Navigate to="/" replace />} />
     </Routes>
   );

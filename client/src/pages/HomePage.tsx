@@ -12,24 +12,28 @@ import Results from "src/components/Results";
 import ScoreCard from "src/components/ScoreCard";
 import SpinWheel from "src/components/SpinWheel";
 import VolumeController from "src/components/VolumeController";
-import { setActiveModal, setSelectedWheel, setWheelSnapshot } from "src/store/actions/wheel";
+import {
+  setActiveModal,
+  setSelectedWheel,
+  setWheelSnapshot,
+} from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import ModifyModal from "./ModifyModal";
 import WheelsListModal from "src/components/WheelsListModal";
 import { fetchWheelById } from "src/store/thunks/wheel";
 import Spinner from "src/components/common/Spinner";
-import { 
+import {
   YesNoWheel,
   CustomOptionsWheel,
   NumberWheel,
   LetterWheel,
   DEFAULT_LETTER_WHEEL_CASING,
   UPPERCASE,
-  letterWheelDefaultOption
-} from '../constants';
+  letterWheelDefaultOption,
+} from "../constants";
 import { generateAlphabetArray } from "../utils";
 import HomePageFullScreen from "src/pages/HomePageFullScreen";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
 
 export type ModalNames =
   | "result"
@@ -43,13 +47,15 @@ export type ModalNames =
   | null;
 
 export default function Home() {
-  const { activeModal, selectedWheel, fullScreenMode } = useSelector((state: RootState) => state.wheel);
+  const { activeModal, selectedWheel, fullScreenMode } = useSelector(
+    (state: RootState) => state.wheel
+  );
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const [ initiateAnimation, setInitiateAnimation ]  = useState(false);
-  const [ isLoadingWheel, setIsLoadingWheel ]  = useState(false);
-  const [ hideSmallScreen, setHideSmallScreen ]  = useState(false);
+  const [initiateAnimation, setInitiateAnimation] = useState(false);
+  const [isLoadingWheel, setIsLoadingWheel] = useState(false);
+  const [hideSmallScreen, setHideSmallScreen] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -62,86 +68,97 @@ export default function Home() {
         navigate({ search: params.toString() }, { replace: true });
       }, 1000);
     }
-
   }, [activeModal, location.search, navigate, dispatch]);
 
   useEffect(() => {
-
     const params = new URLSearchParams(location.search);
     const wheelId = params.get("id");
 
     if (wheelId) {
       setIsLoadingWheel(true);
-      // @ts-ignore
-      dispatch(fetchWheelById(wheelId, () => {setIsLoadingWheel(false)}));
+      dispatch(
+        // @ts-ignore
+        fetchWheelById(wheelId, () => {
+          setIsLoadingWheel(false);
+        })
+      );
     }
-  }, [location.search, dispatch])
+  }, [location.search, dispatch]);
 
-useEffect(() => {
-  if (fullScreenMode) {
-    setInitiateAnimation(true); // Trigger fadeOut for home content when entering fullscreen
-    setTimeout(() => {
-      setHideSmallScreen(true);
-    }, 1000); // Duration should match fadeOut
-  }else{
+  useEffect(() => {
+    if (fullScreenMode) {
+      setInitiateAnimation(true); // Trigger fadeOut for home content when entering fullscreen
+      setTimeout(() => {
+        setHideSmallScreen(true);
+      }, 1000); // Duration should match fadeOut
+    } else {
+      setHideSmallScreen(false);
+      setInitiateAnimation(false);
+    }
+  }, [fullScreenMode]);
 
-    setHideSmallScreen(false);
-    setInitiateAnimation(false); 
-  }
-}, [fullScreenMode]);
+  useEffect(() => {
+    const path = location.pathname;
 
+    switch (path) {
+      case "/yes-or-no-wheel":
+        dispatch(setSelectedWheel(YesNoWheel));
+        break;
+      case "/random-number-wheel":
+        dispatch(setSelectedWheel(NumberWheel));
+        break;
+      case "/random-letter-generator":
+        dispatch(setSelectedWheel(LetterWheel));
+        dispatch(
+          setWheelSnapshot({
+            options: generateAlphabetArray(
+              DEFAULT_LETTER_WHEEL_CASING === UPPERCASE
+            ),
+            selectedOption: letterWheelDefaultOption,
+          })
+        );
+        break;
+      case "/":
+        dispatch(setSelectedWheel(CustomOptionsWheel));
+        break;
+      default:
+        break;
+    }
+  }, [location.pathname, dispatch]);
 
-useEffect(() => {
-  const path = location.pathname;
-
-  switch (path) {
-    case "/yes-or-no-wheel":
-      dispatch(setSelectedWheel(YesNoWheel));
-      break;
-    case "/random-number-wheel":
-      dispatch(setSelectedWheel(NumberWheel));
-      break;
-    case "/random-letter-generator":
-      dispatch(setSelectedWheel(LetterWheel));
-      dispatch(setWheelSnapshot({options: generateAlphabetArray(DEFAULT_LETTER_WHEEL_CASING === UPPERCASE), selectedOption: letterWheelDefaultOption}))
-      break;
-    case "/":
-      dispatch(setSelectedWheel(CustomOptionsWheel));
-      break;
-    default:
-      break;
-  }
-}, [location.pathname, dispatch]);
-
-return (
-  isLoadingWheel ? (
+  return isLoadingWheel ? (
     <div className="flex items-center justify-center h-screen max-h-screen">
       <Spinner />
     </div>
   ) : (
-  <div>
-    <div className="flex flex-col min-h-[100vh] lg:overflow-hidden">
-      {activeModal === "profile" && <Auth />}
-      {activeModal === "wheels" && <WheelsListModal />}
-      {activeModal === "settings" && <Configurator />}
-      {activeModal === "result" && <ResultModal />}
-      {activeModal === "history" && <Results />}
-      {activeModal === "modify" && <ModifyModal />}
-      <NavBar />
-      {
-        !hideSmallScreen ? (
+    <div>
+      <div className="flex flex-col min-h-[100vh] lg:overflow-hidden">
+        {activeModal === "profile" && <Auth />}
+        {activeModal === "wheels" && <WheelsListModal />}
+        {activeModal === "settings" && <Configurator />}
+        {activeModal === "result" && <ResultModal />}
+        {activeModal === "history" && <Results />}
+        {activeModal === "modify" && <ModifyModal />}
+        <NavBar />
+        {!hideSmallScreen ? (
           <div className="flex-1 w-full h-full flex">
-            <div className={clsx(
-              "max-w-[1360px] mx-auto flex-1 lg:flex lg:flex-row lg:justify-between gap-6 lg:overflow-hidden",
-              initiateAnimation && !hideSmallScreen ? "animate-fadeOut" : "opacity-0 animate-fadeIn"
-            )}>
+            <div
+              className={clsx(
+                "max-w-[1360px] mx-auto flex-1 lg:flex lg:flex-row lg:justify-between gap-6 lg:overflow-hidden",
+                initiateAnimation && !hideSmallScreen
+                  ? "animate-fadeOut"
+                  : "opacity-0 animate-fadeIn"
+              )}
+            >
               {selectedWheel && (selectedWheel.name || selectedWheel.label) && (
                 <div className="flex-1 mb-8 lg:mb-0 lg:w-1/2 lg:flex lg:flex-col lg:justify-center">
                   <h1 className="p-6 py-0 mt-[30px] lg:mt-0 text-black text-4xl font-medium">
-                    {selectedWheel.label || selectedWheel.name || "N/A"} Picker Wheel
+                    {selectedWheel.label || selectedWheel.name || "N/A"} Picker
+                    Wheel
                   </h1>
                   <span className="text-light-gray text-base font-normal p-6 py-0">
-                    Decide {selectedWheel.label || selectedWheel.name || "N/A"} by Wheel
+                    Decide {selectedWheel.label || selectedWheel.name || "N/A"}{" "}
+                    by Wheel
                   </span>
                   <SpinWheel />
                 </div>
@@ -190,15 +207,54 @@ return (
           </div>
         ) : (
           <HomePageFullScreen />
-        )
-      }
+        )}
+      </div>
+      <div className="max-w-[90%] lg:max-w-4xl mx-auto">
+        {selectedWheel && parse(selectedWheel.htmlStr)}
+      </div>
+      <footer className="bg-gray-100 text-center text-gray-700 py-6 mt-8 border-t border-gray-300">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row md:justify-between items-center">
+          <div className="mb-4 md:mb-0">
+            <span className="text-lg font-semibold">
+              &copy; 2025 The Spinner Wheel
+            </span>
+          </div>
+          <ul className="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
+            <li>
+              <a href="/about-us" className="hover:text-blue-600 transition">
+                About Us
+              </a>
+            </li>
+            <li>
+              <a href="/contact-us" className="hover:text-blue-600 transition">
+                Contact Us
+              </a>
+            </li>
+            <li>
+              <a
+                href="/privacy-policy"
+                className="hover:text-blue-600 transition"
+              >
+                Privacy Policy
+              </a>
+            </li>
+            <li>
+              <a
+                href="/terms-and-conditions"
+                className="hover:text-blue-600 transition"
+              >
+                Terms & Conditions
+              </a>
+            </li>
+            <li>
+              <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer">
+                Site Map
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </footer>
     </div>
-    <div className="max-w-[1360px] mx-auto flex flex-col gap-6 px-6" >
-    {
-      selectedWheel && parse(selectedWheel.htmlStr)
-    }
-    </div>
-  </div>
-  )
-);
+  );
 }

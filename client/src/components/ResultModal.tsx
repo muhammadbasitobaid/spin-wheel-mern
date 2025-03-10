@@ -27,7 +27,7 @@ const ResultModal: React.FC = () => {
       setShowAnimation(true);
 
       const sound = new Howl({
-        src: ["/assets/sounds/confetti.mp3"],
+        src: ["/assets/sounds/confetti.mpeg"],
       });
 
       if (confettiType === "Fireworks") {

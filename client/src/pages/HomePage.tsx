@@ -246,8 +246,14 @@ export default function Home() {
                 Terms & Conditions
               </a>
             </li>
+            <li>
+              <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer">
+                Site Map
+              </a>
+            </li>
           </ul>
         </div>
+
       </footer>
     </div>
   );

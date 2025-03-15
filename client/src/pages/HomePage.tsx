@@ -150,6 +150,7 @@ export default function Home({ canonicalUrl }: HomeProps) {
         }
       };
     }
+    return () => {}; // Return empty cleanup function when canonicalUrl doesn't exist
   }, [canonicalUrl]);
 
   return isLoadingWheel ? (

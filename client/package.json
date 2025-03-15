@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Wheelspinner App FE",
   "private": true,
+  "homepage": "https://thespinnerwheel.com/",
   "main": "index.js",
   "author": "muhammadbasitobaid",
   "license": "MIT",

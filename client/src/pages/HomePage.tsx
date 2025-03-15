@@ -46,7 +46,12 @@ export type ModalNames =
   | "modify"
   | null;
 
-export default function Home() {
+// Add prop type for HomePage
+interface HomeProps {
+  canonicalUrl?: string;
+}
+
+export default function Home({ canonicalUrl }: HomeProps) {
   const { activeModal, selectedWheel, fullScreenMode } = useSelector(
     (state: RootState) => state.wheel
   );
@@ -125,6 +130,27 @@ export default function Home() {
         break;
     }
   }, [location.pathname, dispatch]);
+
+  // Add useEffect for setting canonical URL
+  useEffect(() => {
+    if (canonicalUrl) {
+      // Find existing canonical link or create a new one
+      let canonicalLink = document.querySelector('link[rel="canonical"]');
+      if (!canonicalLink) {
+        canonicalLink = document.createElement("link");
+        canonicalLink.setAttribute("rel", "canonical");
+        document.head.appendChild(canonicalLink);
+      }
+      canonicalLink.setAttribute("href", canonicalUrl);
+
+      // Cleanup function
+      return () => {
+        if (canonicalLink && canonicalLink.parentNode) {
+          canonicalLink.parentNode.removeChild(canonicalLink);
+        }
+      };
+    }
+  }, [canonicalUrl]);
 
   return isLoadingWheel ? (
     <div className="flex items-center justify-center h-screen max-h-screen">
@@ -253,7 +279,6 @@ export default function Home() {
             </li>
           </ul>
         </div>
-
       </footer>
     </div>
   );

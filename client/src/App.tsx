@@ -46,11 +46,36 @@ export default function App() {
       <Route path="/" element={<HomePage />} />
 
       {/* Explicit wheel routes for better SEO */}
-      <Route path="/yes-or-no-wheel" element={<HomePage />} />
-      <Route path="/random-number-wheel" element={<HomePage />} />
-      <Route path="/random-letter-generator" element={<HomePage />} />
-      <Route path="/random-name-picker" element={<HomePage />} />
-      <Route path="/random-team-generator" element={<HomePage />} />
+      <Route
+        path="/yes-or-no-wheel"
+        element={
+          <HomePage canonicalUrl="https://thespinnerwheel.com/yes-or-no-wheel" />
+        }
+      />
+      <Route
+        path="/random-number-wheel"
+        element={
+          <HomePage canonicalUrl="https://thespinnerwheel.com/random-number-wheel" />
+        }
+      />
+      <Route
+        path="/random-letter-generator"
+        element={
+          <HomePage canonicalUrl="https://thespinnerwheel.com/random-letter-generator" />
+        }
+      />
+      <Route
+        path="/random-name-picker"
+        element={
+          <HomePage canonicalUrl="https://thespinnerwheel.com/random-name-picker" />
+        }
+      />
+      <Route
+        path="/random-team-generator"
+        element={
+          <HomePage canonicalUrl="https://thespinnerwheel.com/random-team-generator" />
+        }
+      />
 
       {/* Other static routes */}
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />

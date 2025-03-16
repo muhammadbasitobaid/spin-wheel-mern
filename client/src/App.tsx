@@ -41,9 +41,9 @@ export default function App() {
         }
       />
       <Route
-        path="/random-number-wheel"
+        path="/random-number-generator"
         element={
-          <HomePage canonicalUrl="https://thespinnerwheel.com/random-number-wheel" />
+          <HomePage canonicalUrl="https://thespinnerwheel.com/random-number-generator" />
         }
       />
       <Route

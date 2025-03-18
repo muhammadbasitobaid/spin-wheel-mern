@@ -143,7 +143,7 @@ export default function Home({ canonicalUrl }: HomeProps) {
       case "/yes-or-no-wheel":
         dispatch(setSelectedWheel(YesNoWheel));
         break;
-      case "/random-number-wheel":
+      case "/random-number-generator":
         dispatch(setSelectedWheel(NumberWheel));
         break;
       case "/random-letter-generator":

@@ -1,27 +1,27 @@
 import React, { useRef } from "react";
-import { wheels, Wheel, YesNoWheel } from "src/constants"; // Assuming you import wheels from a constants file
-import { useDispatch } from 'react-redux';
-import { setWheelSnapshot, setWheelMetaDataDefaultAction, setFullScreenMode } from "../store/actions/wheel";
-import { useNavigate } from 'react-router-dom';
+import { wheels, Wheel, YesNoWheel } from "src/constants";
+import { useDispatch } from "react-redux";
+import {
+  setWheelSnapshot,
+  setWheelMetaDataDefaultAction,
+  setFullScreenMode,
+} from "../store/actions/wheel";
+import { Link } from "react-router-dom";
 import useOutsideClick from "src/hooks/useOutsideClick";
 
 const WheelsPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-
-const navigate = useNavigate();
   const popupRef = useRef<HTMLDivElement>(null);
   useOutsideClick(popupRef, onClose);
   const dispatch = useDispatch();
 
   const handleWheelSelection = (wheel: Wheel) => {
-    dispatch(setWheelSnapshot({ history: [] })); // Reset history when wheel mode changes
-    if(wheel.name === "yes-no-wheel"){
-
-    dispatch(setWheelSnapshot({selectedOption: YesNoWheel.options[0]} ))
+    dispatch(setWheelSnapshot({ history: [] }));
+    if (wheel.name === "yes-no-wheel") {
+      dispatch(setWheelSnapshot({ selectedOption: YesNoWheel.options[0] }));
     }
-    dispatch(setWheelSnapshot({customLetterList: ""} ))
+    dispatch(setWheelSnapshot({ customLetterList: "" }));
     dispatch(setWheelMetaDataDefaultAction());
     dispatch(setFullScreenMode(false));
-    navigate(wheel.slug); 
     onClose();
   };
 
@@ -35,11 +35,16 @@ const navigate = useNavigate();
       </button>
       <h2 className="text-lg font-medium mb-4">Pick a Wheel</h2>
 
-      {/* List of wheels */}
       <ul className="space-y-2">
         {wheels.map((wheel) => (
-          <li key={wheel.name} onClick={() => handleWheelSelection(wheel)} className="p-2 bg-gray-100 rounded-lg">
-            <span className="font-semibold  child">{wheel.label} Wheel</span>
+          <li key={wheel.name}>
+            <Link
+              to={wheel.slug}
+              onClick={() => handleWheelSelection(wheel)}
+              className="block p-2 bg-gray-100 rounded-lg"
+            >
+              <span className="font-semibold child">{wheel.label} Wheel</span>
+            </Link>
           </li>
         ))}
       </ul>

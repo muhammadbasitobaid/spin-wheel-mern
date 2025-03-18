@@ -34,6 +34,7 @@ import {
 import { generateAlphabetArray } from "../utils";
 import HomePageFullScreen from "src/pages/HomePageFullScreen";
 import parse from "html-react-parser";
+import { Helmet } from "react-helmet-async";
 
 export type ModalNames =
   | "result"
@@ -50,6 +51,34 @@ export type ModalNames =
 interface HomeProps {
   canonicalUrl?: string;
 }
+
+interface MetaInfo {
+  title: string;
+  description: string;
+}
+
+const META_INFO: Record<string, MetaInfo> = {
+  default: {
+    title: "The Spinner Wheel - Free Random Choice Picker",
+    description:
+      "Use The Spinner Wheel to make decisions with a customizable random choice picker. Try the Yes/No Wheel, Number Picker, Letter Picker and more for free!",
+  },
+  "yes-or-no-wheel": {
+    title: "Yes or No Picker Wheel - Spin The Wheel To Decide Yes or No",
+    description:
+      "The Yes No Picker Wheel is a unique decision-making tool that provides random yes, no, or maybe answers. You can make your decision with a simple spin.",
+  },
+  "random-number-generator": {
+    title: "Number Picker Wheel - Spin the Wheel to Pick Random Numbers",
+    description:
+      "The Number Picker Wheel lets you pick random numbers for making decisions with a simple spin. You can customize your number range and generate unbiased results.",
+  },
+  "random-letter-generator": {
+    title: "Letter Picker Wheel - Pick Random Letters from A to Z",
+    description:
+      "The Random Letter Picker Wheel helps you generate random letters effortlessly. With a quick spin, you can select letters for word games, educational activities, and more.",
+  },
+};
 
 export default function Home({ canonicalUrl }: HomeProps) {
   const { activeModal, selectedWheel, fullScreenMode } = useSelector(
@@ -109,7 +138,7 @@ export default function Home({ canonicalUrl }: HomeProps) {
       case "/yes-or-no-wheel":
         dispatch(setSelectedWheel(YesNoWheel));
         break;
-      case "/random-number-generator":
+      case "/random-number-wheel":
         dispatch(setSelectedWheel(NumberWheel));
         break;
       case "/random-letter-generator":
@@ -131,7 +160,7 @@ export default function Home({ canonicalUrl }: HomeProps) {
     }
   }, [location.pathname, dispatch]);
 
-  // Add useEffect for setting canonical URL
+  // Fix the useEffect return type issue
   useEffect(() => {
     if (canonicalUrl) {
       // Find existing canonical link or create a new one
@@ -150,8 +179,12 @@ export default function Home({ canonicalUrl }: HomeProps) {
         }
       };
     }
-    return () => {}; // Return empty cleanup function when canonicalUrl doesn't exist
+    return () => {}; // Add return for when canonicalUrl is falsy
   }, [canonicalUrl]);
+
+  // Get the current path without the leading slash
+  const currentPath = location.pathname.slice(1) || "default";
+  const metaInfo = META_INFO[currentPath] || META_INFO.default;
 
   return isLoadingWheel ? (
     <div className="flex items-center justify-center h-screen max-h-screen">
@@ -159,6 +192,12 @@ export default function Home({ canonicalUrl }: HomeProps) {
     </div>
   ) : (
     <div>
+      <Helmet>
+        <title>{metaInfo.title}</title>
+        <meta name="description" content={metaInfo.description} />
+        {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      </Helmet>
+
       <div className="flex flex-col min-h-[100vh] lg:overflow-hidden">
         {activeModal === "profile" && <Auth />}
         {activeModal === "wheels" && <WheelsListModal />}

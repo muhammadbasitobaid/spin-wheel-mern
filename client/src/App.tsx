@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Route, Navigate, Routes } from "react-router-dom";
 import { attemptGetUser } from "./store/thunks/user";
 import {
@@ -9,71 +9,86 @@ import {
 import { useAppDispatch } from "./store/hooks";
 import { AuthRoute } from "./components/AuthRoute";
 // import Test from "./pages/Test";
+import Spinner from "./components/common/Spinner";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AboutUs from "./pages/AboutUs";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import ContactUs from "./pages/ContactUs";
+import { HelmetProvider } from "react-helmet-async";
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(attemptGetUser());
+    dispatch(attemptGetUser())
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   }, [dispatch]);
 
-  return (
-    <Routes>
-      <Route
-        path="/account/confirm/:token"
-        element={
-          <AuthRoute>
-            <ConfirmPage />
-          </AuthRoute>
-        }
-      />
-      <Route path="/" element={<HomePage />} />
+  return loading ? (
+    <div className="flex items-center justify-center h-screen ">
+      <Spinner />
+    </div>
+  ) : (
+    <HelmetProvider>
+      <Routes>
+        <Route
+          path="/account/confirm/:token"
+          element={
+            <AuthRoute>
+              <ConfirmPage />
+            </AuthRoute>
+          }
+        />
+        <Route path="/" element={<HomePage />} />
 
-      {/* Explicit wheel routes for better SEO */}
-      <Route
-        path="/yes-or-no-wheel"
-        element={
-          <HomePage canonicalUrl="https://thespinnerwheel.com/yes-or-no-wheel" />
-        }
-      />
-      <Route
-        path="/random-number-generator"
-        element={
-          <HomePage canonicalUrl="https://thespinnerwheel.com/random-number-generator" />
-        }
-      />
-      <Route
-        path="/random-letter-generator"
-        element={
-          <HomePage canonicalUrl="https://thespinnerwheel.com/random-letter-generator" />
-        }
-      />
-      <Route
-        path="/random-name-picker"
-        element={
-          <HomePage canonicalUrl="https://thespinnerwheel.com/random-name-picker" />
-        }
-      />
-      <Route
-        path="/random-team-generator"
-        element={
-          <HomePage canonicalUrl="https://thespinnerwheel.com/random-team-generator" />
-        }
-      />
+        {/* Explicit wheel routes for better SEO */}
+        <Route
+          path="/yes-or-no-wheel"
+          element={
+            <HomePage canonicalUrl="https://thespinnerwheel.com/yes-or-no-wheel" />
+          }
+        />
+        <Route
+          path="/random-number-generator"
+          element={
+            <HomePage canonicalUrl="https://thespinnerwheel.com/random-number-generator" />
+          }
+        />
+        <Route
+          path="/random-letter-generator"
+          element={
+            <HomePage canonicalUrl="https://thespinnerwheel.com/random-letter-generator" />
+          }
+        />
+        <Route
+          path="/random-name-picker"
+          element={
+            <HomePage canonicalUrl="https://thespinnerwheel.com/random-name-picker" />
+          }
+        />
+        <Route
+          path="/random-team-generator"
+          element={
+            <HomePage canonicalUrl="https://thespinnerwheel.com/random-team-generator" />
+          }
+        />
 
-      {/* Other static routes */}
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/about-us" element={<AboutUs />} />
-      <Route path="/contact-us" element={<ContactUs />} />
-      <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        {/* Other static routes */}
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 
-      {/* Catch-all route for any other slugs */}
-      <Route path="/:slug" element={<HomePage />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* Catch-all route for any other slugs */}
+        <Route path="/:slug" element={<HomePage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </HelmetProvider>
   );
 }

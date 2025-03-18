@@ -30,6 +30,7 @@ import {
   DEFAULT_LETTER_WHEEL_CASING,
   UPPERCASE,
   letterWheelDefaultOption,
+  initCustomWheelOptions,
 } from "../constants";
 import { generateAlphabetArray } from "../utils";
 import HomePageFullScreen from "src/pages/HomePageFullScreen";
@@ -154,6 +155,12 @@ export default function Home({ canonicalUrl }: HomeProps) {
         break;
       case "/":
         dispatch(setSelectedWheel(CustomOptionsWheel));
+        dispatch(
+          setWheelSnapshot({
+            options: initCustomWheelOptions,
+            selectedOption: initCustomWheelOptions[0],
+          })
+        );
         break;
       default:
         break;

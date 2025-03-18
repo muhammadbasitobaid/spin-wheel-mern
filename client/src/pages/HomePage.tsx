@@ -16,6 +16,7 @@ import {
   setActiveModal,
   setSelectedWheel,
   setWheelSnapshot,
+  setLastRotation,
 } from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import ModifyModal from "./ModifyModal";
@@ -134,6 +135,9 @@ export default function Home({ canonicalUrl }: HomeProps) {
 
   useEffect(() => {
     const path = location.pathname;
+
+    // Reset last rotation when changing wheel type
+    dispatch(setLastRotation(0));
 
     switch (path) {
       case "/yes-or-no-wheel":

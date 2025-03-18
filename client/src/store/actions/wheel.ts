@@ -31,6 +31,7 @@ export const RESET_HISTORY = "RESET_HISTORY";
 export const SET_WHEEL_DETAILS = "SET_WHEEL_DETAILS";
 export const SET_FULL_SCREEN_MODE = "SET_FULL_SCREEN_MODE";
 export const SET_WHEEL_FORM_VALUES = 'SET_WHEEL_FORM_VALUES';
+export const SET_LAST_ROTATION = "SET_LAST_ROTATION";
 
 export interface SetVolumeAction {
   type: typeof SET_VOLUME;
@@ -188,6 +189,11 @@ interface SetWheelMetaDataDefaultAction {
   type: typeof SET_WHEEL_META_DATA_DEFAULT_ACTION;
 }
 
+interface SetLastRotationAction {
+  type: typeof SET_LAST_ROTATION;
+  payload: number;
+}
+
 export type WheelActions =
   | SetVolumeAction
   | SetStateAction 
@@ -215,7 +221,8 @@ export type WheelActions =
   | SetWheelFormValuesAction
   | SetWheelMetaDataDefaultAction
   | SetShareLinkAction
-  | ResetWheelAction;
+  | ResetWheelAction
+  | SetLastRotationAction;
 
 export const resetHistory = (): ResetHistoryAction => ({
   type: RESET_HISTORY,
@@ -372,3 +379,8 @@ export const setWheelFormValues = (name: string, description: string, popUpMessa
 export const setWheelMetaDataDefaultAction = () => ({
   type: SET_WHEEL_META_DATA_DEFAULT_ACTION
 })
+
+export const setLastRotation = (rotation: number): SetLastRotationAction => ({
+  type: SET_LAST_ROTATION,
+  payload: rotation,
+});

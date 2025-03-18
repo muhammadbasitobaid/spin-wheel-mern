@@ -23,6 +23,7 @@ import {
   SET_WHEEL_META_DATA_DEFAULT_ACTION,
   WHEEL_RESET,
   SET_SHARE_LINK,
+  SET_LAST_ROTATION,
   WheelActions,
 } from "../actions/wheel";
 
@@ -56,6 +57,7 @@ export interface WheelState {
   spinConfig: SpinConfig;
   fullScreenMode?: boolean;
   shareLink?: string;
+  lastRotation: number;
 }
 
 export const initialState: WheelState = {
@@ -77,6 +79,7 @@ export const initialState: WheelState = {
   popUpMessage: DEFAULT_WHEEL_METADATA.popUpMessage,
   fullScreenMode: false,
   shareLink: "",
+  lastRotation: 0,
 };
 
 type ActionTypes = WheelActions;
@@ -215,6 +218,11 @@ const wheelReducer = (
         ...state,
         fullScreenMode: action.payload,
       }
+    case SET_LAST_ROTATION:
+      return {
+        ...state,
+        lastRotation: action.payload
+      };
     default:
       return state;
   }

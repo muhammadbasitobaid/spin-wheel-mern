@@ -20,6 +20,7 @@ export const fetchWheelById =
           // Construct the WheelState object
  const wheelState: WheelState = {
         selectedWheel: matchingWheel,
+        lastRotation: 0,
         _id: data._id,
         name: data.customWheelName,
         description: data.description,

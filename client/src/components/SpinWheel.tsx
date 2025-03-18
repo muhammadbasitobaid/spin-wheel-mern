@@ -2,7 +2,12 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // @ts-ignore
 import { Wheel } from "spin-wheel";
-import { setActiveModal, setResult, setWheelSnapshot } from "src/store/actions/wheel";
+import {
+  setActiveModal,
+  setResult,
+  setWheelSnapshot,
+  setLastRotation,
+} from "src/store/actions/wheel";
 import { RootState } from "src/store/store";
 import { getBgColorForLabel, getLabelColor } from "src/utils";
 import { Howl } from "howler";
@@ -31,7 +36,7 @@ const randomizeNumber = (number: number) => Math.floor(Math.random() * number);
 
 const SpinWheel = () => {
   const dispatch = useDispatch();
-  const { wheelList, wheelSnapshot, selectedTheme, spinConfig } =
+  const { wheelList, wheelSnapshot, selectedTheme, spinConfig, lastRotation } =
     useSelector((state: RootState) => state.wheel);
   const { inputNumbers, history, options } = wheelSnapshot;
   const {
@@ -59,23 +64,28 @@ const SpinWheel = () => {
   //   }
   // }, [wheelList]);
 
-const wheelItems: WheelListItem[] = useMemo(() => {
-  let items: WheelListItem[] = [];
-  const optionsToUse = wheelList && wheelList.length > 0 ? wheelList : options?.length ? options : ["Yes", "No"]; 
+  const wheelItems: WheelListItem[] = useMemo(() => {
+    let items: WheelListItem[] = [];
+    const optionsToUse =
+      wheelList && wheelList.length > 0
+        ? wheelList
+        : options?.length
+        ? options
+        : ["Yes", "No"];
 
-  if (!optionsToUse || optionsToUse.length === 0) return items;
+    if (!optionsToUse || optionsToUse.length === 0) return items;
 
-  for (let i = 0; i < n; i++) {
-    items = items.concat(
-      optionsToUse.map((item: string, index: number) => ({
-        label: mysterySpinOption ? "?" : item,
-        labelColor: getLabelColor(getBgColorForLabel(index, selectedTheme)),
-        value: item,
-      }))
-    );
-  }
-  return items;
-}, [wheelList, options, n, selectedTheme, mysterySpinOption]);
+    for (let i = 0; i < n; i++) {
+      items = items.concat(
+        optionsToUse.map((item: string, index: number) => ({
+          label: mysterySpinOption ? "?" : item,
+          labelColor: getLabelColor(getBgColorForLabel(index, selectedTheme)),
+          value: item,
+        }))
+      );
+    }
+    return items;
+  }, [wheelList, options, n, selectedTheme, mysterySpinOption]);
 
   const container = useRef<HTMLDivElement | null>(null);
   const shadowCanvas = useRef<HTMLCanvasElement | null>(null);
@@ -93,8 +103,11 @@ const wheelItems: WheelListItem[] = useMemo(() => {
       }
     };
 
-    const rotation = randomInitialAngleOption ? randomizeNumber(360) : 0;
-
+    const rotation =
+      !lastRotation && randomInitialAngleOption
+        ? randomizeNumber(360)
+        : lastRotation;
+    console.log(lastRotation);
     const tickSound = new Howl({
       src: ["/assets/sounds/tick.mp3"],
     });
@@ -104,7 +117,8 @@ const wheelItems: WheelListItem[] = useMemo(() => {
       if (shadowCtx) {
         const radius =
           (Math.min(shadowCanvas.current!.width, shadowCanvas.current!.height) /
-            2)* 0.80;
+            2) *
+          0.8;
         shadowCtx.clearRect(
           0,
           0,
@@ -138,10 +152,15 @@ const wheelItems: WheelListItem[] = useMemo(() => {
         onSpin: () => {},
         onRest: (event: any) => {
           const stoppedItemIndex = event.currentIndex;
+
+          // Store the current rotation in Redux
+          dispatch(setLastRotation(event.rotation));
+
           const stoppedItemLabel =
             wheelItems[stoppedItemIndex].label === "?"
               ? wheelItems[stoppedItemIndex].value
               : wheelItems[stoppedItemIndex].label;
+
           dispatch(setResult(stoppedItemLabel));
           dispatch(setActiveModal("result"));
           const updatedHistory = [...history];
@@ -179,7 +198,14 @@ const wheelItems: WheelListItem[] = useMemo(() => {
       }
       setWheel(null);
     };
-  }, [wheelItems, dispatch, history, randomInitialAngleOption, selectedTheme]);
+  }, [
+    wheelItems,
+    dispatch,
+    history,
+    randomInitialAngleOption,
+    selectedTheme,
+    lastRotation,
+  ]);
 
   const handleSpinButtonClick = () => {
     if (wheelItems.length === 0) {
@@ -207,7 +233,10 @@ const wheelItems: WheelListItem[] = useMemo(() => {
   return (
     <div className="mt-4 md:mt-0 flex flex-col">
       <div className="relative flex justify-center items-center w-full h-[320px] sm:h-[380px] md:h-[450px] lg:h-[550px] lg:w-full">
-        <canvas ref={shadowCanvas} className="absolute h-full w-full lg:w-[120%] lg:h-[120%]"></canvas>
+        <canvas
+          ref={shadowCanvas}
+          className="absolute h-full w-full lg:w-[120%] lg:h-[120%]"
+        ></canvas>
         <div
           id="wheel"
           ref={container}
@@ -235,19 +264,19 @@ const wheelItems: WheelListItem[] = useMemo(() => {
           </button>
         </div>
       </div>
-        {spinCountOption && (
-      <div className="text-center flex justify-center gap-2 mt-4 relative z-40">
-            <strong>{`Spin Count: ${spinCount}`}</strong>
-            <button className="" onClick={() => setSpinCount(0)}>
-              <img
-                src="/assets/icons/refresh.svg"
-                alt="Reset Spin Count"
-                className="w-4 sm:w-5 lg:w-6"
-                title="Reset Spin Count"
-              />
-            </button>
-          </div>
-        )}
+      {spinCountOption && (
+        <div className="text-center flex justify-center gap-2 mt-4 relative z-40">
+          <strong>{`Spin Count: ${spinCount}`}</strong>
+          <button className="" onClick={() => setSpinCount(0)}>
+            <img
+              src="/assets/icons/refresh.svg"
+              alt="Reset Spin Count"
+              className="w-4 sm:w-5 lg:w-6"
+              title="Reset Spin Count"
+            />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

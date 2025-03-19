@@ -3,9 +3,9 @@ import { NavBar } from "src/components";
 
 const ContactUs: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate">
+    <div className="min-h-screen  ">
       <NavBar isPublic />
-      <div className="bg-slate p-8 font-sans">
+      <div className="  p-8 font-sans">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-6">
             Contact Us | The Spinner Wheel

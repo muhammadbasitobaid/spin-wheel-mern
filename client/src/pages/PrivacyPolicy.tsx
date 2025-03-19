@@ -5,7 +5,7 @@ const PrivacyPolicy: React.FC = () => {
   return (
     <>
       <NavBar isPublic />
-      <div className="bg-slate p-8 font-sans">
+      <div className="  p-8 font-sans">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-6 text-black">Privacy Policy</h1>
           <p className="mb-6 text-black">

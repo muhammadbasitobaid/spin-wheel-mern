@@ -268,7 +268,9 @@ export default function Home({ canonicalUrl }: HomeProps) {
                 </div>
               </div>
               <div className="hidden lg:flex lg:flex-col lg:justify-end lg:w-[66px] lg:gap-2 pb-8">
-                <VolumeController />
+                <div className="relative">
+                  <VolumeController />
+                </div>
                 <button
                   className="flex justify-center items-center"
                   onClick={() => dispatch(setActiveModal("history"))}
@@ -289,48 +291,6 @@ export default function Home({ canonicalUrl }: HomeProps) {
       <div className="max-w-[90%] lg:max-w-4xl mx-auto">
         {selectedWheel && parse(selectedWheel.htmlStr)}
       </div>
-      <footer className="bg-gray-100 text-center text-gray-700 py-6 mt-8 border-t border-gray-300">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row md:justify-between items-center">
-          <div className="mb-4 md:mb-0">
-            <span className="text-lg font-semibold">
-              &copy; 2025 The Spinner Wheel
-            </span>
-          </div>
-          <ul className="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
-            <li>
-              <a href="/about-us" className="hover:text-blue-600 transition">
-                About Us
-              </a>
-            </li>
-            <li>
-              <a href="/contact-us" className="hover:text-blue-600 transition">
-                Contact Us
-              </a>
-            </li>
-            <li>
-              <a
-                href="/privacy-policy"
-                className="hover:text-blue-600 transition"
-              >
-                Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a
-                href="/terms-and-conditions"
-                className="hover:text-blue-600 transition"
-              >
-                Terms & Conditions
-              </a>
-            </li>
-            <li>
-              <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer">
-                Site Map
-              </a>
-            </li>
-          </ul>
-        </div>
-      </footer>
     </div>
   );
 }

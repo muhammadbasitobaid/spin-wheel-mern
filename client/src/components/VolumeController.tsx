@@ -38,12 +38,6 @@ const VolumeController: FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newVolume = parseInt(event.target.value);
-    dispatch(setVolume(newVolume));
-    setIsMuted(newVolume === 0); // Set isMuted based on the slider value
-  };
-
   const handleCircularSliderChange = (value: number) => {
     if (value > MAX_VOLUME) {
       return;
@@ -61,13 +55,12 @@ const VolumeController: FC = () => {
 
   return (
     <div className="relative lg:flex lg:items-end">
-      <div className="w-[64px] absolute group inline-block rounded-full lg:bg-white lg:shadow-3xl lg:p-5 leading-none">
+      <div className="w-[64px] absolute group inline-block rounded-full leading-none">
         {sound && (
           <>
-            {/* Circular Slider for Small Screens */}
             <div
               id="volume-controller"
-              className="block lg:hidden"
+              className=""
               onMouseDown={() => setIsActive(true)}
               onFocus={() => setIsActive(true)}
             >
@@ -81,10 +74,11 @@ const VolumeController: FC = () => {
                   min={0}
                   max={100}
                   dataIndex={volume}
+                  label={volume.toString()}
                   renderLabelValue={
                     <button
                       onClick={handleMuteToggle}
-                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-none"
                     >
                       <img
                         src={
@@ -110,44 +104,8 @@ const VolumeController: FC = () => {
                 />
               </div>
             </div>
-
-            {/* Vertical Slider for Larger Screens */}
-            <div className="hidden lg:block">
-              <div className="hidden group-hover:block absolute bottom-full pb-2 w-full">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={volume.toString()}
-                  onChange={handleSliderChange}
-                  aria-orientation="vertical"
-                  className="appearance-none h-40 w-6 bg-gray-200 rounded-full focus:outline-none ml-[1px]"
-                  id="range-vertical"
-                />
-              </div>
-            </div>
           </>
         )}
-
-        <button
-          onClick={handleMuteToggle}
-          disabled={!sound}
-          className="lg:block hidden"
-        >
-          <img
-            src={
-              isMuted
-                ? "/assets/icons/volume_mute.svg"
-                : "/assets/icons/volume.svg"
-            }
-            alt={isMuted ? "Mute" : "Speaker"}
-            className={`w-6 h-6 aspect-square ${
-              sound ? "cursor-pointer" : "cursor-not-allowed"
-            }`}
-            style={{ filter: sound ? "none" : "grayscale(100%)" }}
-            title={!sound ? "Sound disabled" : ""}
-          />
-        </button>
       </div>
     </div>
   );

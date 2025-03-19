@@ -86,7 +86,7 @@
       "/random-name-picker",
       "/random-team-generator"
     ],
-    "waitFor": 2000,
+    "waitFor": 5000,
     "puppeteerIgnoreHTTPSErrors": true,
     "removeBlobs": true,
     "minifyHtml": {
@@ -95,7 +95,7 @@
     },
     "entryPoint": "src/snapEntryPoint.tsx",
     "waitForSelector": "#root > div",
-    "waitForTimeout": 2000,
+    "waitForTimeout": 5000,
     "waitForFunction": "document.querySelector('#root > div').children.length > 0"
   }
 }

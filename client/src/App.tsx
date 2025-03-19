@@ -73,9 +73,6 @@ export default function App() {
             path="/terms-and-conditions"
             element={<TermsAndConditions />}
           />
-
-          {/* Catch-all route for any other slugs */}
-          <Route path="/:slug" element={<HomePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

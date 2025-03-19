@@ -24,7 +24,7 @@ export default function NotFound() {
           />
 
           <h1 className="text-4xl font-medium text-black mb-4">
-            Oops! The wheel stopped here
+            404 - Oops! The wheel stopped here
           </h1>
 
           <p className="text-light-gray text-lg mb-8">

@@ -82,7 +82,20 @@
       "/",
       "/yes-or-no-wheel",
       "/random-number-generator",
-      "/random-letter-generator"
-    ]
+      "/random-letter-generator",
+      "/random-name-picker",
+      "/random-team-generator"
+    ],
+    "waitFor": 2000,
+    "puppeteerIgnoreHTTPSErrors": true,
+    "removeBlobs": true,
+    "minifyHtml": {
+      "collapseWhitespace": true,
+      "removeComments": true
+    },
+    "entryPoint": "src/snapEntryPoint.tsx",
+    "waitForSelector": "#root > div",
+    "waitForTimeout": 2000,
+    "waitForFunction": "document.querySelector('#root > div').children.length > 0"
   }
 }

@@ -37,6 +37,7 @@ import { generateAlphabetArray } from "../utils";
 import HomePageFullScreen from "src/pages/HomePageFullScreen";
 import parse from "html-react-parser";
 import { Helmet } from "react-helmet-async";
+import { initializeWheelState } from "../utils/wheelInitializer";
 
 export type ModalNames =
   | "result"
@@ -86,12 +87,35 @@ export default function Home({ canonicalUrl }: HomeProps) {
   const { activeModal, selectedWheel, fullScreenMode } = useSelector(
     (state: RootState) => state.wheel
   );
-  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [initiateAnimation, setInitiateAnimation] = useState(false);
   const [isLoadingWheel, setIsLoadingWheel] = useState(false);
   const [hideSmallScreen, setHideSmallScreen] = useState(false);
+
+  // Initialize wheel state immediately based on path
+  useEffect(() => {
+    const { selectedWheel, wheelSnapshot } = initializeWheelState(
+      location.pathname
+    );
+
+    dispatch(setSelectedWheel(selectedWheel));
+    dispatch(setWheelSnapshot(wheelSnapshot));
+    dispatch(setLastRotation(0));
+  }, [location.pathname, dispatch]);
+
+  // Handle client-side updates and wheel loading
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const wheelId = searchParams.get("id");
+
+    if (wheelId) {
+      setIsLoadingWheel(true);
+      // @ts-ignore - Ignoring type error for thunk action
+      dispatch(fetchWheelById(wheelId)).finally(() => setIsLoadingWheel(false));
+    }
+  }, [location.pathname, location.search, dispatch]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -105,21 +129,6 @@ export default function Home({ canonicalUrl }: HomeProps) {
       }, 1000);
     }
   }, [activeModal, location.search, navigate, dispatch]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const wheelId = params.get("id");
-
-    if (wheelId) {
-      setIsLoadingWheel(true);
-      dispatch(
-        // @ts-ignore
-        fetchWheelById(wheelId, () => {
-          setIsLoadingWheel(false);
-        })
-      );
-    }
-  }, [location.search, dispatch]);
 
   useEffect(() => {
     if (fullScreenMode) {

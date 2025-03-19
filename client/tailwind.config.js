@@ -21,6 +21,7 @@ module.exports = {
         fadeIn: "fadeIn 1s ease-in-out forwards 1s",
         fadeOutFast: "fadeOut 0.5s ease-in-out forwards", 
         fadeInFast: "fadeIn 0.5s ease-in-out forwards",
+        'spin-slow': 'spin 3s linear infinite',
       },
       keyframes: {
         flick: {

@@ -17,9 +17,47 @@ self.addEventListener("install", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
-  // Bypass service worker for sitemap.xml
+  // Special handling for sitemap.xml
   if (url.pathname === "/sitemap.xml") {
-    event.respondWith(fetch(event.request));
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        // If fetch fails, return a proper XML response
+        return new Response(
+          `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://thespinnerwheel.com/</loc>
+    <lastmod>2025-03-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://thespinnerwheel.com/yes-or-no-wheel</loc>
+    <lastmod>2025-03-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thespinnerwheel.com/random-number-generator</loc>
+    <lastmod>2025-03-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thespinnerwheel.com/random-letter-generator</loc>
+    <lastmod>2025-03-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>`,
+          {
+            headers: {
+              "Content-Type": "application/xml",
+            },
+          }
+        );
+      })
+    );
     return;
   }
 

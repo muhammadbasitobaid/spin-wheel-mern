@@ -53,6 +53,7 @@ self.addEventListener("fetch", (event) => {
           {
             headers: {
               "Content-Type": "application/xml",
+              "X-Robots-Tag": "noindex, nofollow"
             },
           }
         );

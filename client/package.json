@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Wheelspinner App FE",
   "private": true,
-  "homepage": "https://thespinnerwheel.com/",
   "main": "index.js",
   "author": "muhammadbasitobaid",
   "license": "MIT",
@@ -77,14 +76,12 @@
       "--no-sandbox",
       "--disable-setuid-sandbox"
     ],
-    "source": "public",
+    "source": "build",
     "include": [
       "/",
       "/yes-or-no-wheel",
       "/random-number-generator",
-      "/random-letter-generator",
-      "/random-name-picker",
-      "/random-team-generator"
+      "/random-letter-generator"
     ],
     "waitFor": 5000,
     "puppeteerIgnoreHTTPSErrors": true,

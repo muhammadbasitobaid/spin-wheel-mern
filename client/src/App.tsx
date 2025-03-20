@@ -69,6 +69,8 @@ export default function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/sitemap.xml" />
+
           <Route
             path="/terms-and-conditions"
             element={<TermsAndConditions />}

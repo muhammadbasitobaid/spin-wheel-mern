@@ -11,6 +11,75 @@ import { HelmetProvider } from "react-helmet-async";
 import NotFound from "./pages/NotFound";
 import { ConfirmPage, HomePage } from "./pages";
 import Layout from "./components/Layout";
+const SiteMap = () => {
+  return `
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <url>
+        <loc>https://thespinnerwheel.com/</loc>
+        <lastmod>2025-03-19</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <url>
+        <loc>https://thespinnerwheel.com/yes-or-no-wheel</loc>
+        <lastmod>2025-03-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+ <url>
+        <loc>https://thespinnerwheel.com/random-number-generator</loc>
+        <lastmod>2025-03-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+ <url>
+        <loc>https://thespinnerwheel.com/random-letter-generator</loc>
+        <lastmod>2025-03-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+
+
+
+    <url>
+        <loc>https://thespinnerwheel.com/about-us</loc>
+        <lastmod>2025-03-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+    <url>
+        <loc>https://thespinnerwheel.com/contact-us</loc>
+        <lastmod>2025-03-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+ <url>
+        <loc>https://thespinnerwheel.com/privacy-policy</loc>
+        <lastmod>2025-03-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+ <url>
+        <loc>https://thespinnerwheel.com/terms-and-conditions</loc>
+        <lastmod>2025-03-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+</urlset>
+
+
+`;
+};
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -69,7 +138,7 @@ export default function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/sitemap.xml" />
+          <Route path="/sitemap.xml" element={<SiteMap />} />
 
           <Route
             path="/terms-and-conditions"

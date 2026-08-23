@@ -10,7 +10,7 @@ Next.js 14 full-stack app with TypeScript, Tailwind CSS, shadcn/ui, MongoDB (Mon
 
 - `docs/SPEC.md` — product spec, tech-agnostic.
 - `docs/ARCHITECTURE.md` — stack decisions and implementation binding.
-- `docs/styling.md` — v1 → v2 Tailwind / styling mapping (create when styling UI).
+- `docs/styling.md` — v1 → v2 Tailwind / styling mapping.
 
 ## System commands
 
@@ -32,6 +32,22 @@ npm run lint
 
 # Type check
 npm run typecheck
+
+# E2E tests
+npm run test:e2e
+
+# E2E tests with UI
+npm run test:e2e:ui
+```
+
+## Docker
+
+```bash
+# Start app + MongoDB locally
+docker compose up --build
+
+# Stop
+docker compose down
 ```
 
 ## Environment
@@ -67,6 +83,7 @@ components/    # React components (shadcn/ui + custom)
 lib/           # Utilities, db connection, shared helpers
 types/         # TypeScript type declarations (e.g., spin-wheel.d.ts)
 public/        # Static assets
+e2e/           # Playwright end-to-end tests
 ```
 
 ## Agent conventions
@@ -75,4 +92,4 @@ public/        # Static assets
 - Style with **Tailwind** using v1 token mapping in `docs/styling.md`.
 - Prefer `clsx` + `tailwind-merge` (via `lib/utils.ts`) for conditional classes.
 - Keep `SPEC.md` tech-agnostic. Put implementation notes in `ARCHITECTURE.md` or `agent.md`.
-- Run `npm run typecheck` before finishing.
+- Run `npm run lint && npm run typecheck` before finishing.

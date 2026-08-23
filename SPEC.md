@@ -89,16 +89,22 @@ timestamp, reference).
 | Field | Type | Notes |
 |---|---|---|
 | id | identifier | Unique. |
-| username | string (2–50) | Unique (case-insensitive). Required for local accounts. |
+| username | string (2–50) | Required for **all** accounts. Unique (case-insensitive). OAuth providers do not supply a username, so OAuth-created accounts auto-generate one from the email prefix / display name, suffixed until unique. |
 | email | string (5–255) | Unique (case-insensitive). Required. |
+| emailVerified | boolean | Default `false`. Password login requires `true`. |
 | password | string (hashed) | Optional — absent for OAuth-only accounts. |
-| oauthProviderId | string | External identity (e.g., Google subject id). Optional, unique when present. |
+| oauthAccounts | list of `{ provider, providerUserId }` | External identities (e.g., `{ provider: "google", providerUserId: "<sub>" }`). Composite `(provider, providerUserId)` is unique. Supports additional providers later (Facebook — AU-22). Empty for local-only accounts. |
 | avatarUrl | string | Optional profile thumbnail (from OAuth profile). |
-| isVerified | boolean | Default `false`. Password login requires `true`. |
 | isAdmin | boolean | Default `false`. Reserved; no UI specified. |
-| passwordResetToken | string | Empty when no reset is in flight. |
-| passwordResetExpires | timestamp | Reset tokens are valid for 12 hours. |
-| wheels | list of references to SavedWheel | The user's wheel library. |
+| createdAt | timestamp | Defaults to account creation time. |
+
+- Case-insensitive uniqueness (username, email) is enforced via normalized lowercase
+  shadow fields or a case-insensitive collation index — never by application-level
+  string comparison alone.
+- Email verification and password reset use the **Token** entity (3.4); no token state
+  is stored on the User.
+- The user's wheel library is derived from `SavedWheel.ownerId` (3.2) — no wheel
+  references are stored on the User.
 
 ### 3.2 SavedWheel
 
@@ -106,29 +112,46 @@ A persisted snapshot of a wheel's complete configuration.
 
 | Field | Type | Notes |
 |---|---|---|
-| id | identifier | Unique. |
-| wheelType | enum | `custom-options-wheel`, `yes-no-wheel`, `number-wheel`, `letter-wheel`. |
-| customWheelName | string | Required. Display name. |
-| description | string | Required. |
+| id | identifier | Unique **and unguessable** (e.g., UUID v4 / nanoid) — the id doubles as the share token in links (SH-3), so sequential/guessable ids are forbidden. Possession of the id grants read access; revocation is out of scope (Appendix C). |
+| ownerId | reference → User | Required. Single source of truth for library ownership. Indexed. |
+| wheelType | enum | `custom-options-wheel`, `yes-no-wheel`, `number-wheel`, `letter-wheel`. Discriminates `config` (see 3.2.1). |
+| name | string | Required. Display name (auto-generated default, e.g., based on type and date — MD-1). |
+| description | string | Optional. Default `""`. |
 | popUpMessage | string | Required. Shown in the result modal (default "Congratulations!"). |
-| selectedOption | string | Mode/option selected within the wheel type (e.g., "Yes, No or Maybe"). |
-| customOptions | list of strings | For the custom wheel: the option labels. |
-| inputNumbers | number | Repetition count of options on the wheel (1–5). |
-| history | list of strings | Spin results recorded so far. |
-| lowerNumber | number | Number wheel: range start. |
-| highestNumber | number | Number wheel: range end. |
-| interval | number | Number wheel: step between generated numbers. |
-| customLetterList | string | Comma-separated custom letters (letter wheel), excluded numbers (number wheel), or serialized options (custom wheel). |
-| casing | enum | `UPPERCASE` / `lowercase` (letter wheel). |
-| createdAt | timestamp | Defaults to creation time. |
+| history | list of strings | Spin results, oldest → newest. **Capped at the last 100 entries**; older entries are permanently discarded. The score card (F7) and export (HI-3) operate on this retained window. |
+| config | object (see 3.2.1) | Required. Exactly one variant, selected by `wheelType`. |
 | spinConfig | object (see 3.3) | Required. |
+| createdAt | timestamp | Defaults to creation time. |
+| updatedAt | timestamp | Bumped on every save (WP-2); the library list sorts by this. |
+
+#### 3.2.1 Per-type `config` (discriminated union on `wheelType`)
+
+Exactly one variant is present, matching `wheelType`. Modes are stored as enum values,
+never as display strings.
+
+- **`custom-options-wheel`** → `{ options: list of strings }` — the option labels.
+- **`yes-no-wheel`** → `{ mode: "yes-or-no" | "yes-no-maybe", repetitions: number (1–5, default 3) }` —
+  each outcome label is repeated `repetitions` times on the wheel (WT-11).
+- **`number-wheel`** → `{ lower: number (default 1), upper: number (default 10), interval: number (default 1), excluded: list of numbers }` —
+  validate `lower ≤ upper` and ≤ 1000 generated segments (WT-23). Excluded numbers are
+  stored as numbers: the comma-separated input is parsed and invalid entries discarded
+  at the input boundary (WT-23), not stored.
+- **`letter-wheel`** → `{ set: "alphabet" | "consonants" | "vowels" | "custom", casing: "uppercase" | "lowercase", customLetters: list of strings }` —
+  `customLetters` is present only when `set = "custom"`; each entry contributes its
+  first character as a segment (WT-32).
 
 ### 3.3 SpinConfig
 
+> **Implementation reminder:** SpinConfig field types MUST alias or extend the
+> TypeScript types exported by the chosen wheel-rendering library — never redeclare
+> parallel types. The library's types are the source of truth, so a SpinConfig passes
+> to the wheel component without duplicate or contradictory definitions, and numeric
+> bounds (e.g., speed level range) stay aligned with what the library accepts.
+
 | Field | Type | Default | Notes |
 |---|---|---|---|
-| spinningSpeedLevel | number | 5 | Higher = faster spin-up. |
-| spinningDuration | number (seconds) | 9 | Max 30. Ignored when manual stop is on. |
+| spinningSpeedLevel | number | 5 | Higher = faster spin-up. Bounds per the wheel library's accepted range. |
+| spinningDuration | number (seconds) | 9 | 1–30. Ignored when manual stop is on. |
 | manuallyStopOption | boolean | false | User clicks to stop (max ~1 min). |
 | randomInitialAngleOption | boolean | false | Randomize starting rotation when inputs change. |
 | mysterySpinOption | boolean | false | Render all labels as "?" until the result. |
@@ -136,21 +159,41 @@ A persisted snapshot of a wheel's complete configuration.
 | confetti | boolean | true | Show celebration effect on result. |
 | sound | boolean | true | Play celebration sound on result. |
 | confettiType | enum | `Confetti` | `Confetti` or `Fireworks`. |
-| selectedTheme | list of 4 colors | Theme #1 | Segment color palette (see F4). |
+| wheelThemeId | reference → WheelTheme (3.4) | Theme #1 | **Wheel theme** (segment palette — see F4). Stored as a reference: the catalog is constant and not user-editable, so referenced palettes can never change under a saved wheel (TH-4). Never confused with the **site theme** (light/dark — F15), which is a client preference and not part of a wheel. |
 
 ### 3.4 Supporting Entities
 
-- **Session** — server-side session identified by a signed cookie; persists for 30 days.
-- **Token** — single-purpose token (email verification or password reset) bound to a
-  user; a newer token of the same purpose supersedes older ones.
+- **Session** — server-side session identified by a signed cookie.
+  `{ id, userId → User, createdAt, expiresAt }`; persists for 30 days.
+- **Token** — single-purpose token bound to a user, used for **email verification and
+  password reset only** (login state lives in Session, never in Token).
+  `{ id, userId → User, purpose: "email-verification" | "password-reset", tokenHash, createdAt, expiresAt, consumedAt }`.
+  The token value is stored **hashed** (NF-2); a token is single-use (`consumedAt`);
+  a newer token of the same purpose supersedes older ones (AU-31); password-reset
+  tokens are valid for 12 hours (AU-30).
+- **WheelTheme** — a **wheel theme**: one of ~59 predefined 4-color segment palettes
+  (F4). `{ id, label, colors: exactly 4 hex colors }`. A **constant, read-only catalog
+  served by the backend**; themes are not user-editable and never change, so
+  `SpinConfig.wheelThemeId` references are stable. Always called *wheel theme* to
+  distinguish it from the **site theme** (light/dark — F15), which is an unrelated
+  client-side preference (see 3.5).
+
+**Referential integrity:** deleting a User cascades to their Sessions, Tokens, and
+SavedWheels; cancelling a pending registration (AU-5) deletes the unverified account
+together with its Tokens. Deleting a SavedWheel invalidates its share links — the id
+no longer resolves and link visitors get the SH-5 error fallback.
 
 ### 3.5 Client-Side Entities (not necessarily persisted)
 
 - **WheelDefinition** — static descriptor of a wheel type: `name`, `label`, `slug`
   (URL path), available modes/options, and rich-text content for SEO.
 - **WheelSnapshot** — the live working state of the wheel being edited: options, mode,
-  ranges, casing, history, etc.
+  ranges, casing, history, etc. Serializes 1:1 to/from SavedWheel — the snapshot is
+  the working copy, the SavedWheel is the persisted boundary (WP-1, WP-4).
 - **Volume** — playback volume (0–100, default 50), a client-side preference.
+- **SiteThemePreference** — the **site theme** (`light` | `dark`), persisted
+  client-side (WT-52). Independent of any wheel's SpinConfig and never shared via
+  links (WT-55). Not to be confused with **WheelTheme** (3.4).
 
 ---
 
@@ -261,7 +304,8 @@ saved wheel.
 > panels, navigation).
 
 - **TH-1** The Settings modal has a "Themes" tab presenting a grid of ~59 predefined
-  4-color palettes.
+  4-color **wheel theme** palettes, served by the backend from the constant
+  `WheelTheme` catalog (see 3.4).
 - **TH-2** Selecting a palette immediately recolors the wheel segments (cycling through
   the palette colors per segment index); it does not recolor the page or site chrome.
 - **TH-3** Label text color auto-selects black or white per segment for contrast against
@@ -331,7 +375,7 @@ saved wheel.
   must each be unique (case-insensitive); clear errors are returned on conflicts
   ("Username already taken...", "Email already registered...").
 - **AU-2** On registration, a verification email containing a confirmation link is sent.
-  The account is created with `isVerified = false`.
+  The account is created with `emailVerified = false`.
 - **AU-3** Opening the confirmation link marks the account verified and invites login.
   Invalid/expired/unknown tokens produce a clear error.
 - **AU-4** A guest can request the verification email be re-sent ("send confirmation").
@@ -827,5 +871,7 @@ verification and gap-closure.
 3. Should the full-screen toggle be formally enabled (currently marked unavailable)?
 4. Should the health endpoint and rate limiting be enabled for production in v2?
 5. Is the admin role intended to surface a back-office UI in any future phase?
+6. Should share links become revocable in the future? That would require a dedicated
+   ShareLink entity; for v2 the unguessable wheel id is the share token (3.2).
 
 <!-- END -->

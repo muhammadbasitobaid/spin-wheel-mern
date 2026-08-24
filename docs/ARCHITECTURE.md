@@ -23,7 +23,9 @@ handling both the UI layer and the API layer.
 | OAuth | Custom Route Handler or **Auth.js (NextAuth v5)** | Google OAuth (AU-20); Facebook stub (AU-22) |
 | Email | **Resend** (primary) / SMTP fallback | Verification, password reset, confirmation emails |
 | Styling | **Tailwind CSS** | Utility-first CSS with built-in light/dark mode support |
+| Site theme | **next-themes** | Light/dark class toggling with `localStorage` persistence |
 | UI components | **shadcn/ui** (Radix + Tailwind) | Modals, sliders, toggles, toasts, forms |
+| Observability | **pino** | Structured server logging |
 | Wheel rendering | **spin-wheel** v5.x (vanilla-JS canvas library) wrapped in a React component | Animated wheel; supports manual stop, tick callback, and per-item styling. TypeScript types defined in-project (see §3.5). |
 | Icons | **Lucide React** | Consistent iconography |
 | State (client) | **React hooks / Zustand** | Live wheel snapshot, history, UI preferences |
@@ -149,9 +151,11 @@ parallel or contradictory definitions (per SPEC §3.3).
 
 ### 3.6 Tailwind + shadcn/ui
 
-- Light/dark site theme (F15) is implemented via Tailwind's `dark` class strategy.
+- Light/dark site theme (F15) is implemented via Tailwind's `dark` class strategy
+  using `next-themes` for state and persistence.
 - shadcn/ui components are copy-paste primitives, so styling can be tuned to the
   project's design tokens without fighting a heavy theme system.
+- Visual tokens from v1 are mapped to v2 in `docs/styling.md`.
 
 ## 4. Key architectural decisions
 

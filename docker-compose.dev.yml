@@ -2,18 +2,20 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - NEXT_PUBLIC_APP_URL=http://localhost:3000
       - MONGODB_URI=mongodb://mongo:27017/spin-wheel
-      - IMAGES_UNOPTIMIZED=true
       - IRON_SESSION_PASSWORD=${IRON_SESSION_PASSWORD}
       - RESEND_API_KEY=${RESEND_API_KEY}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+    volumes:
+      - .:/app
+      - /app/.next
     depends_on:
       - mongo
 
